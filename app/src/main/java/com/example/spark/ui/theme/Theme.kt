@@ -1,49 +1,68 @@
 package com.example.spark.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 
-private val SparkLightColorScheme = lightColorScheme(
-    primary = SparkPrimary,
-    onPrimary = SparkOnPrimary,
-    primaryContainer = SparkPrimaryContainer,
-    onPrimaryContainer = SparkOnPrimaryContainer,
-    inversePrimary = SparkInversePrimary,
-    secondary = SparkSecondary,
-    onSecondary = SparkOnSecondary,
-    secondaryContainer = SparkSecondaryContainer,
-    onSecondaryContainer = SparkOnSecondaryContainer,
-    tertiary = SparkTertiary,
-    onTertiary = SparkOnTertiary,
-    tertiaryContainer = SparkTertiaryContainer,
-    onTertiaryContainer = SparkOnTertiaryContainer,
-    background = SparkBackground,
-    onBackground = SparkOnBackground,
-    surface = SparkSurface,
-    onSurface = SparkOnSurface,
-    surfaceVariant = SparkSurfaceVariant,
-    onSurfaceVariant = SparkOnSurfaceVariant,
-    surfaceTint = SparkSurfaceTint,
-    inverseSurface = SparkInverseSurface,
-    inverseOnSurface = SparkInverseOnSurface,
-    error = SparkError,
-    onError = SparkOnError,
-    errorContainer = SparkErrorContainer,
-    onErrorContainer = SparkOnErrorContainer,
-    outline = SparkOutline,
-    outlineVariant = SparkOutlineVariant,
-)
+// ============================================================================
+// Composition Locals for Spark Design System
+// ============================================================================
+
+val LocalSparkTypography = staticCompositionLocalOf { DefaultSparkTypography }
+val LocalSparkShapes = staticCompositionLocalOf { DefaultSparkShapes }
+val LocalSparkSpacing = staticCompositionLocalOf { DefaultSparkSpacing }
+
+// ============================================================================
+// SparkTheme Object Accessor (SparkTheme.typography, SparkTheme.shapes, etc.)
+// ============================================================================
+
+object SparkTheme {
+    val typography: SparkTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalSparkTypography.current
+
+    val shapes: SparkShapes
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalSparkShapes.current
+
+    val spacing: SparkSpacing
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalSparkSpacing.current
+
+    val colorScheme: ColorScheme
+        @Composable
+        @ReadOnlyComposable
+        get() = MaterialTheme.colorScheme
+}
+
+// ============================================================================
+// SparkTheme Composable
+// ============================================================================
 
 @Composable
 fun SparkTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(
-        colorScheme = SparkLightColorScheme,
-        typography = SparkTypography,
-        content = content
-    )
+    val colorScheme = if (darkTheme) SparkDarkColorScheme else SparkLightColorScheme
+
+    CompositionLocalProvider(
+        LocalSparkTypography provides DefaultSparkTypography,
+        LocalSparkShapes provides DefaultSparkShapes,
+        LocalSparkSpacing provides DefaultSparkSpacing
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = MaterialTypography,
+            shapes = MaterialShapes,
+            content = content
+        )
+    }
 }
