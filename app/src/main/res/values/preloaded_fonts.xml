@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts">
+        <item>@font/font_plus_jakarta_sans</item>
+        <item>@font/font_nunito_sans</item>
+    </array>
+</resources>

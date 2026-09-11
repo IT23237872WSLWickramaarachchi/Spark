@@ -1,44 +1,52 @@
 package com.example.spark
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import com.example.spark.ui.screens.WelcomeScreen
-import com.example.spark.ui.theme.SparkTheme
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.example.spark.databinding.ActivityMainBinding
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            SparkTheme {
-                var email by rememberSaveable { mutableStateOf("") }
-                var password by rememberSaveable { mutableStateOf("") }
-                var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-                WelcomeScreen(
-                    email = email,
-                    password = password,
-                    passwordVisible = passwordVisible,
-                    onEmailChange = { email = it },
-                    onPasswordChange = { password = it },
-                    onTogglePasswordVisibility = { passwordVisible = !passwordVisible },
-                    onLoginClick = {
-                        Toast.makeText(this, "Log In clicked for $email", Toast.LENGTH_SHORT).show()
-                    },
-                    onForgotPasswordClick = {
-                        Toast.makeText(this, "Forgot password clicked", Toast.LENGTH_SHORT).show()
-                    },
-                    onRegisterClick = {
-                        Toast.makeText(this, "Register clicked", Toast.LENGTH_SHORT).show()
-                    }
-                )
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.navHostFragment.setPadding(0, systemBars.top, 0, 0)
+            binding.bottomNav.setPadding(0, 0, 0, systemBars.bottom)
+            insets
+        }
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
+        binding.bottomNav.setupWithNavController(navController)
+
+        // Show BottomNavigationView only on primary tab destinations
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.dashboard,
+                R.id.stats,
+                R.id.settings -> {
+                    binding.bottomNav.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.bottomNav.visibility = View.GONE
+                }
             }
         }
     }

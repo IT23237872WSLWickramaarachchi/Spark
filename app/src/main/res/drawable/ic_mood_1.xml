@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Mood 1: Awful (Sad / Distressed Face with tear) -->
+    <!-- Face outline -->
+    <path
+        android:strokeColor="@color/on_surface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z" />
+    <!-- Slanted sad eyes -->
+    <path
+        android:strokeColor="@color/on_surface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M8,10 L10,11" />
+    <path
+        android:strokeColor="@color/on_surface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M16,10 L14,11" />
+    <!-- Downturned mouth -->
+    <path
+        android:strokeColor="@color/on_surface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M8,17 C9.5,15 14.5,15 16,17" />
+    <!-- Tear drop -->
+    <path
+        android:strokeColor="@color/primary"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="@color/primary_fixed"
+        android:pathData="M6.5,13.5 C6.5,14.5 7.5,14.5 7.5,13.5 C7.5,12.8 6.5,12 6.5,12 C6.5,12 5.5,12.8 5.5,13.5 C5.5,14.5 6.5,14.5 6.5,13.5 Z" />
+</vector>

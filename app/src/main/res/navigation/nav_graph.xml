@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcome">
+
+    <!-- Welcome / Splash / Onboarding -->
+    <fragment
+        android:id="@+id/welcome"
+        android:name="com.example.spark.ui.auth.WelcomeFragment"
+        android:label="@string/welcome_title"
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_welcome_to_register"
+            app:destination="@id/register" />
+        <action
+            android:id="@+id/action_welcome_to_dashboard"
+            app:destination="@id/dashboard"
+            app:popUpTo="@id/welcome"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Register Screen -->
+    <fragment
+        android:id="@+id/register"
+        android:name="com.example.spark.ui.auth.RegisterFragment"
+        android:label="@string/register_title"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_to_dashboard"
+            app:destination="@id/dashboard"
+            app:popUpTo="@id/welcome"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Dashboard Screen -->
+    <fragment
+        android:id="@+id/dashboard"
+        android:name="com.example.spark.ui.dashboard.DashboardFragment"
+        android:label="@string/nav_dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboard_to_habitDetail"
+            app:destination="@id/habitDetail" />
+    </fragment>
+
+    <!-- Habit Detail Screen -->
+    <fragment
+        android:id="@+id/habitDetail"
+        android:name="com.example.spark.ui.habitdetail.HabitDetailFragment"
+        android:label="@string/habit_detail_title"
+        tools:layout="@layout/fragment_habit_detail" />
+
+    <!-- Stats / Insights Screen -->
+    <fragment
+        android:id="@+id/stats"
+        android:name="com.example.spark.ui.stats.StatsFragment"
+        android:label="@string/nav_stats"
+        tools:layout="@layout/fragment_stats" />
+
+    <!-- Settings Screen -->
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.spark.ui.settings.SettingsFragment"
+        android:label="@string/nav_settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

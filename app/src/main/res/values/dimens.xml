@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing from DESIGN.md -->
+    <dimen name="margin_screen">24dp</dimen>
+    <dimen name="gutter_stack">16dp</dimen>
+    <dimen name="padding_card_v">20dp</dimen>
+    <dimen name="padding_card_h">20dp</dimen>
+    <dimen name="inset_btn">16dp</dimen>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+
+    <!-- Radii from DESIGN.md -->
+    <dimen name="radius_sm">4dp</dimen>
+    <dimen name="radius_default">8dp</dimen>
+    <dimen name="radius_md">12dp</dimen>
+    <dimen name="radius_lg">16dp</dimen>
+    <dimen name="radius_xl">24dp</dimen>
+    <dimen name="radius_full">999dp</dimen>
+
+    <!-- Component Sizing -->
+    <dimen name="button_min_height">56dp</dimen>
+    <dimen name="elevation_card">2dp</dimen>
+    <dimen name="elevation_button">4dp</dimen>
+</resources>
