@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<font-family xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:fontProviderAuthority="com.google.android.gms.fonts"
-    app:fontProviderPackage="com.google.android.gms"
-    app:fontProviderQuery="name=Plus+Jakarta+Sans">
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        app:font="@font/plus_jakarta_sans_font"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
 </font-family>

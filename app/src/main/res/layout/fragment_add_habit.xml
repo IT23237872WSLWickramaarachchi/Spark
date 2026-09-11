@@ -162,7 +162,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/add_habit_freq_daily" />
+                    android:text="@string/add_habit_freq_daily"
+                    tools:ignore="VisualLintButtonSize" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnWeekly"
@@ -170,7 +171,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/add_habit_freq_weekly" />
+                    android:text="@string/add_habit_freq_weekly"
+                    tools:ignore="VisualLintButtonSize" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <!-- Reminder Time Clickable Row -->
