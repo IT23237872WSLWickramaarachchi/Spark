@@ -43,6 +43,14 @@
         <item name="android:textColor">@color/on_surface</item>
     </style>
 
+    <!-- Script Title from Stitch: 64sp, Caveat font, on_primary color -->
+    <style name="TextAppearance.Spark.ScriptTitle" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/font_caveat</item>
+        <item name="android:fontFamily">@font/font_caveat</item>
+        <item name="android:textSize">64sp</item>
+        <item name="android:textColor">@color/on_primary</item>
+    </style>
+
     <!-- Headline Lg: 24sp, 700 bold, Plus Jakarta Sans, lineHeight 32sp -->
     <style name="TextAppearance.Spark.HeadlineLg" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="fontFamily">@font/font_plus_jakarta_sans</item>

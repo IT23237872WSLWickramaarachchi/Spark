@@ -3,198 +3,134 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/primary">
 
-    <!-- Background View with soothing primary gradient -->
+    <!-- Decorative Top-Right Soft Glow (from Stitch spec: secondary-fixed blur) -->
     <View
-        android:id="@+id/viewBackground"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_gradient_primary"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/viewGlowTopRight"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:background="@drawable/bg_glow_top_right"
+        android:translationX="60dp"
+        android:translationY="-60dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Spark Logo Mark in Circular Background -->
+    <!-- Decorative Bottom-Left Ambient Glow (from Stitch spec: surface-container-lowest blur) -->
+    <View
+        android:id="@+id/viewGlowBottomLeft"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:background="@drawable/bg_glow_bottom_left"
+        android:translationX="-80dp"
+        android:translationY="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Spark Hybrid Icon: Checkmark + Dual Sparkle Stars -->
     <ImageView
         android:id="@+id/ivLogoMark"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@drawable/bg_circle_logo"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:contentDescription="@string/app_name"
-        android:elevation="4dp"
-        android:padding="14dp"
-        android:scaleType="fitCenter"
         android:src="@drawable/ic_logo_mark"
-        app:layout_constraintBottom_toTopOf="@+id/tvTitle"
+        app:layout_constraintBottom_toTopOf="@+id/tvAppName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintVertical_bias="0.45"
         app:layout_constraintVertical_chainStyle="packed"
-        app:tint="@color/primary" />
+        app:tint="@color/on_primary" />
 
-    <!-- Welcome Hero Title -->
+    <!-- Cursive / Script Brand Typography "Spark" -->
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/welcome_back_title"
-        android:textAppearance="@style/TextAppearance.Spark.DisplayHero"
+        android:layout_marginTop="20dp"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.Spark.ScriptTitle"
         android:textColor="@color/on_primary"
-        app:layout_constraintBottom_toTopOf="@+id/tvSubtitle"
+        app:layout_constraintBottom_toTopOf="@+id/tvTagline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivLogoMark" />
 
-    <!-- Subtitle (70% alpha) -->
+    <!-- Brand Tagline: "Small habits, better days." -->
     <TextView
-        android:id="@+id/tvSubtitle"
-        android:layout_width="0dp"
+        android:id="@+id/tvTagline"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="8dp"
-        android:alpha="0.7"
+        android:alpha="0.9"
         android:gravity="center"
-        android:text="@string/welcome_back_subtitle"
-        android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-        android:textColor="@color/on_primary"
-        app:layout_constraintBottom_toTopOf="@+id/cardLogin"
+        android:text="@string/welcome_tagline"
+        android:textAppearance="@style/TextAppearance.Spark.BodyLg"
+        android:textColor="@color/primary_fixed"
+        app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAppName" />
 
-    <!-- Bottom Anchored Login Card -->
+    <!-- Bottom Action: Pill-Shaped Get Started Button with Circle Arrow -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardLogin"
-        style="@style/Widget.Spark.Card"
+        android:id="@+id/btnGetStarted"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginHorizontal="@dimen/margin_screen"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="48dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/surface_container_lowest"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="8dp"
+        app:cardMaxElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeWidth="0dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_height="match_parent">
 
-            <!-- Email Input Field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilEmail"
-                style="@style/Widget.Spark.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_label_email"
-                app:startIconDrawable="@drawable/ic_mail"
-                app:startIconTint="@color/outline">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                    android:textColor="@color/on_surface" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Password Input Field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilPassword"
-                style="@style/Widget.Spark.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/register_label_password"
-                app:endIconMode="password_toggle"
-                app:endIconTint="@color/outline"
-                app:startIconDrawable="@drawable/ic_lock"
-                app:startIconTint="@color/outline">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                    android:textColor="@color/on_surface" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Right-aligned Forgot Password -->
+            <!-- "GET STARTED" Label -->
             <TextView
-                android:id="@+id/tvForgotPassword"
+                android:id="@+id/tvGetStarted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingHorizontal="4dp"
-                android:paddingVertical="8dp"
-                android:text="@string/login_forgot_password"
+                android:layout_marginStart="24dp"
+                android:letterSpacing="0.08"
+                android:text="@string/welcome_btn_get_started_caps"
                 android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                android:textColor="@color/primary" />
+                android:textColor="@color/primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Log In Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnLogin"
-                style="@style/Widget.Spark.Button.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/login_btn_login" />
+            <!-- Circular Container for Arrow -->
+            <FrameLayout
+                android:id="@+id/frameArrow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_circle_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <!-- Divider Row "or" -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/welcome_btn_get_started"
+                    android:src="@drawable/ic_arrow_forward"
+                    app:tint="@color/primary" />
+            </FrameLayout>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/divider_grey" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:text="@string/auth_divider_or"
-                    android:textAppearance="@style/TextAppearance.Spark.LabelMd"
-                    android:textColor="@color/outline" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/divider_grey" />
-            </LinearLayout>
-
-            <!-- Bottom TextView with ClickableSpan on "Register" -->
-            <TextView
-                android:id="@+id/tvRegisterPrompt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingVertical="8dp"
-                android:text="@string/welcome_register_prompt"
-                android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                android:textColor="@color/on_surface_variant" />
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

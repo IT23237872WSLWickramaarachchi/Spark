@@ -25,7 +25,9 @@
     <string name="welcome_title">Spark</string>
     <string name="welcome_subtitle">Nurture habits that nurture you</string>
     <string name="welcome_description">Build mindful habits and track your emotional well-being, one gentle step at a time.</string>
+    <string name="welcome_tagline">Small habits, better days.</string>
     <string name="welcome_btn_get_started">Get Started</string>
+    <string name="welcome_btn_get_started_caps">GET STARTED</string>
     <string name="welcome_btn_sign_in">I already have an account</string>
 
     <string name="login_title">Welcome Back</string>
