@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Person Head -->
+    <path
+        android:strokeColor="@color/outline"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M12,11 C13.66,11 15,9.66 15,8 C15,6.34 13.66,5 12,5 C10.34,5 9,6.34 9,8 C9,9.66 10.34,11 12,11 Z" />
+    <!-- Person Body -->
+    <path
+        android:strokeColor="@color/outline"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M6,19 C6,15.7 8.7,13 12,13 C15.3,13 18,15.7 18,19" />
+</vector>

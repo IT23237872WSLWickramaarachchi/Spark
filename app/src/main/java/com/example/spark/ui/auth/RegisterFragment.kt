@@ -15,17 +15,46 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.spark.R
 import com.example.spark.databinding.FragmentRegisterBinding
+import com.google.android.material.textfield.TextInputLayout
 
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     /**
-     * Configurable click listeners with default navigation actions.
+     * Configurable click listeners for testing and modular host binding.
      */
     var onRegisterClick: (() -> Unit)? = null
     var onLoginClick: (() -> Unit)? = null
+    var onBackClick: (() -> Unit)? = null
+
+    /**
+     * Exposed error property placeholders wired to the respective TextInputLayouts.
+     */
+    var passwordError: String? = null
+        set(value) {
+            field = value
+            _binding?.let { setError(it.tilPassword, value) }
+        }
+
+    var confirmPasswordError: String? = null
+        set(value) {
+            field = value
+            _binding?.let { setError(it.tilConfirmPassword, value) }
+        }
+
+    var nameError: String? = null
+        set(value) {
+            field = value
+            _binding?.let { setError(it.tilName, value) }
+        }
+
+    var emailError: String? = null
+        set(value) {
+            field = value
+            _binding?.let { setError(it.tilEmail, value) }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,19 +68,36 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        applyPendingErrors()
         setupClickListeners()
         setupLoginSpannable()
     }
 
+    /**
+     * Shows error conditionally on the given TextInputLayout.
+     */
+    fun setError(layout: TextInputLayout, errorText: String?) {
+        layout.error = errorText
+        layout.isErrorEnabled = !errorText.isNullOrEmpty()
+    }
+
+    private fun applyPendingErrors() {
+        passwordError?.let { setError(binding.tilPassword, it) }
+        confirmPasswordError?.let { setError(binding.tilConfirmPassword, it) }
+        nameError?.let { setError(binding.tilName, it) }
+        emailError?.let { setError(binding.tilEmail, it) }
+    }
+
     private fun setupClickListeners() {
         binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
+            onBackClick?.invoke() ?: run {
+                findNavController().navigateUp()
+            }
         }
 
         binding.btnRegister.setOnClickListener {
             if (validateInputs()) {
                 onRegisterClick?.invoke() ?: run {
-                    // Navigate to dashboard on successful registration
                     findNavController().navigate(R.id.action_register_to_dashboard)
                 }
             }
@@ -59,10 +105,9 @@ class RegisterFragment : Fragment() {
     }
 
     /**
-     * Basic client-side validation for registration form fields.
-     * Returns true if all fields pass validation.
+     * Client-side validation enforcing required fields and minimum 8-character password.
      */
-    private fun validateInputs(): Boolean {
+    fun validateInputs(): Boolean {
         var isValid = true
 
         val name = binding.etName.text?.toString()?.trim().orEmpty()
@@ -70,59 +115,55 @@ class RegisterFragment : Fragment() {
         val password = binding.etPassword.text?.toString().orEmpty()
         val confirmPassword = binding.etConfirmPassword.text?.toString().orEmpty()
 
-        // Name validation
         if (name.isEmpty()) {
-            binding.tilName.error = "Name is required"
+            nameError = "Full Name is required"
             isValid = false
         } else {
-            binding.tilName.error = null
+            nameError = null
         }
 
-        // Email validation
         if (email.isEmpty()) {
-            binding.tilEmail.error = "Email is required"
+            emailError = "Email Address is required"
             isValid = false
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.tilEmail.error = "Enter a valid email address"
+            emailError = "Enter a valid email address"
             isValid = false
         } else {
-            binding.tilEmail.error = null
+            emailError = null
         }
 
-        // Password validation
         if (password.isEmpty()) {
-            binding.tilPassword.error = "Password is required"
+            passwordError = "Password is required"
             isValid = false
-        } else if (password.length < 6) {
-            binding.tilPassword.error = "Password must be at least 6 characters"
+        } else if (password.length < 8) {
+            passwordError = "Minimum 8 characters"
             isValid = false
         } else {
-            binding.tilPassword.error = null
+            passwordError = null
         }
 
-        // Confirm password validation
         if (confirmPassword.isEmpty()) {
-            binding.tilConfirmPassword.error = "Please confirm your password"
+            confirmPasswordError = "Please confirm your password"
             isValid = false
         } else if (confirmPassword != password) {
-            binding.tilConfirmPassword.error = "Passwords do not match"
+            confirmPasswordError = "Passwords do not match"
             isValid = false
         } else {
-            binding.tilConfirmPassword.error = null
+            confirmPasswordError = null
         }
 
         return isValid
     }
 
     /**
-     * Sets up a ClickableSpan on "Sign In" within the login prompt text.
+     * Sets up a ClickableSpan on "Log In" in the bottom prompt text.
      */
     private fun setupLoginSpannable() {
         val fullText = getString(R.string.register_prompt_login)
-        val signInText = "Sign In"
+        val loginWord = getString(R.string.action_login)
 
         val spannable = SpannableString(fullText)
-        val startIndex = fullText.indexOf(signInText)
+        val startIndex = fullText.indexOf(loginWord)
 
         if (startIndex != -1) {
             val clickableSpan = object : ClickableSpan() {
@@ -143,7 +184,7 @@ class RegisterFragment : Fragment() {
             spannable.setSpan(
                 clickableSpan,
                 startIndex,
-                startIndex + signInText.length,
+                startIndex + loginWord.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }

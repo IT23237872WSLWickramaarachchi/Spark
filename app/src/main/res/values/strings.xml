@@ -41,13 +41,17 @@
     <string name="login_prompt_register">Don\'t have an account? Sign Up</string>
 
     <string name="register_title">Create Account</string>
-    <string name="register_subtitle">Start tracking habits with emotional well-being</string>
+    <string name="register_subtitle">Join Spark to begin your journey.</string>
     <string name="register_label_name">Full Name</string>
+    <string name="register_hint_name">Jane Doe</string>
     <string name="register_label_email">Email Address</string>
+    <string name="register_hint_email">jane@example.com</string>
     <string name="register_label_password">Password</string>
+    <string name="register_helper_password">Minimum 8 characters</string>
     <string name="register_label_confirm_password">Confirm Password</string>
-    <string name="register_btn_submit">Create Account</string>
-    <string name="register_prompt_login">Already have an account? Sign In</string>
+    <string name="register_btn_submit">Create Account &#8594;</string>
+    <string name="register_prompt_login">Already have an account? Log In</string>
+    <string name="action_login">Log In</string>
 
     <!-- ================================================================= -->
     <!-- DASHBOARD SCREEN                                                  -->

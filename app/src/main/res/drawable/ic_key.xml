@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Key icon -->
+    <path
+        android:strokeColor="@color/outline"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M16,12 C16,9.8 17.8,8 20,8 C22.2,8 24,9.8 24,12 C24,14.2 22.2,16 20,16 C17.8,16 16,14.2 16,12 Z M16,12 L4,12 M8,12 L8,15 M11,12 L11,14" />
+</vector>
