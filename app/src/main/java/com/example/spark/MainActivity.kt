@@ -34,7 +34,37 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        binding.bottomNav.setupWithNavController(navController)
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.dashboard -> {
+                    if (navController.currentDestination?.id != R.id.dashboard) {
+                        navController.navigate(R.id.dashboard)
+                    }
+                    true
+                }
+                R.id.stats -> {
+                    if (navController.currentDestination?.id != R.id.stats) {
+                        navController.navigate(R.id.stats)
+                    }
+                    true
+                }
+                R.id.settings -> {
+                    if (navController.currentDestination?.id != R.id.settings) {
+                        navController.navigate(R.id.settings)
+                    }
+                    true
+                }
+                R.id.add -> {
+                    // Placeholder for Add Habit flow
+                    true
+                }
+                R.id.mood -> {
+                    // Placeholder for Mood Check-in flow
+                    true
+                }
+                else -> false
+            }
+        }
 
         // Show BottomNavigationView only on primary tab destinations
         navController.addOnDestinationChangedListener { _, destination, _ ->

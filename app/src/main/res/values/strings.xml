@@ -17,6 +17,8 @@
     <!-- ================================================================= -->
     <string name="nav_dashboard">Today</string>
     <string name="nav_stats">Insights</string>
+    <string name="nav_add">Add</string>
+    <string name="nav_mood">Mood</string>
     <string name="nav_settings">Settings</string>
 
     <!-- ================================================================= -->

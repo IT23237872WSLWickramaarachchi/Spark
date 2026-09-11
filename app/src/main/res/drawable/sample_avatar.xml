@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Circular Background -->
+    <path
+        android:fillColor="#F0DFD7"
+        android:pathData="M24,24m-24,0a24,24 0 1,0 48,0a24,24 0 1,0 -48,0" />
+    <!-- Avatar Head -->
+    <path
+        android:fillColor="#8C6551"
+        android:pathData="M24,14 C27.3,14 30,16.7 30,20 C30,23.3 27.3,26 24,26 C20.7,26 18,23.3 18,20 C18,16.7 20.7,14 24,14 Z" />
+    <!-- Avatar Hair -->
+    <path
+        android:fillColor="#5A3D31"
+        android:pathData="M24,12 C28,12 31,15 31,19 C31,21 30,23 29,24 C28,21 28,17 24,17 C20,17 20,21 19,24 C18,23 17,21 17,19 C17,15 20,12 24,12 Z" />
+    <!-- Avatar Shoulders / Torso -->
+    <path
+        android:fillColor="#7C7FC9"
+        android:pathData="M14,40 C14,33 18,30 24,30 C30,30 34,33 34,40 Z" />
+</vector>

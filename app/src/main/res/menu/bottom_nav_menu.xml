@@ -11,6 +11,16 @@
         android:title="@string/nav_stats" />
 
     <item
+        android:id="@+id/add"
+        android:icon="@drawable/ic_plus"
+        android:title="@string/nav_add" />
+
+    <item
+        android:id="@+id/mood"
+        android:icon="@drawable/ic_mood_smile"
+        android:title="@string/nav_mood" />
+
+    <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_gear"
         android:title="@string/nav_settings" />

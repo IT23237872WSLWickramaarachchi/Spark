@@ -1,21 +1,344 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:padding="@dimen/margin_screen">
+    android:background="@color/background_cream">
 
-    <TextView
-        android:id="@+id/tvPlaceholderDashboard"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="96dp">
+
+            <!-- Top App Bar: Back Arrow + "Spark" + Notifications Bell -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:paddingHorizontal="@dimen/margin_screen">
+
+                <LinearLayout
+                    android:id="@+id/layoutBrand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/ivToolbarBack"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@string/action_back"
+                        android:src="@drawable/ic_arrow_back"
+                        app:tint="@color/primary" />
+
+                    <TextView
+                        android:id="@+id/tvToolbarTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
+                        android:textColor="@color/primary" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btnNotifications"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/settings_notifications_title"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_bell"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/outline" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Greeting Header + Avatar Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_screen"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:id="@+id/tvGreeting"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="Good morning, Alex"
+                    android:textAppearance="@style/TextAppearance.Spark.ScriptWelcome"
+                    android:textColor="@color/on_surface"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ivAvatar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Good morning, Alex" />
+
+                <!-- Profile Avatar: circular ShapeableImageView -->
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@string/settings_profile_title"
+                    android:elevation="4dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_avatar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Spark.Corner.Full"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="2dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Dismissible Mood Pill -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMoodPill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_screen"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface_container_high"
+                app:cardCornerRadius="999dp"
+                app:cardElevation="1dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_mood_smile"
+                        app:tint="@color/primary" />
+
+                    <TextView
+                        android:id="@+id/tvMoodText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Feeling good today"
+                        android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                        android:textColor="@color/on_surface" />
+
+                    <ImageView
+                        android:id="@+id/btnDismissMood"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="10dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/action_close"
+                        android:src="@drawable/ic_close"
+                        app:tint="@color/outline" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- "Daily Progress" Bento Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDailyProgress"
+                style="@style/Widget.Spark.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_screen"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/surface_container_lowest"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <!-- Title: Daily Progress -->
+                    <TextView
+                        android:id="@+id/tvDailyProgressTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daily Progress"
+                        android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                        android:textColor="@color/on_surface"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- Top-Right Streak Badge Pill -->
+                    <LinearLayout
+                        android:id="@+id/layoutStreakBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_streak_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvDailyProgressTitle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tvDailyProgressTitle">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_streak_flame"
+                            app:tint="#005230" />
+
+                        <TextView
+                            android:id="@+id/tvStreakBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:text="7 day streak"
+                            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                            android:textColor="#005230" />
+                    </LinearLayout>
+
+                    <!-- Circular Progress Ring with Center Percentage & Count -->
+                    <FrameLayout
+                        android:id="@+id/frameProgressContainer"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDailyProgressTitle">
+
+                        <com.example.spark.ui.custom.CircularProgressView
+                            android:id="@+id/circularProgressView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <!-- Center text overlay -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvProgressPercent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="60%"
+                                android:textAppearance="@style/TextAppearance.Spark.DisplayHero"
+                                android:textColor="@color/on_surface"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvProgressHabitsCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="3 of 5 habits"
+                                android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                                android:textColor="@color/outline" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- "Today's Habits" Section Header -->
+            <TextView
+                android:id="@+id/tvSectionHabits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_screen"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/dashboard_section_all"
+                android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                android:textColor="@color/on_surface"
+                android:textStyle="bold" />
+
+            <!-- Habits RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHabits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_screen"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_habit" />
+
+            <!-- Empty State Container -->
+            <LinearLayout
+                android:id="@+id/layoutEmptyState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_screen"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingVertical="36dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_logo_mark"
+                    app:tint="@color/outline_variant" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/dashboard_empty_title"
+                    android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                    android:textColor="@color/on_surface" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="@string/dashboard_empty_subtitle"
+                    android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                    android:textColor="@color/outline" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- FloatingActionButton (+) above Bottom Navigation -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddHabit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nav_dashboard"
-        android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/add_habit_title"
+        android:src="@drawable/ic_plus"
+        app:backgroundTint="@color/primary"
+        app:elevation="8dp"
+        app:fabCustomSize="56dp"
+        app:tint="@color/white" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
