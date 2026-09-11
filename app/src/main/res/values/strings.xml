@@ -30,6 +30,13 @@
 
     <string name="login_title">Welcome Back</string>
     <string name="login_subtitle">Sign in to continue your mindful journey</string>
+    <string name="welcome_back_title">Welcome back</string>
+    <string name="welcome_back_subtitle">Sign in to continue your mindful journey</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_btn_login">Log In</string>
+    <string name="auth_divider_or">or</string>
+    <string name="welcome_register_prompt">Don\'t have an account? Register</string>
+    <string name="action_register">Register</string>
     <string name="login_btn_submit">Sign In</string>
     <string name="login_prompt_register">Don\'t have an account? Sign Up</string>
 
