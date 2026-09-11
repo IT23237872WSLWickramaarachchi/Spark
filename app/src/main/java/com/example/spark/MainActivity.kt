@@ -55,8 +55,9 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.add -> {
-                    // Placeholder for Add Habit flow
-                    true
+                    com.example.spark.ui.habit.AddHabitBottomSheetFragment.newInstance()
+                        .show(supportFragmentManager, com.example.spark.ui.habit.AddHabitBottomSheetFragment.TAG)
+                    false
                 }
                 R.id.mood -> {
                     // Placeholder for Mood Check-in flow

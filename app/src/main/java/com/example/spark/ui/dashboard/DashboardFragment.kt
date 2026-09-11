@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.spark.R
 import com.example.spark.data.local.entity.HabitWithLogs
 import com.example.spark.databinding.FragmentDashboardBinding
+import com.example.spark.ui.habit.AddHabitBottomSheetFragment
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -45,6 +46,7 @@ class DashboardFragment : Fragment() {
         setupMoodPill()
         setupHabitsRecyclerView()
         setupFab()
+        setupFragmentResultListener()
         observeViewModel()
     }
 
@@ -91,7 +93,40 @@ class DashboardFragment : Fragment() {
 
     private fun setupFab() {
         binding.fabAddHabit.setOnClickListener {
-            // FAB placeholder to add a new habit
+            showAddHabitSheet()
+        }
+    }
+
+    private fun showAddHabitSheet() {
+        AddHabitBottomSheetFragment.newInstance().show(
+            childFragmentManager,
+            AddHabitBottomSheetFragment.TAG
+        )
+    }
+
+    private fun setupFragmentResultListener() {
+        childFragmentManager.setFragmentResultListener(
+            AddHabitBottomSheetFragment.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val title = bundle.getString(AddHabitBottomSheetFragment.EXTRA_TITLE).orEmpty()
+            val category = bundle.getString(AddHabitBottomSheetFragment.EXTRA_CATEGORY).orEmpty()
+            val frequency = bundle.getString(AddHabitBottomSheetFragment.EXTRA_FREQUENCY) ?: "Daily"
+            val targetDays = bundle.getInt(AddHabitBottomSheetFragment.EXTRA_TARGET_DAYS, 7)
+            val hour = bundle.getInt(AddHabitBottomSheetFragment.EXTRA_REMINDER_HOUR, 8)
+            val minute = bundle.getInt(AddHabitBottomSheetFragment.EXTRA_REMINDER_MINUTE, 0)
+            val colorHex = bundle.getString(AddHabitBottomSheetFragment.EXTRA_COLOR_HEX) ?: "#52559C"
+
+            if (title.isNotBlank()) {
+                viewModel.createHabit(
+                    title = title,
+                    category = category,
+                    frequency = frequency,
+                    targetDaysPerWeek = targetDays,
+                    reminderTime = LocalTime.of(hour, minute),
+                    colorHex = colorHex
+                )
+            }
         }
     }
 

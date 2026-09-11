@@ -102,14 +102,24 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     /**
      * Creates a new habit for the current user.
      */
-    fun createHabit(title: String, category: String, frequency: String = "Daily") {
+    fun createHabit(
+        title: String,
+        category: String,
+        frequency: String = "Daily",
+        targetDaysPerWeek: Int = 7,
+        reminderTime: java.time.LocalTime? = null,
+        colorHex: String = "#52559c"
+    ) {
         viewModelScope.launch {
             habitDao.insertHabit(
                 HabitEntity(
                     userId = _currentUserId.value,
                     title = title,
                     category = category,
-                    frequency = frequency
+                    frequency = frequency,
+                    targetDaysPerWeek = targetDaysPerWeek,
+                    reminderTime = reminderTime,
+                    colorHex = colorHex
                 )
             )
         }

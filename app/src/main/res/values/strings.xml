@@ -94,12 +94,23 @@
     <!-- ADD HABIT DIALOG                                                  -->
     <!-- ================================================================= -->
     <string name="add_habit_title">New Habit</string>
+    <string name="add_habit_header">Add Habit</string>
+    <string name="add_habit_name_label">Habit Name</string>
     <string name="add_habit_name_hint">What habit do you want to build?</string>
+    <string name="add_habit_name_hint_placeholder">e.g., Morning Run, Read 20 mins</string>
     <string name="add_habit_category_label">Category</string>
+    <string name="add_habit_category_health">Health</string>
+    <string name="add_habit_category_mindfulness">Mindfulness</string>
+    <string name="add_habit_category_productivity">Productivity</string>
     <string name="add_habit_frequency_label">Frequency</string>
+    <string name="add_habit_freq_daily">Daily</string>
+    <string name="add_habit_freq_weekly">Weekly</string>
     <string name="add_habit_time_label">Time of Day</string>
     <string name="add_habit_reminder_label">Daily Reminder</string>
+    <string name="add_habit_reminder_time_label">Reminder Time</string>
+    <string name="add_habit_color_label">Color Swatch</string>
     <string name="add_habit_btn_create">Create Habit</string>
+    <string name="add_habit_btn_save">&#10003; Save Habit</string>
 
     <!-- ================================================================= -->
     <!-- MOOD CHECK-IN DIALOG                                              -->
