@@ -51,6 +51,15 @@
         <item name="android:textColor">@color/on_primary</item>
     </style>
 
+    <!-- Script Welcome: 44sp, Caveat font, on_primary color -->
+    <style name="TextAppearance.Spark.ScriptWelcome" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/font_caveat</item>
+        <item name="android:fontFamily">@font/font_caveat</item>
+        <item name="android:textSize">44sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/on_primary</item>
+    </style>
+
     <!-- Headline Lg: 24sp, 700 bold, Plus Jakarta Sans, lineHeight 32sp -->
     <style name="TextAppearance.Spark.HeadlineLg" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="fontFamily">@font/font_plus_jakarta_sans</item>
