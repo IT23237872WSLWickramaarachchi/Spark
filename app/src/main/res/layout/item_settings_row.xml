@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:minHeight="64dp"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="16dp"
+    tools:showIn="@layout/fragment_settings">
+
+    <!-- Leading Icon -->
+    <ImageView
+        android:id="@+id/ivRowIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/primary"
+        tools:src="@drawable/ic_bell" />
+
+    <!-- Label -->
+    <TextView
+        android:id="@+id/tvRowLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="12dp"
+        android:textAppearance="@style/TextAppearance.Spark.BodyLg"
+        android:textColor="@color/on_surface"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/slotTrailing"
+        app:layout_constraintStart_toEndOf="@+id/ivRowIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Notifications" />
+
+    <!-- Trailing Content Slot (FrameLayout slot for Switch / value-text + chevron / chevron) -->
+    <FrameLayout
+        android:id="@+id/slotTrailing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Slot Option 1: SwitchMaterial -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchRow"
+            style="@style/Widget.Spark.Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:checked="true"
+            tools:ignore="VisualLintOverlap"
+            tools:visibility="visible" />
+
+        <!-- Slot Option 2: Value Text + Chevron -->
+        <LinearLayout
+            android:id="@+id/layoutValueChevron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:ignore="UseCompoundDrawables"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvRowValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                android:textColor="@color/on_surface_variant"
+                tools:text="8:00 AM" />
+
+            <ImageView
+                android:id="@+id/ivRowChevron"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="6dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron"
+                app:tint="@color/outline_variant" />
+        </LinearLayout>
+
+        <!-- Slot Option 3: Chevron only -->
+        <ImageView
+            android:id="@+id/ivOnlyChevron"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_chevron"
+            android:visibility="gone"
+            app:tint="@color/outline_variant"
+            tools:visibility="gone" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

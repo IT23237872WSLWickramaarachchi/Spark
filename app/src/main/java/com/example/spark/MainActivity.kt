@@ -60,8 +60,9 @@ class MainActivity : AppCompatActivity() {
                     false
                 }
                 R.id.mood -> {
-                    // Placeholder for Mood Check-in flow
-                    true
+                    com.example.spark.ui.mood.MoodCheckInDialogFragment.newInstance()
+                        .show(supportFragmentManager, com.example.spark.ui.mood.MoodCheckInDialogFragment.TAG)
+                    false
                 }
                 else -> false
             }

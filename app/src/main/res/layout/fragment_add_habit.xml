@@ -11,16 +11,15 @@
     <!-- Top Drag Handle -->
     <View
         android:id="@+id/dragHandle"
-        android:layout_width="36dp"
+        android:layout_width="48dp"
         android:layout_height="4dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/selector_bottom_nav_pill"
-        android:backgroundTint="@color/outline_variant"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_drag_handle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Header Row: Title + Close Button -->
+    <!-- Header Row: Title + Circular Close Button -->
     <TextView
         android:id="@+id/tvHeaderTitle"
         android:layout_width="0dp"
@@ -31,35 +30,37 @@
         android:text="@string/add_habit_header"
         android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
         android:textColor="@color/on_surface"
+        app:layout_constraintBottom_toBottomOf="@+id/btnClose"
         app:layout_constraintEnd_toStartOf="@+id/btnClose"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dragHandle" />
+        app:layout_constraintTop_toTopOf="@+id/btnClose" />
 
     <ImageButton
         android:id="@+id/btnClose"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/bg_circle_close"
         android:contentDescription="@string/action_close"
-        android:padding="10dp"
+        android:padding="14dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_close"
-        app:layout_constraintBottom_toBottomOf="@+id/tvHeaderTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvHeaderTitle"
-        app:tint="@color/outline" />
+        app:layout_constraintTop_toBottomOf="@+id/dragHandle"
+        app:tint="@color/on_surface_variant" />
 
+    <!-- Scrollable Form Content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollViewContent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fillViewport="true"
         app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/btnSaveHabit"
         app:layout_constraintHeight_max="540dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeaderTitle">
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveHabit"
+        app:layout_constraintTop_toBottomOf="@+id/btnClose">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,9 +75,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
+                android:letterSpacing="0.05"
                 android:text="@string/add_habit_name_label"
+                android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                android:textColor="@color/on_surface" />
+                android:textColor="@color/on_surface_variant" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilHabitName"
@@ -90,22 +93,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/add_habit_name_hint_placeholder"
+                    android:textColorHint="@color/outline"
                     android:imeOptions="actionDone"
                     android:inputType="textCapSentences"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                    android:textColor="@color/on_surface" />
+                    android:paddingVertical="16dp"
+                    android:textAppearance="@style/TextAppearance.Spark.BodyLg"
+                    android:textColor="@color/on_surface"
+                    tools:ignore="VisualLintTextFieldSize,TextContrastCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Category Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
+                android:letterSpacing="0.05"
                 android:text="@string/add_habit_category_label"
+                android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                android:textColor="@color/on_surface" />
+                android:textColor="@color/on_surface_variant" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/cgCategory"
@@ -117,7 +125,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipHealth"
-                    style="@style/Widget.Spark.Chip.Choice"
+                    style="@style/Widget.Spark.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -125,14 +133,14 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipMindfulness"
-                    style="@style/Widget.Spark.Chip.Choice"
+                    style="@style/Widget.Spark.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/add_habit_category_mindfulness" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipProductivity"
-                    style="@style/Widget.Spark.Chip.Choice"
+                    style="@style/Widget.Spark.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/add_habit_category_productivity" />
@@ -142,16 +150,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
+                android:letterSpacing="0.05"
                 android:text="@string/add_habit_frequency_label"
+                android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                android:textColor="@color/on_surface" />
+                android:textColor="@color/on_surface_variant" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/toggleGroupFrequency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_segmented_container"
+                android:padding="4dp"
                 app:checkedButton="@id/btnDaily"
                 app:selectionRequired="true"
                 app:singleSelection="true">
@@ -179,11 +191,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
+                android:letterSpacing="0.05"
                 android:text="@string/add_habit_reminder_time_label"
+                android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                android:textColor="@color/on_surface" />
+                android:textColor="@color/on_surface_variant" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardReminderTime"
@@ -193,11 +207,10 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/surface_container_low"
-                app:cardCornerRadius="@dimen/radius_lg"
+                app:cardBackgroundColor="@color/surface_container"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="@color/outline_variant"
-                app:strokeWidth="1dp">
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -205,51 +218,50 @@
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="14dp">
 
-                    <ImageView
-                        android:id="@+id/ivClock"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_clock"
+                    <FrameLayout
+                        android:id="@+id/containerClockIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_circle_close"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/primary" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ivClock"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_clock"
+                            app:tint="@color/outline" />
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/tvReminderLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="@string/add_habit_reminder_time_label"
-                        android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                        android:layout_marginStart="14dp"
+                        android:text="@string/add_habit_set_time"
+                        android:textAppearance="@style/TextAppearance.Spark.BodyLg"
                         android:textColor="@color/on_surface"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/ivClock"
+                        app:layout_constraintStart_toEndOf="@+id/containerClockIcon"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvReminderTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="08:00 AM"
-                        android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                        android:text="@string/add_habit_default_time"
+                        android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
                         android:textColor="@color/primary"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/ivChevron"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/ivChevron"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_chevron"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/outline" />
+                        tools:text="08:00 AM" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -257,11 +269,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="12dp"
+                android:letterSpacing="0.05"
                 android:text="@string/add_habit_color_label"
+                android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                android:textColor="@color/on_surface" />
+                android:textColor="@color/on_surface_variant" />
 
             <LinearLayout
                 android:id="@+id/layoutColorSwatches"
@@ -270,123 +284,128 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- Swatch 1: Primary Lilac (#52559C) -->
+                <!-- Swatch 1: Primary Purple (#52559C) -->
                 <FrameLayout
                     android:id="@+id/swatch1"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:contentDescription="@string/add_habit_color_purple">
 
                     <View
                         android:id="@+id/ring1"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@drawable/bg_color_swatch_ring"
                         android:visibility="visible" />
 
                     <View
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/selector_bottom_nav_pill"
-                        android:backgroundTint="#52559C" />
+                        android:background="@drawable/bg_circle_swatch"
+                        android:backgroundTint="@color/primary" />
                 </FrameLayout>
 
-                <!-- Swatch 2: Emerald Green (#1C8554) -->
+                <!-- Swatch 2: Secondary Pink/Wine (#874D5E) -->
                 <FrameLayout
                     android:id="@+id/swatch2"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="14dp"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:contentDescription="@string/add_habit_color_rose">
 
                     <View
                         android:id="@+id/ring2"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@drawable/bg_color_swatch_ring"
                         android:visibility="invisible" />
 
                     <View
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/selector_bottom_nav_pill"
-                        android:backgroundTint="#1C8554" />
+                        android:background="@drawable/bg_circle_swatch"
+                        android:backgroundTint="@color/secondary" />
                 </FrameLayout>
 
-                <!-- Swatch 3: Rose Coral (#874D5E) -->
+                <!-- Swatch 3: Tertiary Green (#006A3F) -->
                 <FrameLayout
                     android:id="@+id/swatch3"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="14dp"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:contentDescription="@string/add_habit_color_green">
 
                     <View
                         android:id="@+id/ring3"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@drawable/bg_color_swatch_ring"
                         android:visibility="invisible" />
 
                     <View
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/selector_bottom_nav_pill"
-                        android:backgroundTint="#874D5E" />
+                        android:background="@drawable/bg_circle_swatch"
+                        android:backgroundTint="@color/tertiary" />
                 </FrameLayout>
 
-                <!-- Swatch 4: Ocean Blue (#2563EB) -->
+                <!-- Swatch 4: Tertiary Fixed Dim Light Green (#7ADAA1) -->
                 <FrameLayout
                     android:id="@+id/swatch4"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="14dp"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:contentDescription="@string/add_habit_color_mint">
 
                     <View
                         android:id="@+id/ring4"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@drawable/bg_color_swatch_ring"
                         android:visibility="invisible" />
 
                     <View
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/selector_bottom_nav_pill"
-                        android:backgroundTint="#2563EB" />
+                        android:background="@drawable/bg_circle_swatch"
+                        android:backgroundTint="@color/tertiary_fixed_dim" />
                 </FrameLayout>
 
-                <!-- Swatch 5: Amber Orange (#D97706) -->
+                <!-- Swatch 5: Secondary Fixed Soft Pink (#FFD9E1) -->
                 <FrameLayout
                     android:id="@+id/swatch5"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="14dp"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:contentDescription="@string/add_habit_color_pink">
 
                     <View
                         android:id="@+id/ring5"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@drawable/bg_color_swatch_ring"
                         android:visibility="invisible" />
 
                     <View
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/selector_bottom_nav_pill"
-                        android:backgroundTint="#D97706" />
+                        android:background="@drawable/bg_circle_swatch"
+                        android:backgroundTint="@color/secondary_fixed" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -399,13 +418,19 @@
         android:id="@+id/btnSaveHabit"
         style="@style/Widget.Spark.Button.Primary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginHorizontal="@dimen/margin_screen"
         android:layout_marginTop="16dp"
         android:enabled="false"
         android:text="@string/add_habit_btn_save"
+        app:icon="@drawable/ic_check_circle"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconTint="@color/on_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollViewContent"
+        tools:ignore="VisualLintButtonSize" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

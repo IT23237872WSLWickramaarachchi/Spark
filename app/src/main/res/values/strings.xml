@@ -97,7 +97,7 @@
     <string name="add_habit_header">Add Habit</string>
     <string name="add_habit_name_label">Habit Name</string>
     <string name="add_habit_name_hint">What habit do you want to build?</string>
-    <string name="add_habit_name_hint_placeholder">e.g., Morning Run, Read 20 mins</string>
+    <string name="add_habit_name_hint_placeholder">e.g., Morning Meditation</string>
     <string name="add_habit_category_label">Category</string>
     <string name="add_habit_category_health">Health</string>
     <string name="add_habit_category_mindfulness">Mindfulness</string>
@@ -108,9 +108,16 @@
     <string name="add_habit_time_label">Time of Day</string>
     <string name="add_habit_reminder_label">Daily Reminder</string>
     <string name="add_habit_reminder_time_label">Reminder Time</string>
-    <string name="add_habit_color_label">Color Swatch</string>
+    <string name="add_habit_set_time">Set Time</string>
+    <string name="add_habit_default_time">08:00 AM</string>
+    <string name="add_habit_color_label">Color Tag</string>
+    <string name="add_habit_color_purple">Purple</string>
+    <string name="add_habit_color_rose">Rose</string>
+    <string name="add_habit_color_green">Green</string>
+    <string name="add_habit_color_mint">Mint</string>
+    <string name="add_habit_color_pink">Pink</string>
     <string name="add_habit_btn_create">Create Habit</string>
-    <string name="add_habit_btn_save">&#10003; Save Habit</string>
+    <string name="add_habit_btn_save">Save Habit</string>
 
     <!-- ================================================================= -->
     <!-- MOOD CHECK-IN DIALOG                                              -->
@@ -139,6 +146,21 @@
     <!-- ================================================================= -->
     <string name="stats_title">Insights &amp; Growth</string>
     <string name="stats_subtitle">Your consistency and emotional balance</string>
+    <string name="stats_your_progress">Your Progress</string>
+    <string name="stats_period_week">Week</string>
+    <string name="stats_period_month">Month</string>
+    <string name="stats_completion_label">Completion</string>
+    <string name="stats_completion_sublabel">Daily Habit Success Rate</string>
+    <string name="stats_completion_percentage_default">82%</string>
+    <string name="stats_mood_trend_label">Mood Trend</string>
+    <string name="stats_mood_trend_sublabel">Average emotional state</string>
+    <string name="stats_mood_trend_positive">Positive</string>
+    <string name="stats_current_streak_title">Current Streak</string>
+    <string name="stats_todays_rate_title">Today\'s Rate</string>
+    <string name="stats_days_unit">days</string>
+    <string name="stats_streak_value_default">12</string>
+    <string name="stats_today_rate_default">4</string>
+    <string name="stats_today_rate_total">/5</string>
     <string name="stats_weekly_completion_title">Weekly Completion</string>
     <string name="stats_monthly_trend_title">Monthly Trend</string>
     <string name="stats_mood_correlation_title">Habits &amp; Mood Correlation</string>
@@ -150,16 +172,29 @@
     <!-- SETTINGS SCREEN                                                   -->
     <!-- ================================================================= -->
     <string name="settings_title">Settings</string>
-    <string name="settings_section_general">Preferences</string>
+    <string name="settings_section_account">ACCOUNT</string>
+    <string name="settings_profile_title">Profile</string>
+    <string name="settings_profile_name">Alex Johnson</string>
+    <string name="settings_profile_view">View Profile</string>
+    <string name="settings_section_preferences">PREFERENCES</string>
+    <string name="settings_notifications">Notifications</string>
     <string name="settings_notifications_title">Daily Reminders</string>
     <string name="settings_notifications_summary">Receive mindful nudges to check in</string>
+    <string name="settings_dark_mode">Dark Mode</string>
     <string name="settings_dark_mode_title">Dark Theme</string>
     <string name="settings_dark_mode_summary">Adapt appearance to night mode</string>
-    <string name="settings_language_title">Language</string>
-    <string name="settings_section_account">Account &amp; Data</string>
-    <string name="settings_profile_title">Profile</string>
+    <string name="settings_dark_mode_notice">Dark mode requires values-night theme assets, which are not configured yet.</string>
+    <string name="settings_reminder_time">Reminder Time</string>
+    <string name="settings_reminder_time_value">8:00 AM</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_value">English</string>
+    <string name="settings_section_about">ABOUT</string>
+    <string name="settings_help_center">Help Center</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_log_out">Log Out</string>
+    <string name="settings_sign_out_title">Sign Out</string>
+    <string name="settings_app_version">App Version 2.4.1</string>
+    <string name="settings_version_format">Spark Version %1$s</string>
     <string name="settings_export_data_title">Export Data</string>
     <string name="settings_export_data_summary">Download your habits and mood history</string>
-    <string name="settings_sign_out_title">Sign Out</string>
-    <string name="settings_version_format">Spark Version %1$s</string>
 </resources>

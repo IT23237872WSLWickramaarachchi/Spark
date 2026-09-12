@@ -75,8 +75,15 @@ class DashboardFragment : Fragment() {
         }
 
         binding.cardMoodPill.setOnClickListener {
-            // Placeholder to open mood check-in flow
+            showMoodCheckInDialog()
         }
+    }
+
+    private fun showMoodCheckInDialog() {
+        com.example.spark.ui.mood.MoodCheckInDialogFragment.newInstance().show(
+            childFragmentManager,
+            com.example.spark.ui.mood.MoodCheckInDialogFragment.TAG
+        )
     }
 
     private fun setupHabitsRecyclerView() {
@@ -85,7 +92,8 @@ class DashboardFragment : Fragment() {
                 viewModel.toggleHabitCompletion(habitUi.id)
             },
             onItemClick = { habitUi ->
-                // Optional navigation to habit detail
+                val bundle = com.example.spark.ui.habitdetail.HabitDetailFragment.createBundle(habitUi.id)
+                findNavController().navigate(R.id.action_dashboard_to_habitDetail, bundle)
             }
         )
         binding.rvHabits.adapter = habitAdapter
@@ -171,6 +179,25 @@ class DashboardFragment : Fragment() {
                         }
                     }
                     binding.tvStreakBadge.text = "$bestStreak day streak"
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.todayMood.collect { moodEntry ->
+                    if (moodEntry != null) {
+                        binding.cardMoodPill.visibility = View.VISIBLE
+                        val desc = when (moodEntry.moodScore) {
+                            1 -> "Difficult today"
+                            2 -> "Feeling low today"
+                            3 -> "Feeling okay today"
+                            4 -> "Feeling good today"
+                            5 -> "Feeling radiant today"
+                            else -> "Mood logged today"
+                        }
+                        binding.tvMoodText.text = desc
+                    }
                 }
             }
         }

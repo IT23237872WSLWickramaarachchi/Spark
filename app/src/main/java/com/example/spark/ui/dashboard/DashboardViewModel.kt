@@ -135,9 +135,52 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     /**
+     * Retrieves a habit with its complete logs history by ID.
+     */
+    fun getHabitWithLogs(habitId: Long): kotlinx.coroutines.flow.Flow<HabitWithLogs?> {
+        return habitDao.getHabitWithLogs(habitId)
+    }
+
+    /**
+     * Updates an existing habit.
+     */
+    fun updateHabit(habit: HabitEntity) {
+        viewModelScope.launch {
+            habitDao.updateHabit(habit)
+        }
+    }
+
+    /**
      * Calculates the streak for a specific habit.
      */
     fun calculateStreak(logs: List<HabitLogEntity>): CalculateStreakUseCase.StreakResult {
         return streakUseCase.execute(logs)
+    }
+
+    // ── Mood Logging (FR-06) ─────────────────────────────────────────────
+
+    private val moodDao = db.moodDao()
+
+    private val _todayMood = MutableStateFlow<com.example.spark.data.local.entity.MoodEntryEntity?>(null)
+    val todayMood: StateFlow<com.example.spark.data.local.entity.MoodEntryEntity?> = _todayMood.asStateFlow()
+
+    fun loadTodayMood() {
+        viewModelScope.launch {
+            _todayMood.value = moodDao.getMoodForDate(_currentUserId.value, LocalDate.now())
+        }
+    }
+
+    fun logMood(moodScore: Int, note: String? = null) {
+        viewModelScope.launch {
+            moodDao.insert(
+                com.example.spark.data.local.entity.MoodEntryEntity(
+                    userId = _currentUserId.value,
+                    date = LocalDate.now(),
+                    moodScore = moodScore,
+                    note = note?.takeIf { it.isNotBlank() }
+                )
+            )
+            loadTodayMood()
+        }
     }
 }

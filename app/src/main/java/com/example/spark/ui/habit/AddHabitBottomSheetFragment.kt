@@ -49,11 +49,11 @@ class AddHabitBottomSheetFragment : BottomSheetDialogFragment() {
     private var selectedMinute: Int = 0
     private var selectedColorHex: String = "#52559C"
     private val colorSwatches = listOf(
-        "#52559C", // Primary Lilac
-        "#1C8554", // Emerald Green
-        "#874D5E", // Rose Coral
-        "#2563EB", // Ocean Blue
-        "#D97706"  // Amber Orange
+        "#52559C", // Primary Purple
+        "#874D5E", // Secondary Mauve/Pink
+        "#006A3F", // Tertiary Green
+        "#7ADAA1", // Tertiary Fixed Dim Light Green
+        "#FFD9E1"  // Secondary Fixed Light Pink
     )
 
     override fun getTheme(): Int = R.style.Widget_Spark_BottomSheetDialog
