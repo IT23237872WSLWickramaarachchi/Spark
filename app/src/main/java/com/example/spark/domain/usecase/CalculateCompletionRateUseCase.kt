@@ -58,4 +58,39 @@ class CalculateCompletionRateUseCase {
 
         return totalPercentage / days
     }
+
+    /**
+     * Calculates completion percentage from total active habits and completed logs count.
+     */
+    fun calculate(
+        totalHabits: Int,
+        completedLogsCount: Int,
+        totalDays: Int = 1
+    ): Int {
+        if (totalHabits <= 0 || totalDays <= 0 || completedLogsCount <= 0) return 0
+        val totalScheduled = totalHabits * totalDays
+        return ((completedLogsCount.toFloat() / totalScheduled) * 100).toInt().coerceIn(0, 100)
+    }
+
+    /**
+     * Calculates completion rate for a period given total active habits and logs within the period.
+     */
+    fun forPeriod(
+        totalActiveHabits: Int,
+        logsInPeriod: List<HabitLogEntity>,
+        totalDays: Int
+    ): Int {
+        val completedCount = logsInPeriod.count { it.isCompleted }
+        return calculate(totalActiveHabits, completedCount, totalDays)
+    }
+
+    /**
+     * Calculates completion percentage for a single day.
+     */
+    fun forDay(
+        totalActiveHabits: Int,
+        completedLogsForDay: Int
+    ): Int {
+        return calculate(totalActiveHabits, completedLogsForDay, 1)
+    }
 }

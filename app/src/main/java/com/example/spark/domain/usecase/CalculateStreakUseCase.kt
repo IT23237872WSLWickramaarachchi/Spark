@@ -71,7 +71,7 @@ class CalculateStreakUseCase {
 
         // --- Best Streak ---
         // Walk through all completed dates chronologically
-        val sortedAsc = completedDates.sortedDescending().reversed()
+        val sortedAsc = completedDates.reversed()
         var bestStreak = 0
         var tempStreak = 1
 

@@ -102,6 +102,7 @@ class CircleToggleView @JvmOverloads constructor(
     }
 
     override fun toggle() {
+        performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM)
         setChecked(!isCheckedState, animate = true)
     }
 

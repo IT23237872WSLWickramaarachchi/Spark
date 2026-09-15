@@ -16,13 +16,25 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(user: UserEntity): Long
+    suspend fun register(user: UserEntity): Long
 
     @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
     suspend fun getUserByEmail(email: String): UserEntity?
 
+    @Query("SELECT * FROM users WHERE email = :email AND passwordHash = :passwordHash LIMIT 1")
+    suspend fun login(email: String, passwordHash: String): UserEntity?
+
     @Query("SELECT * FROM users WHERE id = :userId LIMIT 1")
-    fun getUserById(userId: Long): Flow<UserEntity?>
+    fun getCurrentUser(userId: Long): Flow<UserEntity?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updatePrefs(prefs: com.example.spark.data.local.entity.UserPrefsEntity)
+
+    @Query("SELECT * FROM user_prefs WHERE userId = :userId LIMIT 1")
+    suspend fun getUserPrefs(userId: Long): com.example.spark.data.local.entity.UserPrefsEntity?
+
+    @Query("SELECT * FROM user_prefs WHERE userId = :userId LIMIT 1")
+    fun getUserPrefsFlow(userId: Long): Flow<com.example.spark.data.local.entity.UserPrefsEntity?>
 
     @Query("DELETE FROM users WHERE id = :userId")
     suspend fun deleteUser(userId: Long)

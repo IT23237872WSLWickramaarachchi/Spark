@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -13,30 +14,25 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.spark.R
-import com.example.spark.data.local.entity.HabitWithLogs
+import com.example.spark.SparkApplication
 import com.example.spark.databinding.FragmentHabitDetailBinding
-import com.example.spark.ui.custom.DayStatus
-import com.example.spark.ui.dashboard.DashboardViewModel
+import com.example.spark.ui.habit.AddHabitBottomSheetFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
-import java.time.LocalDate
 
 /**
  * HabitDetailFragment displays comprehensive habit metrics:
  * - Current streak & best streak
  * - 7-day progress indicator for the current week (Monday–Sunday)
  * - Notes & reflections
- * - Edit and delete actions with confirmation dialogs
+ * - Edit and delete actions
  */
 class HabitDetailFragment : Fragment() {
 
     private var _binding: FragmentHabitDetailBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: DashboardViewModel
-    private var habitId: Long = 0L
-    private var currentHabitWithLogs: HabitWithLogs? = null
+    private lateinit var viewModel: HabitDetailViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,13 +46,16 @@ class HabitDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[DashboardViewModel::class.java]
-        habitId = arguments?.getLong(ARG_HABIT_ID) ?: 0L
+        val app = requireActivity().application as SparkApplication
+        viewModel = ViewModelProvider(
+            this,
+            HabitDetailViewModel.Factory(app.habitRepository, this, arguments)
+        )[HabitDetailViewModel::class.java]
 
         setupToolbar()
         setupBottomActions()
         setupNotesEdit()
-        observeHabitDetails()
+        observeViewModel()
     }
 
     private fun setupToolbar() {
@@ -75,7 +74,7 @@ class HabitDetailFragment : Fragment() {
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_edit -> {
-                    showEditHabitDialog()
+                    navigateToEditHabit()
                     true
                 }
                 R.id.action_delete -> {
@@ -90,11 +89,21 @@ class HabitDetailFragment : Fragment() {
 
     private fun setupBottomActions() {
         binding.btnEditHabit.setOnClickListener {
-            showEditHabitDialog()
+            navigateToEditHabit()
         }
 
         binding.btnDeleteHabit.setOnClickListener {
             confirmDeleteHabit()
+        }
+    }
+
+    private fun navigateToEditHabit() {
+        val habitId = viewModel.habitId
+        val bundle = bundleOf(AddHabitBottomSheetFragment.ARG_HABIT_ID to habitId)
+        try {
+            findNavController().navigate(R.id.action_habitDetail_to_addHabit, bundle)
+        } catch (e: Exception) {
+            AddHabitBottomSheetFragment.newInstance(habitId).show(childFragmentManager, AddHabitBottomSheetFragment.TAG)
         }
     }
 
@@ -104,52 +113,34 @@ class HabitDetailFragment : Fragment() {
         }
     }
 
-    private fun observeHabitDetails() {
+    private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                if (habitId > 0) {
-                    viewModel.getHabitWithLogs(habitId).collect { habitWithLogs ->
-                        if (habitWithLogs == null) {
-                            // Habit was deleted, navigate back
-                            findNavController().navigateUp()
-                            return@collect
-                        }
-                        currentHabitWithLogs = habitWithLogs
-                        bindHabitData(habitWithLogs)
+                launch {
+                    viewModel.uiState.collect { state ->
+                        bindHabitData(state)
                     }
-                } else {
-                    // Fallback to latest habit or navigate back
-                    viewModel.habitsWithLogs.collect { list ->
-                        val first = list.firstOrNull()
-                        if (first != null) {
-                            currentHabitWithLogs = first
-                            bindHabitData(first)
-                        }
+                }
+                launch {
+                    viewModel.habitDeleted.collect {
+                        findNavController().popBackStack()
                     }
                 }
             }
         }
     }
 
-    private fun bindHabitData(habitWithLogs: HabitWithLogs) {
-        val habit = habitWithLogs.habit
-        val logs = habitWithLogs.logs
+    private fun bindHabitData(state: HabitDetailUiState) {
+        if (state.title.isBlank()) return
 
         // Title
-        binding.tvHabitTitle.text = habit.title
+        binding.tvHabitTitle.text = state.title
 
         // Streaks
-        val streakResult = viewModel.calculateStreak(logs)
-        val currentStreak = if (streakResult.currentStreak > 0) streakResult.currentStreak else 12 // reference fallback
-        val bestStreak = if (streakResult.bestStreak > 0) streakResult.bestStreak else 21
-
-        binding.tvStreakDays.text = "$currentStreak Day Streak"
-        binding.tvBestStreak.text = "Best streak: $bestStreak days"
+        binding.tvStreakDays.text = "${state.currentStreak} Day Streak"
+        binding.tvBestStreak.text = "Best streak: ${state.bestStreak} days"
 
         // 7-day progress for the current week (Monday to Sunday)
-        val today = LocalDate.now()
-        val monday = today.with(DayOfWeek.MONDAY)
-
         val indicators = listOf(
             binding.dayIndicator0,
             binding.dayIndicator1,
@@ -160,23 +151,15 @@ class HabitDetailFragment : Fragment() {
             binding.dayIndicator6
         )
 
-        for (i in 0..6) {
-            val date = monday.plusDays(i.toLong())
-            val isDone = logs.any { it.completedDate == date && it.isCompleted }
-
-            val status = when {
-                isDone -> DayStatus.COMPLETED
-                date == today -> if (isDone) DayStatus.COMPLETED else DayStatus.TODAY
-                date.isAfter(today) -> DayStatus.FUTURE
-                else -> DayStatus.MISSED
+        state.weeklyStatuses.forEachIndexed { index, status ->
+            if (index < indicators.size) {
+                indicators[index].setStatus(status)
             }
-
-            indicators[i].setStatus(status)
         }
 
         // Notes
-        if (binding.tvNotes.text.isNullOrBlank()) {
-            binding.tvNotes.text = "Feeling great this week. Trying to keep the pace steady and not push too hard on the hills."
+        binding.tvNotes.text = state.notes.ifBlank {
+            "Tap edit to add your reflections and notes."
         }
     }
 
@@ -185,31 +168,7 @@ class HabitDetailFragment : Fragment() {
             .setTitle(R.string.habit_detail_delete_confirm_title)
             .setMessage(R.string.habit_detail_delete_confirm_message)
             .setPositiveButton(R.string.action_delete) { _, _ ->
-                currentHabitWithLogs?.habit?.let { habit ->
-                    viewModel.deleteHabit(habit)
-                    findNavController().navigateUp()
-                }
-            }
-            .setNegativeButton(R.string.action_cancel, null)
-            .show()
-    }
-
-    private fun showEditHabitDialog() {
-        val habit = currentHabitWithLogs?.habit ?: return
-        val input = EditText(requireContext()).apply {
-            setText(habit.title)
-            setSelection(text.length)
-            setPadding(48, 32, 48, 32)
-        }
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.habit_detail_edit_action)
-            .setView(input)
-            .setPositiveButton(R.string.action_save) { _, _ ->
-                val newTitle = input.text.toString().trim()
-                if (newTitle.isNotBlank()) {
-                    viewModel.updateHabit(habit.copy(title = newTitle))
-                }
+                viewModel.deleteHabit()
             }
             .setNegativeButton(R.string.action_cancel, null)
             .show()
@@ -229,6 +188,7 @@ class HabitDetailFragment : Fragment() {
             .setPositiveButton(R.string.action_save) { _, _ ->
                 val newNotes = input.text.toString().trim()
                 if (newNotes.isNotBlank()) {
+                    viewModel.updateNotes(newNotes)
                     binding.tvNotes.text = newNotes
                 }
             }
@@ -245,7 +205,7 @@ class HabitDetailFragment : Fragment() {
         const val ARG_HABIT_ID = "habitId"
 
         fun createBundle(habitId: Long): Bundle = Bundle().apply {
-            putLong(ARG_HABIT_ID, habitId)
+            putString(ARG_HABIT_ID, habitId.toString())
         }
     }
 }

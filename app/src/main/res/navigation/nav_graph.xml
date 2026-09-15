@@ -3,7 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/welcome">
+    app:startDestination="@id/splash">
+
+    <!-- Splash Screen -->
+    <fragment
+        android:id="@+id/splash"
+        android:name="com.example.spark.ui.auth.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splash_to_dashboard"
+            app:destination="@id/dashboard"
+            app:popUpTo="@id/splash"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_splash_to_welcome"
+            app:destination="@id/welcome"
+            app:popUpTo="@id/splash"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
 
     <!-- Welcome / Splash / Onboarding -->
     <fragment
@@ -13,12 +35,18 @@
         tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_welcome_to_register"
-            app:destination="@id/register" />
+            app:destination="@id/register"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_welcome_to_dashboard"
             app:destination="@id/dashboard"
             app:popUpTo="@id/welcome"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
     <!-- Register Screen -->
@@ -31,7 +59,9 @@
             android:id="@+id/action_register_to_dashboard"
             app:destination="@id/dashboard"
             app:popUpTo="@id/welcome"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
     <!-- Dashboard Screen -->
@@ -42,7 +72,18 @@
         tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_dashboard_to_habitDetail"
-            app:destination="@id/habitDetail" />
+            app:destination="@id/habitDetail"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_dashboard_to_todo"
+            app:destination="@id/todo"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- Habit Detail Screen -->
@@ -50,7 +91,28 @@
         android:id="@+id/habitDetail"
         android:name="com.example.spark.ui.habitdetail.HabitDetailFragment"
         android:label="@string/habit_detail_title"
-        tools:layout="@layout/fragment_habit_detail" />
+        tools:layout="@layout/fragment_habit_detail">
+        <action
+            android:id="@+id/action_habitDetail_to_addHabit"
+            app:destination="@id/addHabit"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- Add / Edit Habit Bottom Sheet Dialog -->
+    <dialog
+        android:id="@+id/addHabit"
+        android:name="com.example.spark.ui.habit.AddHabitBottomSheetFragment"
+        android:label="@string/add_habit_header"
+        tools:layout="@layout/fragment_add_habit">
+        <argument
+            android:name="habitId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
 
     <!-- Stats / Insights Screen -->
     <fragment
@@ -64,6 +126,21 @@
         android:id="@+id/settings"
         android:name="com.example.spark.ui.settings.SettingsFragment"
         android:label="@string/nav_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_welcome"
+            app:destination="@id/welcome"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+
+    <!-- Tasks / To-Do Screen -->
+    <fragment
+        android:id="@+id/todo"
+        android:name="com.example.spark.ui.todo.TodoFragment"
+        android:label="@string/todo_screen_title"
+        tools:layout="@layout/fragment_todo" />
 
 </navigation>

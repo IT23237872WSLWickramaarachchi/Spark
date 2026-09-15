@@ -10,17 +10,26 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.spark.R
 import com.example.spark.databinding.FragmentRegisterBinding
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     val binding get() = _binding!!
+
+    private val authViewModel: AuthViewModel by viewModels { AuthViewModel.Factory() }
 
     /**
      * Configurable click listeners for testing and modular host binding.
@@ -71,6 +80,7 @@ class RegisterFragment : Fragment() {
         applyPendingErrors()
         setupClickListeners()
         setupLoginSpannable()
+        observeAuthEvents()
     }
 
     /**
@@ -88,6 +98,13 @@ class RegisterFragment : Fragment() {
         emailError?.let { setError(binding.tilEmail, it) }
     }
 
+    private fun clearErrors() {
+        setError(binding.tilName, null)
+        setError(binding.tilEmail, null)
+        setError(binding.tilPassword, null)
+        setError(binding.tilConfirmPassword, null)
+    }
+
     private fun setupClickListeners() {
         binding.btnBack.setOnClickListener {
             onBackClick?.invoke() ?: run {
@@ -96,63 +113,48 @@ class RegisterFragment : Fragment() {
         }
 
         binding.btnRegister.setOnClickListener {
-            if (validateInputs()) {
-                onRegisterClick?.invoke() ?: run {
-                    findNavController().navigate(R.id.action_register_to_dashboard)
-                }
+            onRegisterClick?.invoke() ?: run {
+                clearErrors()
+                val name = binding.etName.text?.toString().orEmpty()
+                val email = binding.etEmail.text?.toString().orEmpty()
+                val password = binding.etPassword.text?.toString().orEmpty()
+                val confirmPassword = binding.etConfirmPassword.text?.toString().orEmpty()
+                authViewModel.register(name, email, password, confirmPassword)
             }
         }
     }
 
-    /**
-     * Client-side validation enforcing required fields and minimum 8-character password.
-     */
-    fun validateInputs(): Boolean {
-        var isValid = true
-
-        val name = binding.etName.text?.toString()?.trim().orEmpty()
-        val email = binding.etEmail.text?.toString()?.trim().orEmpty()
-        val password = binding.etPassword.text?.toString().orEmpty()
-        val confirmPassword = binding.etConfirmPassword.text?.toString().orEmpty()
-
-        if (name.isEmpty()) {
-            nameError = "Full Name is required"
-            isValid = false
-        } else {
-            nameError = null
+    private fun observeAuthEvents() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                authViewModel.uiEvent.collectLatest { event ->
+                    when (event) {
+                        is AuthViewModel.AuthUiEvent.Success -> {
+                            Toast.makeText(requireContext(), "Welcome to Spark!", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.action_register_to_dashboard)
+                        }
+                        is AuthViewModel.AuthUiEvent.NameError -> {
+                            setError(binding.tilName, event.message)
+                        }
+                        is AuthViewModel.AuthUiEvent.EmailError -> {
+                            setError(binding.tilEmail, event.message)
+                        }
+                        is AuthViewModel.AuthUiEvent.PasswordError -> {
+                            setError(binding.tilPassword, event.message)
+                        }
+                        is AuthViewModel.AuthUiEvent.ConfirmPasswordError -> {
+                            setError(binding.tilConfirmPassword, event.message)
+                        }
+                        is AuthViewModel.AuthUiEvent.GeneralError -> {
+                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()
+                        }
+                        is AuthViewModel.AuthUiEvent.Loading -> {
+                            // Optional loading state handling
+                        }
+                    }
+                }
+            }
         }
-
-        if (email.isEmpty()) {
-            emailError = "Email Address is required"
-            isValid = false
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailError = "Enter a valid email address"
-            isValid = false
-        } else {
-            emailError = null
-        }
-
-        if (password.isEmpty()) {
-            passwordError = "Password is required"
-            isValid = false
-        } else if (password.length < 8) {
-            passwordError = "Minimum 8 characters"
-            isValid = false
-        } else {
-            passwordError = null
-        }
-
-        if (confirmPassword.isEmpty()) {
-            confirmPasswordError = "Please confirm your password"
-            isValid = false
-        } else if (confirmPassword != password) {
-            confirmPasswordError = "Passwords do not match"
-            isValid = false
-        } else {
-            confirmPasswordError = null
-        }
-
-        return isValid
     }
 
     /**

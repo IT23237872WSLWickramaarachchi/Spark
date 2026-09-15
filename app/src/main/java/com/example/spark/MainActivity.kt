@@ -59,11 +59,6 @@ class MainActivity : AppCompatActivity() {
                         .show(supportFragmentManager, com.example.spark.ui.habit.AddHabitBottomSheetFragment.TAG)
                     false
                 }
-                R.id.mood -> {
-                    com.example.spark.ui.mood.MoodCheckInDialogFragment.newInstance()
-                        .show(supportFragmentManager, com.example.spark.ui.mood.MoodCheckInDialogFragment.TAG)
-                    false
-                }
                 else -> false
             }
         }

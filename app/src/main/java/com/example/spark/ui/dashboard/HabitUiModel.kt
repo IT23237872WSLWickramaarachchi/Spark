@@ -11,8 +11,8 @@ data class HabitUiModel(
     val title: String,
     val subtitle: String,
     val category: String,
-    @DrawableRes val iconRes: Int,
-    @ColorInt val iconColor: Int,
-    @ColorInt val iconBgColor: Int,
+    @field:DrawableRes val iconRes: Int,
+    @field:ColorInt val iconColor: Int,
+    @field:ColorInt val iconBgColor: Int,
     val isCompleted: Boolean
 )

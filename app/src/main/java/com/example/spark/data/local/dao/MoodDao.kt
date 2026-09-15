@@ -18,10 +18,19 @@ import java.time.LocalDate
 interface MoodDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(moodEntry: MoodEntryEntity): Long
+    suspend fun insertMoodEntry(entry: MoodEntryEntity): Long
+
+    @Query("SELECT * FROM mood_entries WHERE date = :date LIMIT 1")
+    fun getTodayMood(date: LocalDate): Flow<MoodEntryEntity?>
+
+    @Query("SELECT * FROM mood_entries WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
+    fun getMoodEntriesInRange(startDate: LocalDate, endDate: LocalDate): Flow<List<MoodEntryEntity>>
 
     @Query("SELECT * FROM mood_entries WHERE userId = :userId AND date = :date LIMIT 1")
     suspend fun getMoodForDate(userId: Long, date: LocalDate): MoodEntryEntity?
+
+    @Query("SELECT * FROM mood_entries WHERE userId = :userId AND date = :date LIMIT 1")
+    fun getMoodForDateFlow(userId: Long, date: LocalDate): Flow<MoodEntryEntity?>
 
     /**
      * Reactive stream of all mood entries for a user, ordered by date descending.

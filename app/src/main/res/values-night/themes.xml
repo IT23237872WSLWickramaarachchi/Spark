@@ -1,28 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Dark theme overrides -->
+
+    <!-- Dark theme overrides beyond automatic color resolution -->
     <style name="Theme.Spark" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- MD3 Primary Colors -->
-        <item name="colorPrimary">@color/inverse_primary</item>
-        <item name="colorOnPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
         <item name="colorPrimaryContainer">@color/primary_container</item>
         <item name="colorOnPrimaryContainer">@color/on_primary_container</item>
 
         <!-- MD3 Secondary Colors -->
-        <item name="colorSecondary">@color/secondary_fixed_dim</item>
-        <item name="colorOnSecondary">@color/on_secondary_fixed</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorSecondaryContainer">@color/secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_secondary_container</item>
 
         <!-- MD3 Surface & Background -->
-        <item name="colorSurface">@color/inverse_surface</item>
-        <item name="colorOnSurface">@color/inverse_on_surface</item>
-        <item name="colorSurfaceVariant">@color/on_surface_variant</item>
-        <item name="android:colorBackground">@color/inverse_surface</item>
-        <item name="android:windowBackground">@color/inverse_surface</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:windowBackground">@color/background</item>
 
-        <!-- Status & Navigation Bars -->
-        <item name="android:statusBarColor">@color/inverse_surface</item>
+        <!-- MD3 Error Colors -->
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/on_error</item>
+        <item name="colorErrorContainer">@color/error_container</item>
+        <item name="colorOnErrorContainer">@color/on_error_container</item>
+
+        <!-- Outline & Tint -->
+        <item name="colorOutline">@color/outline</item>
+
+        <!-- Status & Navigation Bars (light mode flags disabled for dark theme) -->
+        <item name="android:statusBarColor">@color/surface</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:navigationBarColor">@color/inverse_surface</item>
+        <item name="android:navigationBarColor">@color/surface</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
 
         <!-- Material Component Style Defaults -->
@@ -31,4 +44,12 @@
         <item name="textInputStyle">@style/Widget.Spark.TextInputLayout</item>
         <item name="chipStyle">@style/Widget.Spark.Chip</item>
     </style>
+
+    <!-- Splash Screen Dark Theme Override -->
+    <style name="Theme.Spark.Splash" parent="Theme.Spark">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
 </resources>

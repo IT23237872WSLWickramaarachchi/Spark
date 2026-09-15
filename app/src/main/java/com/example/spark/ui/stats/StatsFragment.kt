@@ -7,29 +7,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.spark.R
+import com.example.spark.SparkApplication
 import com.example.spark.databinding.FragmentStatsBinding
-import com.example.spark.ui.custom.DayStatus
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import kotlinx.coroutines.launch
 
 /**
  * Fragment displaying habit completion statistics, mood trend line chart,
- * and streak metrics with Week/Month period toggle.
+ * and streak metrics with Week/Month period toggle, reactively connected to [StatsViewModel].
  */
 class StatsFragment : Fragment() {
-
-    enum class Period {
-        WEEK,
-        MONTH
-    }
 
     private var _binding: FragmentStatsBinding? = null
     private val binding get() = _binding!!
 
-    private var currentPeriod: Period = Period.WEEK
+    private lateinit var viewModel: StatsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,10 +43,16 @@ class StatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val app = requireActivity().application as SparkApplication
+        viewModel = ViewModelProvider(
+            this,
+            StatsViewModel.Factory(app.habitRepository, app.moodRepository)
+        )[StatsViewModel::class.java]
+
         setupToolbar()
         setupToggleGroup()
         setupMoodLineChart()
-        reloadData(Period.WEEK)
+        observeViewModel()
     }
 
     private fun setupToolbar() {
@@ -69,10 +75,7 @@ class StatsFragment : Fragment() {
                     R.id.btnPeriodMonth -> Period.MONTH
                     else -> Period.WEEK
                 }
-                if (newPeriod != currentPeriod) {
-                    currentPeriod = newPeriod
-                    reloadData(newPeriod)
-                }
+                viewModel.onPeriodChange(newPeriod)
             }
         }
     }
@@ -107,142 +110,137 @@ class StatsFragment : Fragment() {
                 setDrawAxisLine(false)
             }
 
-            // Offset edges for padding circles
             setViewPortOffsets(32f, 24f, 32f, 24f)
         }
     }
 
-    private fun reloadData(period: Period) {
-        updateCompletionCard(period)
-        updateMoodChart(period)
-        updateBottomStats(period)
-    }
-
-    private fun updateCompletionCard(period: Period) {
-        when (period) {
-            Period.WEEK -> {
-                binding.tvCompletionRate.text = getString(R.string.stats_completion_percentage_default)
-
-                // Set Day Indicators using DayIndicatorView from Habit Detail
-                binding.dayIndicator0.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator1.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator2.setStatus(DayStatus.MISSED)
-                binding.dayIndicator3.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator4.setStatus(DayStatus.TODAY)
-                binding.dayIndicator5.setStatus(DayStatus.FUTURE)
-                binding.dayIndicator6.setStatus(DayStatus.FUTURE)
-
-                // Day Labels
-                binding.tvDay4.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary))
-
-                // Bar Heights (60%, 80%, 40%, 90%, 100%, 20%, 10%)
-                setBarHeight(binding.barDay0, 72)
-                setBarHeight(binding.barDay1, 96)
-                setBarHeight(binding.barDay2, 48)
-                setBarHeight(binding.barDay3, 108)
-                setBarHeight(binding.barDay4, 120)
-                setBarHeight(binding.barDay5, 24)
-                setBarHeight(binding.barDay6, 12)
-
-                binding.barDay0.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay1.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay2.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay3.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay4.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay5.setBackgroundResource(R.drawable.bg_chart_bar_variant)
-                binding.barDay6.setBackgroundResource(R.drawable.bg_chart_bar_variant)
-            }
-            Period.MONTH -> {
-                binding.tvCompletionRate.text = "78%"
-
-                // Month aggregation representation
-                binding.dayIndicator0.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator1.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator2.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator3.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator4.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator5.setStatus(DayStatus.COMPLETED)
-                binding.dayIndicator6.setStatus(DayStatus.MISSED)
-
-                setBarHeight(binding.barDay0, 92)
-                setBarHeight(binding.barDay1, 104)
-                setBarHeight(binding.barDay2, 86)
-                setBarHeight(binding.barDay3, 100)
-                setBarHeight(binding.barDay4, 114)
-                setBarHeight(binding.barDay5, 80)
-                setBarHeight(binding.barDay6, 44)
-
-                binding.barDay0.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay1.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay2.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay3.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay4.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay5.setBackgroundResource(R.drawable.bg_chart_bar_primary)
-                binding.barDay6.setBackgroundResource(R.drawable.bg_chart_bar_primary)
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    render(state)
+                }
             }
         }
     }
 
-    private fun updateMoodChart(period: Period) {
-        val entries = when (period) {
-            Period.WEEK -> listOf(
-                Entry(0f, 2.8f),
-                Entry(1f, 4.4f),
-                Entry(2f, 3.2f),
-                Entry(3f, 4.7f)
-            )
-            Period.MONTH -> listOf(
-                Entry(0f, 3.0f),
-                Entry(1f, 3.8f),
-                Entry(2f, 3.2f),
-                Entry(3f, 4.2f),
-                Entry(4f, 4.0f),
-                Entry(5f, 4.8f)
-            )
+    private fun render(state: StatsUiState) {
+        // Update toggle group selection without re-triggering listener loops
+        val targetButtonId = if (state.period == Period.WEEK) R.id.btnPeriodWeek else R.id.btnPeriodMonth
+        if (binding.toggleGroupPeriod.checkedButtonId != targetButtonId) {
+            binding.toggleGroupPeriod.check(targetButtonId)
         }
 
+        // Completion Card
+        binding.tvCompletionRate.text = "${state.completionPercent}%"
+        binding.tvCompletionSubtitle.text = state.completionSubtitle
+
+        // Day Indicators & Bars
+        val dayIndicators = listOf(
+            binding.dayIndicator0,
+            binding.dayIndicator1,
+            binding.dayIndicator2,
+            binding.dayIndicator3,
+            binding.dayIndicator4,
+            binding.dayIndicator5,
+            binding.dayIndicator6
+        )
+        val dayBars = listOf(
+            binding.barDay0,
+            binding.barDay1,
+            binding.barDay2,
+            binding.barDay3,
+            binding.barDay4,
+            binding.barDay5,
+            binding.barDay6
+        )
+        val dayLabels = listOf(
+            binding.tvDay0,
+            binding.tvDay1,
+            binding.tvDay2,
+            binding.tvDay3,
+            binding.tvDay4,
+            binding.tvDay5,
+            binding.tvDay6
+        )
+
+        state.dayStats.forEachIndexed { index, dayStat ->
+            if (index < dayIndicators.size) {
+                dayIndicators[index].setStatus(dayStat.status)
+
+                val barHeightDp = (12 + (dayStat.completionPercent * 1.08f)).toInt()
+                setBarHeight(dayBars[index], barHeightDp)
+
+                val barBg = if (dayStat.completionPercent > 0) {
+                    R.drawable.bg_chart_bar_primary
+                } else {
+                    R.drawable.bg_chart_bar_variant
+                }
+                dayBars[index].setBackgroundResource(barBg)
+
+                val labelColor = if (dayStat.isToday) {
+                    ContextCompat.getColor(requireContext(), R.color.primary)
+                } else {
+                    ContextCompat.getColor(requireContext(), R.color.outline)
+                }
+                dayLabels[index].setTextColor(labelColor)
+            }
+        }
+
+        // Mood Chart & Trend Pill
+        updateMoodChart(state)
+
+        // Bottom Stats
+        binding.tvStreakValue.text = "${state.currentStreak}"
+        binding.tvStreakUnit.text = getString(R.string.stats_days_unit)
+        binding.tvTodayRateValue.text = "${state.todayCompletedCount}"
+        binding.tvTodayRateTotal.text = " /${state.todayTotalCount}"
+    }
+
+    /**
+     * Updates the mood trend line chart.
+     * Re-uses the existing LineDataSet and notifies changes rather than re-creating
+     * the dataset from scratch, avoiding animation flickers on recomposition.
+     */
+    private fun updateMoodChart(state: StatsUiState) {
+        val entries = state.moodPoints.map { Entry(it.x, it.y) }
         val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary)
-        val secondaryColor = ContextCompat.getColor(requireContext(), R.color.secondary)
+        val chart = binding.lineChartMood
 
-        val dataSet = LineDataSet(entries, "Mood Trend").apply {
-            // Cubic Bezier curve creates smooth rolling-average look without raw jagged points
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            cubicIntensity = 0.22f
-            color = primaryColor
-            lineWidth = 3.5f
+        val lineData = chart.data
+        if (lineData != null && lineData.dataSetCount > 0) {
+            val dataSet = lineData.getDataSetByIndex(0) as LineDataSet
+            dataSet.values = entries
+            lineData.notifyDataChanged()
+            chart.notifyDataSetChanged()
+            chart.invalidate()
+        } else {
+            val dataSet = LineDataSet(entries, "Mood Trend").apply {
+                mode = LineDataSet.Mode.CUBIC_BEZIER
+                cubicIntensity = 0.22f
+                color = primaryColor
+                lineWidth = 3.5f
 
-            // Data point dots
-            setDrawCircles(true)
-            circleRadius = 5.5f
-            circleHoleRadius = 2.5f
-            setCircleColor(primaryColor)
-            circleHoleColor = Color.WHITE
+                setDrawCircles(true)
+                circleRadius = 5.5f
+                circleHoleRadius = 2.5f
+                setCircleColor(primaryColor)
+                circleHoleColor = Color.WHITE
 
-            setDrawValues(false)
-            setDrawHighlightIndicators(false)
-            isHighlightEnabled = false
+                setDrawValues(false)
+                setDrawHighlightIndicators(false)
+                isHighlightEnabled = false
+            }
+            chart.data = LineData(dataSet)
+            chart.invalidate()
         }
 
-        val lineData = LineData(dataSet)
-        binding.lineChartMood.data = lineData
-        binding.lineChartMood.animateY(500)
-        binding.lineChartMood.invalidate()
-    }
-
-    private fun updateBottomStats(period: Period) {
-        when (period) {
-            Period.WEEK -> {
-                binding.tvStreakValue.text = getString(R.string.stats_streak_value_default)
-                binding.tvStreakUnit.text = getString(R.string.stats_days_unit)
-                binding.tvTodayRateValue.text = getString(R.string.stats_today_rate_default)
-                binding.tvTodayRateTotal.text = getString(R.string.stats_today_rate_total)
-            }
-            Period.MONTH -> {
-                binding.tvStreakValue.text = "18"
-                binding.tvStreakUnit.text = getString(R.string.stats_days_unit)
-                binding.tvTodayRateValue.text = "22"
-                binding.tvTodayRateTotal.text = " /28"
-            }
+        // Trend Pill
+        binding.tvTrendStatus.text = state.moodTrendStatus
+        binding.tvMoodTrendSubtitle.text = if (state.period == Period.WEEK) {
+            getString(R.string.stats_mood_trend_sublabel)
+        } else {
+            "Past 30 days"
         }
     }
 

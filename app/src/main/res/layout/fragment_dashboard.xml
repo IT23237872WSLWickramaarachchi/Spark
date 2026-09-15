@@ -18,54 +18,20 @@
             android:orientation="vertical"
             android:paddingBottom="96dp">
 
-            <!-- Top App Bar: Back Arrow + "Spark" + Notifications Bell -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Top App Bar: Dashboard Toolbar with Collapsible SearchView and Notification Bell -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:paddingHorizontal="@dimen/margin_screen">
-
-                <LinearLayout
-                    android:id="@+id/layoutBrand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/ivToolbarBack"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="12dp"
-                        android:contentDescription="@string/action_back"
-                        android:src="@drawable/ic_arrow_back"
-                        app:tint="@color/primary" />
-
-                    <TextView
-                        android:id="@+id/tvToolbarTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/app_name"
-                        android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
-                        android:textColor="@color/primary" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/btnNotifications"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/settings_notifications_title"
-                    android:padding="10dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_bell"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/outline" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:background="@android:color/transparent"
+                android:paddingEnd="8dp"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:navigationIconTint="@color/primary"
+                app:navigationContentDescription="@string/action_back"
+                app:title="@string/app_name"
+                app:titleTextAppearance="@style/TextAppearance.Spark.HeadlineLg"
+                app:titleTextColor="@color/primary"
+                app:menu="@menu/dashboard_menu" />
 
             <!-- Greeting Header + Avatar Section -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -264,6 +230,83 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- "Today's Tasks" Overview Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTasksOverview"
+                style="@style/Widget.Spark.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_screen"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface_container_lowest"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/divider_grey"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_check_circle"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:id="@+id/tvTasksHeader"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/dashboard_tasks_title"
+                            android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                            android:textColor="@color/on_surface"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/btnViewAllTasks"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dashboard_tasks_view_all"
+                            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTasksSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/dashboard_tasks_empty"
+                        android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                        android:textColor="@color/on_surface_variant" />
+
+                    <!-- Container for Preview Tasks -->
+                    <LinearLayout
+                        android:id="@+id/layoutTasksPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- "Today's Habits" Section Header -->
             <TextView
                 android:id="@+id/tvSectionHabits"
@@ -284,6 +327,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_screen"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_habit" />
 

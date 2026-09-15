@@ -6,15 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.spark.R
+import com.example.spark.SparkApplication
+import com.example.spark.data.local.entity.UserPrefsEntity
+import com.example.spark.data.repository.UserRepository
 import com.example.spark.databinding.FragmentSettingsBinding
 import com.example.spark.databinding.ItemSettingsRowBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 /**
@@ -25,6 +33,8 @@ class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var userRepository: UserRepository
+    private lateinit var sessionManager: com.example.spark.data.local.SessionManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,11 +48,16 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val app = requireActivity().application as SparkApplication
+        userRepository = app.userRepository
+        sessionManager = app.sessionManager
+
         setupToolbar()
         setupAccountSection()
         setupPreferencesSection()
         setupAboutSection()
         setupLogOutButton()
+        observePreferences()
     }
 
     private fun setupToolbar() {
@@ -77,28 +92,15 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // Row 2: Dark Mode (SwitchMaterial, disabled/no-op - values-night doesn't exist yet)
+        // Row 2: Dark Mode (SwitchMaterial)
         setupRow(
             rowBinding = binding.rowDarkMode,
             iconRes = R.drawable.ic_moon,
             label = getString(R.string.settings_dark_mode)
         ) {
             switchRow.visibility = View.VISIBLE
-            switchRow.isChecked = false
-            switchRow.setOnClickListener {
-                switchRow.isChecked = false
-                Toast.makeText(
-                    requireContext(),
-                    R.string.settings_dark_mode_notice,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            root.setOnClickListener {
-                Toast.makeText(
-                    requireContext(),
-                    R.string.settings_dark_mode_notice,
-                    Toast.LENGTH_LONG
-                ).show()
+            switchRow.setOnCheckedChangeListener { _, isChecked ->
+                onDarkModeToggled(isChecked)
             }
         }
 
@@ -182,8 +184,40 @@ class SettingsFragment : Fragment() {
         rowBinding.configure()
     }
 
+    private fun observePreferences() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userRepository.getUserPrefsFlow().collect { prefs ->
+                    val notificationsEnabled = prefs?.notificationsEnabled ?: true
+                    if (binding.rowNotifications.switchRow.isChecked != notificationsEnabled) {
+                        binding.rowNotifications.switchRow.isChecked = notificationsEnabled
+                    }
+
+                    val darkModeEnabled = prefs?.darkModeEnabled ?: false
+                    if (binding.rowDarkMode.switchRow.isChecked != darkModeEnabled) {
+                        binding.rowDarkMode.switchRow.isChecked = darkModeEnabled
+                    }
+                }
+            }
+        }
+    }
+
     private fun onNotificationsToggled(enabled: Boolean) {
-        // Stub callback for notification preference
+        viewLifecycleOwner.lifecycleScope.launch {
+            val current = userRepository.getUserPrefs() ?: UserPrefsEntity(userId = 1L)
+            userRepository.updatePrefs(current.copy(notificationsEnabled = enabled))
+        }
+    }
+
+    private fun onDarkModeToggled(enabled: Boolean) {
+        val targetMode = if (enabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        if (AppCompatDelegate.getDefaultNightMode() != targetMode) {
+            AppCompatDelegate.setDefaultNightMode(targetMode)
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            val current = userRepository.getUserPrefs() ?: UserPrefsEntity(userId = 1L)
+            userRepository.updatePrefs(current.copy(darkModeEnabled = enabled))
+        }
     }
 
     private fun showReminderTimePicker() {
@@ -202,7 +236,14 @@ class SettingsFragment : Fragment() {
                 picker.hour > 12 -> picker.hour - 12
                 else -> picker.hour
             }
-            binding.rowReminderTime.tvRowValue.text = "$displayHour:$formattedMinute $period"
+            val timeDisplay = "$displayHour:$formattedMinute $period"
+            binding.rowReminderTime.tvRowValue.text = timeDisplay
+
+            // Persist to UserPrefsEntity
+            viewLifecycleOwner.lifecycleScope.launch {
+                val current = userRepository.getUserPrefs() ?: UserPrefsEntity(userId = 1L)
+                userRepository.updatePrefs(current.copy(reminderTime = timeDisplay))
+            }
         }
 
         picker.show(parentFragmentManager, "SettingsReminderTimePicker")
@@ -213,13 +254,22 @@ class SettingsFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.settings_language)
             .setItems(languages) { _, which ->
-                binding.rowLanguage.tvRowValue.text = languages[which]
+                val selectedLang = languages[which]
+                binding.rowLanguage.tvRowValue.text = selectedLang
+
+                // Persist to UserPrefsEntity
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val current = userRepository.getUserPrefs() ?: UserPrefsEntity(userId = 1L)
+                    userRepository.updatePrefs(current.copy(language = selectedLang))
+                }
             }
             .show()
     }
 
     private fun onLogOutConfirmed() {
+        sessionManager.clearSession()
         Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_settings_to_welcome)
     }
 
     override fun onDestroyView() {

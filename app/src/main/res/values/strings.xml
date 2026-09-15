@@ -16,6 +16,7 @@
     <!-- NAVIGATION                                                        -->
     <!-- ================================================================= -->
     <string name="nav_dashboard">Today</string>
+    <string name="nav_todo">Tasks</string>
     <string name="nav_stats">Insights</string>
     <string name="nav_add">Add</string>
     <string name="nav_mood">Mood</string>
@@ -73,6 +74,10 @@
     <string name="dashboard_section_all">Today\'s Habits</string>
     <string name="dashboard_empty_title">No habits yet</string>
     <string name="dashboard_empty_subtitle">Tap the + button below to create your first habit</string>
+    <string name="action_search">Search habits</string>
+    <string name="search_habits_hint">Search habits or categories…</string>
+    <string name="habit_deleted_message">Habit deleted</string>
+    <string name="action_undo">Undo</string>
 
     <!-- ================================================================= -->
     <!-- HABIT DETAIL SCREEN                                               -->
@@ -197,4 +202,34 @@
     <string name="settings_version_format">Spark Version %1$s</string>
     <string name="settings_export_data_title">Export Data</string>
     <string name="settings_export_data_summary">Download your habits and mood history</string>
+
+    <!-- ================================================================= -->
+    <!-- TO-DO / TASKS SCREEN                                              -->
+    <!-- ================================================================= -->
+    <string name="todo_screen_title">Tasks</string>
+    <string name="todo_new_task">New Task</string>
+    <string name="todo_edit_task">Edit Task</string>
+    <string name="todo_filter_all">All</string>
+    <string name="todo_filter_pending">Pending</string>
+    <string name="todo_filter_completed">Completed</string>
+    <string name="todo_empty_title">All clear!</string>
+    <string name="todo_empty_subtitle">You have no tasks here. Tap + to add one.</string>
+    <string name="todo_title_hint">Task title</string>
+    <string name="todo_title_error">Title cannot be empty</string>
+    <string name="todo_description_hint">Notes or description (optional)</string>
+    <string name="todo_priority_label">Priority</string>
+    <string name="todo_priority_low">Low</string>
+    <string name="todo_priority_medium">Medium</string>
+    <string name="todo_priority_high">High</string>
+    <string name="todo_due_date_label">Due Date</string>
+    <string name="todo_no_due_date">No due date</string>
+    <string name="todo_due_today">Due today</string>
+    <string name="todo_overdue">Overdue</string>
+    <string name="todo_deleted_message">Task deleted</string>
+    <string name="todo_progress_summary">%1$d of %2$d completed (%3$d%%)</string>
+    <string name="dashboard_tasks_title">Today\'s Tasks</string>
+    <string name="dashboard_tasks_view_all">View All</string>
+    <string name="dashboard_tasks_pending_count">%1$d tasks pending</string>
+    <string name="dashboard_tasks_all_done">All tasks completed! Great job 🎉</string>
+    <string name="dashboard_tasks_empty">No pending tasks for today</string>
 </resources>

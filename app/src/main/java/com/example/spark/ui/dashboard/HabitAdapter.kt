@@ -14,11 +14,12 @@ import com.example.spark.databinding.ItemHabitBinding
 /**
  * ListAdapter for habit items displayed on the Dashboard.
  *
- * Uses DiffUtil for efficient animated updates and handles interaction
- * with the custom [CircleToggleView].
+ * Uses DiffUtil for efficient animated updates. Checkbox click events are dispatched
+ * directly to the ViewModel/Repository Flow without mutating the view locally, guaranteeing
+ * that UI state always reflects the database single source of truth.
  */
 class HabitAdapter(
-    private val onToggleHabit: (HabitUiModel) -> Unit,
+    private val onToggleHabit: (habitId: String, isChecked: Boolean) -> Unit,
     private val onItemClick: ((HabitUiModel) -> Unit)? = null
 ) : ListAdapter<HabitUiModel, HabitAdapter.ViewHolder>(HabitDiffCallback()) {
 
@@ -61,12 +62,13 @@ class HabitAdapter(
             }
             binding.frameIconContainer.background = circleBg
 
-            // Trailing animated CircleToggleView
+            // Trailing animated CircleToggleView - DB-truth bound via DiffUtil
             binding.toggleHabit.onCheckedChangeListener = null
             binding.toggleHabit.setChecked(item.isCompleted, animate = false)
 
-            binding.toggleHabit.onCheckedChangeListener = { _, _ ->
-                onToggleHabit(item)
+            // Click listener delegates to ViewModel without optimistic local toggle
+            binding.toggleHabit.setOnClickListener {
+                onToggleHabit(item.id.toString(), !item.isCompleted)
             }
 
             binding.cardHabitRow.setOnClickListener {

@@ -34,11 +34,20 @@ interface HabitDao {
     @Delete
     suspend fun deleteHabit(habit: HabitEntity)
 
+    @Query("DELETE FROM habits WHERE id = :habitId")
+    suspend fun deleteHabitById(habitId: Long)
+
+    @Query("SELECT * FROM habits WHERE isArchived = 0 ORDER BY createdAt DESC")
+    fun getAllHabits(): Flow<List<HabitEntity>>
+
     @Query("SELECT * FROM habits WHERE userId = :userId AND isArchived = 0 ORDER BY createdAt DESC")
     fun getActiveHabitsForUser(userId: Long): Flow<List<HabitEntity>>
 
     @Query("SELECT * FROM habits WHERE id = :habitId LIMIT 1")
     suspend fun getHabitById(habitId: Long): HabitEntity?
+
+    @Query("SELECT * FROM habits WHERE id = :habitId LIMIT 1")
+    fun getHabitByIdFlow(habitId: Long): Flow<HabitEntity?>
 
     /**
      * Returns a habit with all of its log entries via @Transaction.
@@ -62,6 +71,18 @@ interface HabitDao {
 
     @Query("SELECT * FROM habit_logs WHERE habitId = :habitId ORDER BY completedDate DESC")
     fun getLogsForHabit(habitId: Long): Flow<List<HabitLogEntity>>
+
+    @Query("SELECT * FROM habit_logs WHERE completedDate = :date")
+    fun getLogsForDate(date: LocalDate): Flow<List<HabitLogEntity>>
+
+    @Query("SELECT * FROM habit_logs WHERE completedDate = :date")
+    fun getTodayLogs(date: LocalDate): Flow<List<HabitLogEntity>>
+
+    @Query("SELECT * FROM habit_logs WHERE completedDate BETWEEN :startDate AND :endDate ORDER BY completedDate ASC")
+    fun getLogsInRange(startDate: LocalDate, endDate: LocalDate): Flow<List<HabitLogEntity>>
+
+    @Query("SELECT * FROM habit_logs ORDER BY completedDate DESC")
+    fun getAllLogs(): Flow<List<HabitLogEntity>>
 
     @Query("SELECT * FROM habit_logs WHERE habitId = :habitId AND completedDate = :date LIMIT 1")
     suspend fun getLogForDate(habitId: Long, date: LocalDate): HabitLogEntity?

@@ -23,7 +23,10 @@ import java.time.LocalDate
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["habitId"])]
+    indices = [
+        Index(value = ["habitId"]),
+        Index(value = ["habitId", "completedDate"], unique = true)
+    ]
 )
 data class HabitLogEntity(
     @PrimaryKey(autoGenerate = true)

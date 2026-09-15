@@ -6,9 +6,9 @@
         android:title="@string/nav_dashboard" />
 
     <item
-        android:id="@+id/stats"
-        android:icon="@drawable/ic_chart"
-        android:title="@string/nav_stats" />
+        android:id="@+id/todo"
+        android:icon="@drawable/ic_check_circle"
+        android:title="@string/nav_todo" />
 
     <item
         android:id="@+id/add"
@@ -16,9 +16,9 @@
         android:title="@string/nav_add" />
 
     <item
-        android:id="@+id/mood"
-        android:icon="@drawable/ic_mood_smile"
-        android:title="@string/nav_mood" />
+        android:id="@+id/stats"
+        android:icon="@drawable/ic_chart"
+        android:title="@string/nav_stats" />
 
     <item
         android:id="@+id/settings"

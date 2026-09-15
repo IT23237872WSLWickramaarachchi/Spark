@@ -6,48 +6,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.spark.R
+import com.example.spark.SparkApplication
 import com.example.spark.databinding.FragmentAddHabitBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /**
- * BottomSheetDialogFragment for creating a new habit.
+ * BottomSheetDialogFragment for creating or editing a habit.
  *
- * Implements FR-03: Create habit with name, category, frequency,
+ * Implements FR-03: Create/Edit habit with name, category, frequency,
  * reminder time, and color theme.
  */
 class AddHabitBottomSheetFragment : BottomSheetDialogFragment() {
 
-    interface OnHabitSavedListener {
-        fun onHabitSaved(
-            title: String,
-            category: String,
-            frequency: String,
-            targetDaysPerWeek: Int,
-            reminderTime: LocalTime?,
-            colorHex: String
-        )
-    }
-
     private var _binding: FragmentAddHabitBinding? = null
     private val binding get() = _binding!!
 
-    var onHabitSavedListener: OnHabitSavedListener? = null
+    private lateinit var viewModel: AddHabitViewModel
+    private var isInitialFormPopulated: Boolean = false
 
     // State
     private var selectedHour: Int = 8
     private var selectedMinute: Int = 0
-    private var selectedColorHex: String = "#52559C"
     private val colorSwatches = listOf(
         "#52559C", // Primary Purple
         "#874D5E", // Secondary Mauve/Pink
@@ -83,11 +76,24 @@ class AddHabitBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val app = requireActivity().application as SparkApplication
+        viewModel = ViewModelProvider(
+            this,
+            AddHabitViewModel.Factory(
+                habitRepository = app.habitRepository,
+                defaultArgs = arguments,
+                currentUserIdProvider = { app.sessionManager.currentUserId }
+            )
+        )[AddHabitViewModel::class.java]
+
         setupCloseButton()
         setupNameInput()
+        setupCategoryChips()
+        setupFrequencyToggle()
         setupReminderPicker()
         setupColorSwatches()
         setupSaveButton()
+        observeViewModel()
     }
 
     private fun setupCloseButton() {
@@ -98,8 +104,27 @@ class AddHabitBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun setupNameInput() {
         binding.etHabitName.doAfterTextChanged { text ->
-            val isNotBlank = !text.isNullOrBlank()
-            binding.btnSaveHabit.isEnabled = isNotBlank
+            viewModel.onNameChange(text?.toString().orEmpty())
+        }
+    }
+
+    private fun setupCategoryChips() {
+        binding.cgCategory.setOnCheckedStateChangeListener { _, checkedIds ->
+            val category = when (checkedIds.firstOrNull()) {
+                R.id.chipMindfulness -> "Mindfulness"
+                R.id.chipProductivity -> "Productivity"
+                else -> "Health"
+            }
+            viewModel.onCategorySelect(category)
+        }
+    }
+
+    private fun setupFrequencyToggle() {
+        binding.toggleGroupFrequency.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                val frequency = if (checkedId == R.id.btnDaily) "Daily" else "Weekly"
+                viewModel.onFrequencySelect(frequency)
+            }
         }
     }
 
@@ -116,6 +141,8 @@ class AddHabitBottomSheetFragment : BottomSheetDialogFragment() {
             picker.addOnPositiveButtonClickListener {
                 selectedHour = picker.hour
                 selectedMinute = picker.minute
+                val formattedTime = String.format(Locale.ROOT, "%02d:%02d", selectedHour, selectedMinute)
+                viewModel.onReminderTimeSelect(formattedTime)
                 updateReminderTimeUi()
             }
 
@@ -147,7 +174,8 @@ class AddHabitBottomSheetFragment : BottomSheetDialogFragment() {
 
         swatches.forEachIndexed { index, swatchView ->
             swatchView.setOnClickListener {
-                selectedColorHex = colorSwatches[index]
+                val colorHex = colorSwatches[index]
+                viewModel.onColorSelect(colorHex)
                 swatchRings.forEachIndexed { rIndex, ringView ->
                     ringView.visibility = if (rIndex == index) View.VISIBLE else View.INVISIBLE
                 }
@@ -157,45 +185,75 @@ class AddHabitBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun setupSaveButton() {
         binding.btnSaveHabit.setOnClickListener {
-            val name = binding.etHabitName.text?.toString()?.trim().orEmpty()
-            if (name.isBlank()) return@setOnClickListener
+            viewModel.saveHabit()
+        }
+    }
 
-            val category = when (binding.cgCategory.checkedChipId) {
-                R.id.chipMindfulness -> "Mindfulness"
-                R.id.chipProductivity -> "Productivity"
-                else -> "Health"
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.formState.collect { state ->
+                        binding.btnSaveHabit.isEnabled = state.isSaveEnabled
+
+                        // Pre-populate form when opening in Edit mode
+                        if (!viewModel.habitId.isNullOrBlank() && !isInitialFormPopulated && state.name.isNotBlank()) {
+                            isInitialFormPopulated = true
+                            binding.tvHeaderTitle.text = "Edit Habit"
+                            binding.btnSaveHabit.text = "Update Habit"
+
+                            if (binding.etHabitName.text.toString() != state.name) {
+                                binding.etHabitName.setText(state.name)
+                                binding.etHabitName.setSelection(state.name.length)
+                            }
+
+                            val chipId = when (state.category) {
+                                "Mindfulness" -> R.id.chipMindfulness
+                                "Productivity" -> R.id.chipProductivity
+                                else -> R.id.chipHealth
+                            }
+                            if (binding.cgCategory.checkedChipId != chipId) {
+                                binding.cgCategory.check(chipId)
+                            }
+
+                            val freqBtnId = if (state.frequency.equals("Weekly", ignoreCase = true)) {
+                                R.id.btnWeekly
+                            } else {
+                                R.id.btnDaily
+                            }
+                            if (binding.toggleGroupFrequency.checkedButtonId != freqBtnId) {
+                                binding.toggleGroupFrequency.check(freqBtnId)
+                            }
+
+                            val timeParts = state.reminderTime.split(":")
+                            if (timeParts.size == 2) {
+                                selectedHour = timeParts[0].toIntOrNull() ?: 8
+                                selectedMinute = timeParts[1].toIntOrNull() ?: 0
+                                updateReminderTimeUi()
+                            }
+
+                            val colorIdx = colorSwatches.indexOfFirst { it.equals(state.colorTag, ignoreCase = true) }
+                            if (colorIdx >= 0) {
+                                val swatchRings = listOf(
+                                    binding.ring1,
+                                    binding.ring2,
+                                    binding.ring3,
+                                    binding.ring4,
+                                    binding.ring5
+                                )
+                                swatchRings.forEachIndexed { rIndex, ringView ->
+                                    ringView.visibility = if (rIndex == colorIdx) View.VISIBLE else View.INVISIBLE
+                                }
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.habitSaved.collect {
+                        dismiss()
+                    }
+                }
             }
-
-            val isDaily = binding.toggleGroupFrequency.checkedButtonId == R.id.btnDaily
-            val frequency = if (isDaily) "Daily" else "Weekly"
-            val targetDays = if (isDaily) 7 else 3
-            val reminderTime = LocalTime.of(selectedHour, selectedMinute)
-
-            // 1. Notify via setFragmentResult
-            setFragmentResult(
-                REQUEST_KEY,
-                bundleOf(
-                    EXTRA_TITLE to name,
-                    EXTRA_CATEGORY to category,
-                    EXTRA_FREQUENCY to frequency,
-                    EXTRA_TARGET_DAYS to targetDays,
-                    EXTRA_REMINDER_HOUR to selectedHour,
-                    EXTRA_REMINDER_MINUTE to selectedMinute,
-                    EXTRA_COLOR_HEX to selectedColorHex
-                )
-            )
-
-            // 2. Notify optional direct listener
-            onHabitSavedListener?.onHabitSaved(
-                title = name,
-                category = category,
-                frequency = frequency,
-                targetDaysPerWeek = targetDays,
-                reminderTime = reminderTime,
-                colorHex = selectedColorHex
-            )
-
-            dismiss()
         }
     }
 
@@ -206,15 +264,16 @@ class AddHabitBottomSheetFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "AddHabitBottomSheetFragment"
-        const val REQUEST_KEY = "request_add_habit"
-        const val EXTRA_TITLE = "extra_title"
-        const val EXTRA_CATEGORY = "extra_category"
-        const val EXTRA_FREQUENCY = "extra_frequency"
-        const val EXTRA_TARGET_DAYS = "extra_target_days"
-        const val EXTRA_REMINDER_HOUR = "extra_reminder_hour"
-        const val EXTRA_REMINDER_MINUTE = "extra_reminder_minute"
-        const val EXTRA_COLOR_HEX = "extra_color_hex"
+        const val ARG_HABIT_ID = "habitId"
 
-        fun newInstance(): AddHabitBottomSheetFragment = AddHabitBottomSheetFragment()
+        fun newInstance(habitId: String? = null): AddHabitBottomSheetFragment {
+            return AddHabitBottomSheetFragment().apply {
+                arguments = Bundle().apply {
+                    if (habitId != null) {
+                        putString(ARG_HABIT_ID, habitId)
+                    }
+                }
+            }
+        }
     }
 }

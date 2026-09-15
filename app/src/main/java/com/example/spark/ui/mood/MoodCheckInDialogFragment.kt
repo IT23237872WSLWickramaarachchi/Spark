@@ -11,33 +11,34 @@ import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.fragment.app.setFragmentResult
+import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.spark.R
+import com.example.spark.SparkApplication
 import com.example.spark.databinding.FragmentMoodCheckinBinding
-import com.example.spark.ui.dashboard.DashboardViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.launch
 
 /**
  * BottomSheetDialogFragment for the daily mood check-in.
  *
  * Implements FR-06: Daily mood log on scale 1–5 with optional note.
- * Features animated halo selection state on mood face icons.
+ * Features animated halo selection state on mood face icons and shame-free skip.
  */
 class MoodCheckInDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentMoodCheckinBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: DashboardViewModel
-    private var selectedMoodScore: Int? = null
-
+    private lateinit var viewModel: MoodCheckInViewModel
     private lateinit var moodViews: List<ImageView>
 
     override fun getTheme(): Int = R.style.Widget_Spark_BottomSheetDialog
@@ -67,7 +68,11 @@ class MoodCheckInDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[DashboardViewModel::class.java]
+        val app = requireActivity().application as SparkApplication
+        viewModel = ViewModelProvider(
+            this,
+            MoodCheckInViewModel.Factory(app.moodRepository)
+        )[MoodCheckInViewModel::class.java]
 
         // Apply window insets to prevent top elements (tvClose, dragHandle) from being covered by system bars / status bar
         ViewCompat.setOnApplyWindowInsetsListener(binding.moodSheetRoot) { v, insets ->
@@ -86,39 +91,70 @@ class MoodCheckInDialogFragment : BottomSheetDialogFragment() {
 
         setupDismissActions()
         setupMoodSelectors()
+        setupNoteInput()
         setupSaveButton()
+        observeViewModel()
     }
 
     private fun setupDismissActions() {
         binding.tvClose.setOnClickListener {
-            dismiss()
+            viewModel.skip()
         }
 
         binding.tvSkip.setOnClickListener {
-            dismiss()
+            viewModel.skip()
         }
     }
 
     private fun setupMoodSelectors() {
         moodViews.forEachIndexed { index, imageView ->
-            val score = index + 1
             imageView.setOnClickListener {
-                selectMood(score)
+                viewModel.onMoodSelect(index)
             }
         }
     }
 
-    private fun selectMood(score: Int) {
-        if (selectedMoodScore == score) return
-        val previousScore = selectedMoodScore
-        selectedMoodScore = score
+    private fun setupNoteInput() {
+        binding.etMoodNote.doAfterTextChanged { text ->
+            viewModel.onNoteChange(text?.toString().orEmpty())
+        }
+    }
 
+    private fun setupSaveButton() {
+        binding.btnSaveMood.setOnClickListener {
+            viewModel.saveMood()
+        }
+    }
+
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    var previousIndex: Int? = null
+                    viewModel.formState.collect { state ->
+                        binding.btnSaveMood.isEnabled = state.isSaveEnabled
+                        if (state.selectedMoodIndex != previousIndex) {
+                            animateMoodSelection(previousIndex, state.selectedMoodIndex)
+                            previousIndex = state.selectedMoodIndex
+                        }
+                    }
+                }
+                launch {
+                    viewModel.dismissEvent.collect {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun animateMoodSelection(previousIndex: Int?, newIndex: Int?) {
         val selectedTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.on_secondary_container))
         val defaultTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.on_surface_variant))
 
         // Reset previous selected mood
-        if (previousScore != null && previousScore in 1..5) {
-            val prevView = moodViews[previousScore - 1]
+        if (previousIndex != null && previousIndex in moodViews.indices) {
+            val prevView = moodViews[previousIndex]
             prevView.setBackgroundResource(R.drawable.bg_mood_item_unselected)
             prevView.imageTintList = defaultTint
             prevView.animate()
@@ -130,38 +166,16 @@ class MoodCheckInDialogFragment : BottomSheetDialogFragment() {
         }
 
         // Animate newly selected mood with halo ring & scale
-        val newView = moodViews[score - 1]
-        newView.setBackgroundResource(R.drawable.bg_mood_item_selected_halo)
-        newView.imageTintList = selectedTint
-        newView.animate()
-            .scaleX(1.25f)
-            .scaleY(1.25f)
-            .setDuration(220)
-            .setInterpolator(OvershootInterpolator(2.0f))
-            .start()
-
-        // Enable Save button
-        binding.btnSaveMood.isEnabled = true
-    }
-
-    private fun setupSaveButton() {
-        binding.btnSaveMood.setOnClickListener {
-            val score = selectedMoodScore ?: return@setOnClickListener
-            val note = binding.etMoodNote.text?.toString()?.trim()
-
-            // 1. Persist to Room
-            viewModel.logMood(score, note)
-
-            // 2. Notify FragmentResultListener
-            setFragmentResult(
-                REQUEST_KEY,
-                bundleOf(
-                    EXTRA_MOOD_SCORE to score,
-                    EXTRA_MOOD_NOTE to note
-                )
-            )
-
-            dismiss()
+        if (newIndex != null && newIndex in moodViews.indices) {
+            val newView = moodViews[newIndex]
+            newView.setBackgroundResource(R.drawable.bg_mood_item_selected_halo)
+            newView.imageTintList = selectedTint
+            newView.animate()
+                .scaleX(1.25f)
+                .scaleY(1.25f)
+                .setDuration(220)
+                .setInterpolator(OvershootInterpolator(2.0f))
+                .start()
         }
     }
 

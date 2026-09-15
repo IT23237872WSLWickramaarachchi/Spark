@@ -12,13 +12,15 @@ import com.example.spark.data.local.entity.HabitEntity
 import com.example.spark.data.local.entity.HabitLogEntity
 import com.example.spark.data.local.entity.MoodEntryEntity
 import com.example.spark.data.local.entity.UserEntity
+import com.example.spark.data.local.entity.UserPrefsEntity
 
 /**
  * The single Room database for the Spark app.
  *
- * Manages four entities with relational foreign keys:
+ * Manages five entities with relational foreign keys:
  * - [UserEntity] 1—* [HabitEntity] 1—* [HabitLogEntity]
  * - [UserEntity] 1—* [MoodEntryEntity]
+ * - [UserEntity] 1—1 [UserPrefsEntity]
  *
  * Uses a thread-safe singleton pattern via double-checked locking.
  */
@@ -27,9 +29,11 @@ import com.example.spark.data.local.entity.UserEntity
         UserEntity::class,
         HabitEntity::class,
         HabitLogEntity::class,
-        MoodEntryEntity::class
+        MoodEntryEntity::class,
+        UserPrefsEntity::class,
+        com.example.spark.data.local.entity.TodoEntity::class
     ],
-    version = 1,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -38,6 +42,7 @@ abstract class SparkDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun habitDao(): HabitDao
     abstract fun moodDao(): MoodDao
+    abstract fun todoDao(): com.example.spark.data.local.dao.TodoDao
 
     companion object {
 

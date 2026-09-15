@@ -8,16 +8,22 @@ class StatsPeriodTest {
 
     @Test
     fun periodEnum_hasExpectedValues() {
-        val periods = StatsFragment.Period.values()
+        val periods = Period.values()
         assertEquals(2, periods.size)
-        assertEquals(StatsFragment.Period.WEEK, StatsFragment.Period.valueOf("WEEK"))
-        assertEquals(StatsFragment.Period.MONTH, StatsFragment.Period.valueOf("MONTH"))
+        assertEquals(Period.WEEK, Period.valueOf("WEEK"))
+        assertEquals(Period.MONTH, Period.valueOf("MONTH"))
     }
 
     @Test
     fun defaultPeriod_isWeek() {
-        val defaultPeriod = StatsFragment.Period.WEEK
+        val defaultPeriod = Period.WEEK
         assertNotNull(defaultPeriod)
         assertEquals("WEEK", defaultPeriod.name)
+    }
+
+    @Test
+    fun typealias_statsPeriod_aliasesPeriod() {
+        val statsPeriod: StatsPeriod = Period.WEEK
+        assertEquals(Period.WEEK, statsPeriod)
     }
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ================================================================= -->
     <!-- SHAPE APPEARANCES (Corner Radii from DESIGN.md)                   -->
@@ -38,7 +40,8 @@
         <item name="android:fontFamily">@font/font_plus_jakarta_sans</item>
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:lineHeight">40sp</item>
+        <item name="lineHeight">40sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">40sp</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:textColor">@color/on_surface</item>
     </style>
@@ -66,7 +69,8 @@
         <item name="android:fontFamily">@font/font_plus_jakarta_sans</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:lineHeight">32sp</item>
+        <item name="lineHeight">32sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">32sp</item>
         <item name="android:textColor">@color/on_surface</item>
     </style>
 
@@ -76,7 +80,8 @@
         <item name="android:fontFamily">@font/font_plus_jakarta_sans</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:lineHeight">28sp</item>
+        <item name="lineHeight">28sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">28sp</item>
         <item name="android:textColor">@color/on_surface</item>
     </style>
 
@@ -86,7 +91,8 @@
         <item name="android:fontFamily">@font/font_nunito_sans</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:lineHeight">26sp</item>
+        <item name="lineHeight">26sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">26sp</item>
         <item name="android:textColor">@color/on_surface</item>
     </style>
 
@@ -96,7 +102,8 @@
         <item name="android:fontFamily">@font/font_nunito_sans</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:lineHeight">24sp</item>
+        <item name="lineHeight">24sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">24sp</item>
         <item name="android:textColor">@color/on_surface</item>
     </style>
 
@@ -106,7 +113,8 @@
         <item name="android:fontFamily">@font/font_nunito_sans</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:lineHeight">20sp</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">20sp</item>
         <item name="android:textColor">@color/on_surface_variant</item>
     </style>
 
@@ -116,7 +124,8 @@
         <item name="android:fontFamily">@font/font_nunito_sans</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:lineHeight">18sp</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">18sp</item>
         <item name="android:letterSpacing">0.05</item>
         <item name="android:textColor">@color/on_surface</item>
     </style>
@@ -127,7 +136,8 @@
         <item name="android:fontFamily">@font/font_nunito_sans</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:lineHeight">16sp</item>
+        <item name="lineHeight">16sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">16sp</item>
         <item name="android:textColor">@color/on_surface_variant</item>
     </style>
 

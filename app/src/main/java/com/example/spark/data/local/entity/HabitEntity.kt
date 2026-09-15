@@ -38,5 +38,6 @@ data class HabitEntity(
     val reminderTime: LocalTime? = null,
     val colorHex: String = "#52559c",
     val createdAt: Instant = Instant.now(),
-    val isArchived: Boolean = false
+    val isArchived: Boolean = false,
+    val notes: String? = null
 )
