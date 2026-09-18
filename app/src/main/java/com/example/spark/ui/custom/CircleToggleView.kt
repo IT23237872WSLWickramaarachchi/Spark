@@ -31,7 +31,7 @@ class CircleToggleView @JvmOverloads constructor(
     private val checkStrokeWidthPx = 2.5f * density
 
     private val outlineColor = ContextCompat.getColor(context, R.color.divider_grey)
-    private val activeColor = Color.parseColor("#6FCF97") // Success green
+    private val activeColor = Color.parseColor("#1C8554") // Success green
     private val checkColor = Color.WHITE
 
     private val outlinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -71,10 +71,10 @@ class CircleToggleView @JvmOverloads constructor(
     override fun isChecked(): Boolean = isCheckedState
 
     override fun setChecked(checked: Boolean) {
-        setChecked(checked, animate = true)
+        setChecked(checked, animate = true, notifyListener = true)
     }
 
-    fun setChecked(checked: Boolean, animate: Boolean) {
+    fun setChecked(checked: Boolean, animate: Boolean, notifyListener: Boolean = false) {
         if (isCheckedState == checked) return
         isCheckedState = checked
 
@@ -84,7 +84,9 @@ class CircleToggleView @JvmOverloads constructor(
         if (!animate || !isAttachedToWindow) {
             animationFraction = target
             invalidate()
-            onCheckedChangeListener?.invoke(this, isCheckedState)
+            if (notifyListener) {
+                onCheckedChangeListener?.invoke(this, isCheckedState)
+            }
             return
         }
 
@@ -98,12 +100,14 @@ class CircleToggleView @JvmOverloads constructor(
             start()
         }
 
-        onCheckedChangeListener?.invoke(this, isCheckedState)
+        if (notifyListener) {
+            onCheckedChangeListener?.invoke(this, isCheckedState)
+        }
     }
 
     override fun toggle() {
         performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM)
-        setChecked(!isCheckedState, animate = true)
+        setChecked(!isCheckedState, animate = true, notifyListener = true)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -133,7 +137,6 @@ class CircleToggleView @JvmOverloads constructor(
             val half = size / 2f
 
             checkPath.reset()
-            // Checkmark coordinates relative to center
             checkPath.moveTo(cx - half * 0.7f, cy + half * 0.05f)
             checkPath.lineTo(cx - half * 0.15f, cy + half * 0.65f)
             checkPath.lineTo(cx + half * 0.75f, cy - half * 0.45f)

@@ -57,6 +57,17 @@
     <string name="register_btn_submit">Create Account &#8594;</string>
     <string name="register_prompt_login">Already have an account? Log In</string>
     <string name="action_login">Log In</string>
+    <string name="login_success_toast">Welcome back, %1$s!</string>
+    <string name="login_error_failed">Invalid email or password.</string>
+    <string name="login_forgot_password_title">Password Recovery</string>
+    <string name="login_forgot_password_msg">Spark stores accounts only on this device. Online password recovery is not available.</string>
+    <string name="register_error_name_empty">Please enter your full name.</string>
+    <string name="register_error_email_empty">Please enter your email address.</string>
+    <string name="register_error_email_invalid">Please enter a valid email address.</string>
+    <string name="register_error_password_empty">Please enter a password.</string>
+    <string name="register_error_password_too_short">Password must be at least 8 characters.</string>
+    <string name="register_error_password_mismatch">Passwords do not match.</string>
+    <string name="register_success_toast">Account created! You can now log in.</string>
 
     <!-- ================================================================= -->
     <!-- DASHBOARD SCREEN                                                  -->
@@ -103,6 +114,7 @@
     <string name="add_habit_name_label">Habit Name</string>
     <string name="add_habit_name_hint">What habit do you want to build?</string>
     <string name="add_habit_name_hint_placeholder">e.g., Morning Meditation</string>
+    <string name="add_habit_hint_name">e.g., Morning Meditation</string>
     <string name="add_habit_category_label">Category</string>
     <string name="add_habit_category_health">Health</string>
     <string name="add_habit_category_mindfulness">Mindfulness</string>
@@ -232,4 +244,16 @@
     <string name="dashboard_tasks_pending_count">%1$d tasks pending</string>
     <string name="dashboard_tasks_all_done">All tasks completed! Great job 🎉</string>
     <string name="dashboard_tasks_empty">No pending tasks for today</string>
+
+    <!-- Habit Search and Filter (FR-10) -->
+    <string name="filter_habits_content_desc">Filter habits</string>
+    <string name="search_habits_content_desc">Search habits</string>
+    <string name="filter_all">All</string>
+    <string name="filter_pending">Pending</string>
+    <string name="filter_completed">Completed</string>
+    <string name="filter_health">Health</string>
+    <string name="filter_mindfulness">Mindfulness</string>
+    <string name="filter_productivity">Productivity</string>
+    <string name="empty_search_results">No matching habits found</string>
+    <string name="empty_search_results_sub">Try a different search term or filter</string>
 </resources>

@@ -52,4 +52,11 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <!-- Bottom Sheet Dialog Theme -->
+    <style name="Theme.Spark.BottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Spark.BottomSheet</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/surface_container_lowest</item>
+    </style>
 </resources>

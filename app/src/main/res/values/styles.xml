@@ -36,8 +36,8 @@
     <!-- ================================================================= -->
     <!-- Display Hero: 32sp, 700 bold, Plus Jakarta Sans, lineHeight 40sp, letterSpacing -0.02 -->
     <style name="TextAppearance.Spark.DisplayHero" parent="TextAppearance.MaterialComponents.Headline3">
-        <item name="fontFamily">@font/font_plus_jakarta_sans</item>
-        <item name="android:fontFamily">@font/font_plus_jakarta_sans</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
         <item name="lineHeight">40sp</item>
@@ -48,16 +48,16 @@
 
     <!-- Script Title from Stitch: 64sp, Caveat font, on_primary color -->
     <style name="TextAppearance.Spark.ScriptTitle" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="fontFamily">@font/font_caveat</item>
-        <item name="android:fontFamily">@font/font_caveat</item>
+        <item name="fontFamily">cursive</item>
+        <item name="android:fontFamily">cursive</item>
         <item name="android:textSize">64sp</item>
         <item name="android:textColor">@color/on_primary</item>
     </style>
 
     <!-- Script Welcome: 44sp, Caveat font, on_primary color -->
     <style name="TextAppearance.Spark.ScriptWelcome" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="fontFamily">@font/font_caveat</item>
-        <item name="android:fontFamily">@font/font_caveat</item>
+        <item name="fontFamily">cursive</item>
+        <item name="android:fontFamily">cursive</item>
         <item name="android:textSize">44sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/on_primary</item>
@@ -65,8 +65,8 @@
 
     <!-- Headline Lg: 24sp, 700 bold, Plus Jakarta Sans, lineHeight 32sp -->
     <style name="TextAppearance.Spark.HeadlineLg" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="fontFamily">@font/font_plus_jakarta_sans</item>
-        <item name="android:fontFamily">@font/font_plus_jakarta_sans</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="lineHeight">32sp</item>
@@ -76,8 +76,8 @@
 
     <!-- Headline Md: 20sp, 600 semibold, Plus Jakarta Sans, lineHeight 28sp -->
     <style name="TextAppearance.Spark.HeadlineMd" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">@font/font_plus_jakarta_sans</item>
-        <item name="android:fontFamily">@font/font_plus_jakarta_sans</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">normal</item>
         <item name="lineHeight">28sp</item>
@@ -85,10 +85,28 @@
         <item name="android:textColor">@color/on_surface</item>
     </style>
 
+    <!-- Title Lg: 18sp, 700 bold, Plus Jakarta Sans -->
+    <style name="TextAppearance.Spark.TitleLg" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/on_surface</item>
+    </style>
+
+    <!-- Title Md: 16sp, 600 semibold, Plus Jakarta Sans -->
+    <style name="TextAppearance.Spark.TitleMd" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/on_surface</item>
+    </style>
+
     <!-- Body Lg: 18sp, 400 regular, Nunito Sans, lineHeight 26sp -->
     <style name="TextAppearance.Spark.BodyLg" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/font_nunito_sans</item>
-        <item name="android:fontFamily">@font/font_nunito_sans</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">normal</item>
         <item name="lineHeight">26sp</item>
@@ -98,8 +116,8 @@
 
     <!-- Body Md: 16sp, 400 regular, Nunito Sans, lineHeight 24sp -->
     <style name="TextAppearance.Spark.BodyMd" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/font_nunito_sans</item>
-        <item name="android:fontFamily">@font/font_nunito_sans</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="lineHeight">24sp</item>
@@ -109,8 +127,8 @@
 
     <!-- Body Sm: 14sp, 400 regular, Nunito Sans, lineHeight 20sp -->
     <style name="TextAppearance.Spark.BodySm" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/font_nunito_sans</item>
-        <item name="android:fontFamily">@font/font_nunito_sans</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="lineHeight">20sp</item>
@@ -120,8 +138,8 @@
 
     <!-- Label Bold: 14sp, 700 bold, Nunito Sans, lineHeight 18sp, letterSpacing 0.05 -->
     <style name="TextAppearance.Spark.LabelBold" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="fontFamily">@font/font_nunito_sans</item>
-        <item name="android:fontFamily">@font/font_nunito_sans</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="lineHeight">18sp</item>
@@ -132,12 +150,23 @@
 
     <!-- Label Md: 12sp, 600 semibold, Nunito Sans, lineHeight 16sp -->
     <style name="TextAppearance.Spark.LabelMd" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">@font/font_nunito_sans</item>
-        <item name="android:fontFamily">@font/font_nunito_sans</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
         <item name="lineHeight">16sp</item>
         <item name="android:lineHeight" tools:targetApi="p">16sp</item>
+        <item name="android:textColor">@color/on_surface_variant</item>
+    </style>
+
+    <!-- Label Sm: 11sp, 700 bold, Nunito Sans, lineHeight 14sp -->
+    <style name="TextAppearance.Spark.LabelSm" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="lineHeight">14sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">14sp</item>
         <item name="android:textColor">@color/on_surface_variant</item>
     </style>
 

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardMoodRoot"
+    style="@style/Widget.Spark.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="24dp"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@color/surface_container_lowest"
+    app:cardCornerRadius="28dp"
+    app:cardElevation="12dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="28dp">
+
+        <!-- Top Close Button -->
+        <TextView
+            android:id="@+id/tvCloseMood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp"
+            android:text="@string/action_close"
+            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+            android:textColor="@color/on_surface_variant"
+            android:textStyle="bold" />
+
+        <!-- Script Title: How are you feeling today? -->
+        <TextView
+            android:id="@+id/tvMoodQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="cursive"
+            android:gravity="center"
+            android:text="How are you feeling\ntoday?"
+            android:textAppearance="@style/TextAppearance.Spark.ScriptWelcome"
+            android:textColor="@color/primary_deep_purple"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <!-- 5 Mood Icons Row -->
+        <LinearLayout
+            android:id="@+id/layoutMoodIcons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivMood1"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/bg_circle_arrow"
+                android:clickable="true"
+                android:contentDescription="Difficult"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_mood_1"
+                app:tint="@color/primary" />
+
+            <ImageView
+                android:id="@+id/ivMood2"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/bg_circle_arrow"
+                android:clickable="true"
+                android:contentDescription="Low"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_mood_2"
+                app:tint="@color/primary" />
+
+            <ImageView
+                android:id="@+id/ivMood3"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/bg_circle_arrow"
+                android:clickable="true"
+                android:contentDescription="Okay"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_mood_3"
+                app:tint="@color/primary" />
+
+            <ImageView
+                android:id="@+id/ivMood4"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/bg_mood_item_selected_halo"
+                android:clickable="true"
+                android:contentDescription="Good"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_mood_4"
+                app:tint="@color/secondary_container" />
+
+            <ImageView
+                android:id="@+id/ivMood5"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/bg_circle_arrow"
+                android:clickable="true"
+                android:contentDescription="Radiant"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_mood_5"
+                app:tint="@color/primary" />
+        </LinearLayout>
+
+        <!-- What best describes today? (optional) -->
+        <TextView
+            android:id="@+id/tvMoodTagsLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="What best describes today? (optional)"
+            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+            android:textColor="@color/outline"
+            android:textSize="13sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupMoodTags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            app:chipSpacingHorizontal="6dp"
+            app:chipSpacingVertical="4dp"
+            app:singleSelection="false">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTagCalm"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calm" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTagEnergetic"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Energetic" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTagFocused"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Focused" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTagTired"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tired" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTagStressed"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stressed" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTagAnxious"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anxious" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipMoreTags"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ More"
+                android:textColor="@color/primary"
+                app:chipStrokeColor="@color/outline"
+                app:chipStrokeWidth="1dp" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- Optional Note Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMoodNote"
+            style="@style/Widget.Spark.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMoodNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Add a note (optional)..."
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="3"
+                android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/outline" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Save Mood Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveMood"
+            style="@style/Widget.Spark.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/mood_btn_save"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            app:cornerRadius="16dp" />
+
+        <!-- Skip for Today Link -->
+        <TextView
+            android:id="@+id/btnSkipMood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="6dp"
+            android:text="Skip for today"
+            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+            android:textColor="@color/primary" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheetScroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/bottomSheetRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_sheet"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="36dp">
+
+        <!-- Top Drag Handle -->
+        <View
+            android:layout_width="48dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_drag_handle" />
+
+        <!-- Title & Close Button Row -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvSheetTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif"
+                android:text="@string/add_habit_title"
+                android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
+                android:textColor="@color/on_surface"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivClose"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_circle_close"
+                android:clickable="true"
+                android:contentDescription="@string/action_close"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_close"
+                app:tint="@color/primary" />
+        </RelativeLayout>
+
+        <!-- 1. Habit Name Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0.08"
+            android:text="HABIT NAME"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            android:textColor="@color/outline"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilHabitName"
+            style="@style/Widget.Spark.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxStrokeColor="@color/divider_grey"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etHabitName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="e.g., Morning Meditation"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/outline" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 2. Category Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0.08"
+            android:text="CATEGORY"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            android:textColor="@color/outline"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <!-- Category ChipGroup -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipHealth"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Health" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFitness"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fitness" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipMindfulness"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mindfulness" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipProductivity"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Productivity" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStudy"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Study" />
+
+            <!-- Dynamically revealed when user chooses another category from + More -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCustomCategory"
+                style="@style/Widget.Spark.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:text="Creativity"
+                tools:visibility="visible" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipMoreCategory"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ More"
+                android:textColor="@color/primary"
+                app:chipStrokeColor="@color/outline"
+                app:chipStrokeWidth="1dp" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- 3. Frequency Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0.08"
+            android:text="FREQUENCY"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            android:textColor="@color/outline"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <!-- Segmented Frequency Toggle Pill -->
+        <LinearLayout
+            android:id="@+id/layoutFrequencySegment"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_segmented_container"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/btnFreqDaily"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_segmented_active"
+                android:clickable="true"
+                android:elevation="1dp"
+                android:focusable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="Daily"
+                android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                android:textColor="@color/primary" />
+
+            <TextView
+                android:id="@+id/btnFreqWeekly"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="Weekly"
+                android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                android:textColor="@color/on_surface_variant" />
+        </LinearLayout>
+
+        <!-- 4. Reminder Time Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0.08"
+            android:text="REMINDER TIME"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            android:textColor="@color/outline"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <!-- Reminder Time Lavender Card -->
+        <LinearLayout
+            android:id="@+id/cardReminderTime"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_reminder_time_card"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <FrameLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_circle_clock">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_clock"
+                    app:tint="@color/primary" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:text="Set Time"
+                android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                android:textColor="@color/on_surface"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvReminderTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="08:00 AM"
+                android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                android:textColor="@color/primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 5. Color Tag Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0.08"
+            android:text="COLOR TAG"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            android:textColor="@color/outline"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <!-- Dynamic Color Choices -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/layoutColorTags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="4dp" />
+        </HorizontalScrollView>
+
+        <!-- 6. Save/Update Habit Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveHabit"
+            style="@style/Widget.Spark.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/add_habit_btn_save"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_check"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/on_primary" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

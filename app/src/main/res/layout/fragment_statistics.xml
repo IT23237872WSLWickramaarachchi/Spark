@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_cream"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
+
+        <!-- Top App Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <ImageView
+                android:id="@+id/btnStatsBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/action_close"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/on_surface" />
+
+            <TextView
+                android:id="@+id/tvSparkTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.Spark.TitleMd"
+                android:textColor="@color/primary_deep_purple"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/btnStatsBell"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Notifications"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_bell"
+                app:tint="@color/on_surface" />
+        </LinearLayout>
+
+        <!-- Header Title: Your Progress -->
+        <TextView
+            android:id="@+id/tvStatsProgressTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/stats_your_progress"
+            android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
+            android:textColor="@color/primary_deep_purple"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <!-- Segmented Toggle: Week / Month -->
+        <LinearLayout
+            android:id="@+id/layoutToggleContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_stats_toggle_container"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/btnToggleWeek"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_stats_toggle_active"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingHorizontal="24dp"
+                android:text="Week"
+                android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/btnToggleMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingHorizontal="24dp"
+                android:text="Month"
+                android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                android:textColor="@color/primary_deep_purple"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- CARD 1: Completion -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardCompletion"
+            style="@style/Widget.Spark.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="16dp">
+
+                <!-- Title & Rate Row -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvCompletionHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/stats_completion_label"
+                        android:textAppearance="@style/TextAppearance.Spark.TitleLg"
+                        android:textColor="@color/on_surface"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCompletionSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvCompletionHeader"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/stats_completion_sublabel"
+                        android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                        android:textColor="@color/outline"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvCompletionPercentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="sans-serif"
+                        android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
+                        android:textColor="@color/primary_deep_purple"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        tools:text="82%" />
+                </RelativeLayout>
+
+                <!-- MPAndroidChart BarChart -->
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chartCompletion"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/tvCompletionEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="No habit data recorded for this period."
+                    android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                    android:textColor="@color/outline"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- CARD 2: Mood Trend -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMoodTrend"
+            style="@style/Widget.Spark.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="16dp">
+
+                <!-- Header Row -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvMoodTrendHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/stats_mood_trend_label"
+                        android:textAppearance="@style/TextAppearance.Spark.TitleLg"
+                        android:textColor="@color/on_surface"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvMoodTrendSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvMoodTrendHeader"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/stats_mood_trend_sublabel"
+                        android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                        android:textColor="@color/outline"
+                        android:textSize="13sp" />
+
+                    <!-- Trend Badge Pill -->
+                    <LinearLayout
+                        android:id="@+id/layoutMoodTrendBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_trend_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp">
+
+                        <ImageView
+                            android:id="@+id/ivTrendIcon"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_trending_up"
+                            app:tint="#D44A68" />
+
+                        <TextView
+                            android:id="@+id/tvMoodTrendBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="sans-serif"
+                            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                            android:textColor="#D44A68"
+                            android:textSize="13sp"
+                            tools:text="Positive" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!-- MPAndroidChart LineChart -->
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartMoodTrend"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/tvMoodEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Check in with your mood to see trends."
+                    android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                    android:textColor="@color/outline"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvMoodProgressiveNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                    android:textColor="@color/outline"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:text="Early trend preview (3 entries logged)." />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- CARD 3: Common Feelings -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardCommonFeelings"
+            style="@style/Widget.Spark.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="18dp">
+
+                <TextView
+                    android:id="@+id/tvFeelingsHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Common Feelings"
+                    android:textAppearance="@style/TextAppearance.Spark.TitleLg"
+                    android:textColor="@color/on_surface"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvFeelingsSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Feelings you reported most this period"
+                    android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                    android:textColor="@color/outline"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupCommonFeelings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:chipSpacingHorizontal="6dp"
+                    app:chipSpacingVertical="4dp" />
+
+                <TextView
+                    android:id="@+id/tvFeelingsEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:text="Log feelings during your check-in to reveal emotional patterns."
+                    android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                    android:textColor="@color/outline"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- CARD 4: Habit & Mood Connection -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHabitMoodConnection"
+            style="@style/Widget.Spark.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="18dp">
+
+                <TextView
+                    android:id="@+id/tvHabitMoodHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Habit &amp; Mood"
+                    android:textAppearance="@style/TextAppearance.Spark.TitleLg"
+                    android:textColor="@color/on_surface"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvHabitMoodSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Descriptive well-being insights"
+                    android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                    android:textColor="@color/outline"
+                    android:textSize="13sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_segmented_container"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="12dp">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/ic_flare"
+                        app:tint="@color/primary" />
+
+                    <TextView
+                        android:id="@+id/tvHabitMoodInsight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="3dp"
+                        android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                        android:textColor="@color/on_surface"
+                        android:textSize="13sp"
+                        tools:text="On days you completed habits, your mood averaged 4.2 compared to 3.1 on other days." />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- BOTTOM SUMMARY CARDS (Side by Side) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <!-- Card Left: Current Streak -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardStreakSummary"
+                style="@style/Widget.Spark.Card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/surface_container_lowest"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="20dp">
+
+                    <ImageView
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_stat_badge_flame"
+                        android:contentDescription="Streak"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_streak_flame"
+                        app:tint="#D44A68" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvStreakDaysCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
+                            android:textColor="@color/on_surface"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            tools:text="12" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="sans-serif"
+                            android:text="days"
+                            android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                            android:textColor="@color/on_surface"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="0.05"
+                        android:text="CURRENT STREAK"
+                        android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                        android:textColor="@color/outline"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Right: Today's Rate -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTodayRateSummary"
+                style="@style/Widget.Spark.Card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/surface_container_lowest"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="20dp">
+
+                    <ImageView
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_stat_badge_check"
+                        android:contentDescription="Today Rate"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_check"
+                        app:tint="@color/primary" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTodayRateCompleted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
+                            android:textColor="@color/on_surface"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            tools:text="4" />
+
+                        <TextView
+                            android:id="@+id/tvTodayRateTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:fontFamily="sans-serif"
+                            android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                            android:textColor="@color/outline"
+                            android:textSize="16sp"
+                            tools:text="/5" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="sans-serif"
+                        android:letterSpacing="0.05"
+                        android:text="TODAY'S RATE"
+                        android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+                        android:textColor="@color/outline"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

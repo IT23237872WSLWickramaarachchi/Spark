@@ -1,63 +1,74 @@
 package com.example.spark.data.repository
 
-import com.example.spark.data.local.dao.MoodDao
-import com.example.spark.data.local.entity.MoodEntryEntity
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
-import java.time.LocalDate
+import androidx.lifecycle.LiveData
+import com.example.spark.data.dao.MoodEntryDao
+import com.example.spark.data.entity.MoodEntryEntity
 
-/**
- * Repository wrapping [MoodDao] exposing suspend functions and Flows only.
- * No business logic, no UI concerns. Every suspend function executes on [ioDispatcher].
- */
-class MoodRepository(
-    private val moodDao: MoodDao,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) {
+class MoodRepository(private val moodEntryDao: MoodEntryDao) {
 
-    /**
-     * Inserts or replaces a mood entry in the database.
-     */
-    suspend fun insertMoodEntry(entry: MoodEntryEntity): Unit = withContext(ioDispatcher) {
-        moodDao.insertMoodEntry(entry)
+    suspend fun saveMood(
+        userId: Long,
+        date: String,
+        moodLevel: Int,
+        note: String?,
+        tags: String = "",
+        isDemo: Boolean = false
+    ): Long {
+        val existing = moodEntryDao.getMoodForDate(userId, date)
+        val entry = if (existing != null) {
+            existing.copy(
+                moodLevel = moodLevel,
+                note = note,
+                tags = tags,
+                isDemo = if (existing.isDemo && !isDemo) false else (existing.isDemo || isDemo),
+                updatedAt = System.currentTimeMillis()
+            )
+        } else {
+            MoodEntryEntity(
+                userId = userId,
+                date = date,
+                moodLevel = moodLevel,
+                note = note,
+                tags = tags,
+                isDemo = isDemo
+            )
+        }
+        return moodEntryDao.insertOrUpdate(entry)
     }
 
-    /**
-     * Reactive stream of mood entries within a date range [startDate, endDate].
-     */
-    fun getMoodEntriesInRange(startDate: LocalDate, endDate: LocalDate): Flow<List<MoodEntryEntity>> {
-        return moodDao.getMoodEntriesInRange(startDate, endDate)
+    suspend fun deleteDemoMoods(userId: Long): Int {
+        return moodEntryDao.deleteDemoMoods(userId)
     }
 
-    /**
-     * Reactive stream of today's mood entry.
-     */
-    fun getTodayMood(date: LocalDate): Flow<MoodEntryEntity?> {
-        return moodDao.getTodayMood(date)
+    suspend fun getDemoMoodCount(userId: Long): Int {
+        return moodEntryDao.getDemoMoodCount(userId)
     }
 
-    // ── Additional Helpers ──────────────────────────────────────────────
-
-    fun getMoodForDateFlow(userId: Long, date: LocalDate): Flow<MoodEntryEntity?> {
-        return moodDao.getMoodForDateFlow(userId, date)
+    suspend fun insertDemoMood(userId: Long, date: String, level: Int, note: String?, tags: String): Long {
+        val existing = moodEntryDao.getMoodForDate(userId, date)
+        if (existing == null) {
+            return saveMood(userId, date, level, note, tags = tags, isDemo = true)
+        }
+        return 0L
     }
 
-    suspend fun getMoodForDate(userId: Long, date: LocalDate): MoodEntryEntity? = withContext(ioDispatcher) {
-        moodDao.getMoodForDate(userId, date)
+    suspend fun getMoodForDate(userId: Long, date: String): MoodEntryEntity? {
+        return moodEntryDao.getMoodForDate(userId, date)
     }
 
-    fun getAllMoodEntries(userId: Long = 1L): Flow<List<MoodEntryEntity>> {
-        return moodDao.getAllMoodEntries(userId)
+    fun getMoodForDateLiveData(userId: Long, date: String): LiveData<MoodEntryEntity?> {
+        return moodEntryDao.getMoodForDateLiveData(userId, date)
     }
 
-    fun getRecentMoodEntries(userId: Long = 1L, limit: Int = 7): Flow<List<MoodEntryEntity>> {
-        return moodDao.getRecentMoodEntries(userId, limit)
+    suspend fun getMoodsBetween(userId: Long, startDate: String, endDate: String): List<MoodEntryEntity> {
+        return moodEntryDao.getMoodsBetween(userId, startDate, endDate)
     }
 
-    suspend fun deleteMoodEntry(moodId: String): Unit = withContext(ioDispatcher) {
-        val id = moodId.toLongOrNull() ?: return@withContext
-        moodDao.deleteMoodEntry(id)
+    fun getMoodsBetweenLiveData(userId: Long, startDate: String, endDate: String): LiveData<List<MoodEntryEntity>> {
+        return moodEntryDao.getMoodsBetweenLiveData(userId, startDate, endDate)
+    }
+
+    fun getAllMoodsLiveData(userId: Long): LiveData<List<MoodEntryEntity>> {
+        return moodEntryDao.getAllMoodsLiveData(userId)
     }
 }

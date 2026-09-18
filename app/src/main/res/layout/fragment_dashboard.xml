@@ -2,12 +2,13 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorDashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/background_cream">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollDashboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -16,51 +17,71 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="96dp">
+            android:paddingBottom="88dp">
 
-            <!-- Top App Bar: Dashboard Toolbar with Collapsible SearchView and Notification Bell -->
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
+            <!-- Top Header Bar: Spark Title + Notification Bell -->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@android:color/transparent"
-                android:paddingEnd="8dp"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                app:navigationIconTint="@color/primary"
-                app:navigationContentDescription="@string/action_back"
-                app:title="@string/app_name"
-                app:titleTextAppearance="@style/TextAppearance.Spark.HeadlineLg"
-                app:titleTextColor="@color/primary"
-                app:menu="@menu/dashboard_menu" />
+                android:paddingHorizontal="@dimen/margin_screen">
 
-            <!-- Greeting Header + Avatar Section -->
+                <TextView
+                    android:id="@+id/tvTopTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/app_name"
+                    android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivBell"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/settings_notifications"
+                    android:focusable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_bell"
+                    app:tint="@color/on_surface_variant" />
+            </FrameLayout>
+
+            <!-- Greeting Header + Circular Avatar -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_screen"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="8dp">
 
                 <TextView
                     android:id="@+id/tvGreeting"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="Good morning, Alex"
+                    android:fontFamily="cursive"
+                    android:includeFontPadding="false"
                     android:textAppearance="@style/TextAppearance.Spark.ScriptWelcome"
                     android:textColor="@color/on_surface"
+                    android:textSize="38sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/ivAvatar"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Good morning, Alex" />
+                    tools:text="Good morning,\nAlex" />
 
-                <!-- Profile Avatar: circular ShapeableImageView -->
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivAvatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:clickable="true"
                     android:contentDescription="@string/settings_profile_title"
-                    android:elevation="4dp"
+                    android:elevation="3dp"
+                    android:focusable="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/sample_avatar"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -71,13 +92,13 @@
                     app:strokeWidth="2dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Dismissible Mood Pill -->
+            <!-- Mood Check-in Pill -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardMoodPill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_screen"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="14dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -92,11 +113,12 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="14dp"
-                    android:paddingVertical="8dp">
+                    android:paddingVertical="7dp">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:id="@+id/ivMoodIcon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_mood_smile"
                         app:tint="@color/primary" />
@@ -106,53 +128,57 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Feeling good today"
+                        android:fontFamily="sans-serif"
                         android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                        android:textColor="@color/on_surface" />
+                        android:textColor="@color/on_surface"
+                        android:textStyle="bold"
+                        tools:text="Feeling good today" />
 
                     <ImageView
-                        android:id="@+id/btnDismissMood"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:id="@+id/ivMoodDismiss"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
                         android:layout_marginStart="10dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/action_close"
                         android:src="@drawable/ic_close"
                         app:tint="@color/outline" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- "Daily Progress" Bento Card -->
+            <!-- Daily Progress Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardDailyProgress"
                 style="@style/Widget.Spark.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_screen"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="18dp"
                 app:cardBackgroundColor="@color/surface_container_lowest"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
-                app:strokeWidth="0dp">
+                app:cardElevation="2dp"
+                app:strokeColor="@color/divider_grey"
+                app:strokeWidth="1dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp">
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="20dp">
 
-                    <!-- Title: Daily Progress -->
                     <TextView
-                        android:id="@+id/tvDailyProgressTitle"
+                        android:id="@+id/tvProgressTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
                         android:text="Daily Progress"
                         android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
                         android:textColor="@color/on_surface"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <!-- Top-Right Streak Badge Pill -->
+                    <!-- Streak Badge Pill -->
                     <LinearLayout
                         android:id="@+id/layoutStreakBadge"
                         android:layout_width="wrap_content"
@@ -161,45 +187,45 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingHorizontal="10dp"
-                        android:paddingVertical="4dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/tvDailyProgressTitle"
+                        android:paddingVertical="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tvDailyProgressTitle">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_streak_flame"
-                            app:tint="#005230" />
+                            app:tint="@color/tertiary" />
 
                         <TextView
                             android:id="@+id/tvStreakBadge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="7 day streak"
-                            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                            android:textColor="#005230" />
+                            android:fontFamily="sans-serif"
+                            android:text="0 day streak"
+                            android:textAppearance="@style/TextAppearance.Spark.LabelSm"
+                            android:textColor="@color/tertiary"
+                            android:textStyle="bold"
+                            tools:text="7 day streak" />
                     </LinearLayout>
 
-                    <!-- Circular Progress Ring with Center Percentage & Count -->
+                    <!-- Circular Progress Ring Container -->
                     <FrameLayout
-                        android:id="@+id/frameProgressContainer"
-                        android:layout_width="180dp"
-                        android:layout_height="180dp"
+                        android:id="@+id/frameProgressRing"
+                        android:layout_width="170dp"
+                        android:layout_height="170dp"
                         android:layout_marginTop="20dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvDailyProgressTitle">
+                        app:layout_constraintTop_toBottomOf="@+id/tvProgressTitle">
 
                         <com.example.spark.ui.custom.CircularProgressView
-                            android:id="@+id/circularProgressView"
+                            android:id="@+id/progressView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
-                        <!-- Center text overlay -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -208,162 +234,302 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tvProgressPercent"
+                                android:id="@+id/tvProgressPercentage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="60%"
-                                android:textAppearance="@style/TextAppearance.Spark.DisplayHero"
+                                android:fontFamily="sans-serif"
+                                android:text="0%"
+                                android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
                                 android:textColor="@color/on_surface"
-                                android:textStyle="bold" />
+                                android:textSize="32sp"
+                                android:textStyle="bold"
+                                tools:text="60%" />
 
                             <TextView
-                                android:id="@+id/tvProgressHabitsCount"
+                                android:id="@+id/tvProgressCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="3 of 5 habits"
+                                android:fontFamily="sans-serif"
+                                android:text="0 of 0 habits"
                                 android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                                android:textColor="@color/outline" />
+                                android:textColor="@color/outline"
+                                tools:text="3 of 5 habits" />
                         </LinearLayout>
                     </FrameLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- "Today's Tasks" Overview Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardTasksOverview"
-                style="@style/Widget.Spark.Card"
+            <!-- Today's Habits Header with subtle Search/Filter controls -->
+            <LinearLayout
+                android:id="@+id/layoutHabitsHeaderRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_screen"
+                android:layout_marginEnd="@dimen/margin_screen"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvHabitsHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif"
+                    android:text="Today's Habits"
+                    android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                    android:textColor="@color/on_surface"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Subtle Search Icon Toggle -->
+                <ImageView
+                    android:id="@+id/btnSearchHabits"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/search_habits_content_desc"
+                    android:focusable="true"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/outline" />
+
+                <!-- Subtle Filter Icon Toggle -->
+                <ImageView
+                    android:id="@+id/btnFilterHabits"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/filter_habits_content_desc"
+                    android:focusable="true"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_filter"
+                    app:tint="@color/outline" />
+            </LinearLayout>
+
+            <!-- Expandable Search Input (Subtle) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSearchHabits"
+                style="@style/Widget.Spark.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_screen"
-                android:layout_marginTop="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp"
-                app:strokeColor="@color/divider_grey"
-                app:strokeWidth="1dp">
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxStrokeColor="@color/primary"
+                app:boxStrokeWidth="1dp"
+                app:endIconMode="clear_text"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/ic_search"
+                app:startIconTint="@color/outline">
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etSearchHabits"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:hint="@string/search_habits_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingVertical="10dp"
+                    android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                    android:textColor="@color/on_surface"
+                    android:textColorHint="@color/outline" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+            <!-- Compact Filter Chip Row -->
+            <HorizontalScrollView
+                android:id="@+id/scrollFilterChips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/margin_screen"
+                android:scrollbars="none"
+                android:visibility="gone">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_check_circle"
-                            app:tint="@color/primary" />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    app:singleSelection="true">
 
-                        <TextView
-                            android:id="@+id/tvTasksHeader"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:text="@string/dashboard_tasks_title"
-                            android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
-                            android:textColor="@color/on_surface"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/btnViewAllTasks"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dashboard_tasks_view_all"
-                            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                            android:textColor="@color/primary" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvTasksSubtitle"
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterAll"
+                        style="@style/Widget.Spark.Chip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/dashboard_tasks_empty"
-                        android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                        android:textColor="@color/on_surface_variant" />
+                        android:checked="true"
+                        android:text="@string/filter_all" />
 
-                    <!-- Container for Preview Tasks -->
-                    <LinearLayout
-                        android:id="@+id/layoutTasksPreview"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterPending"
+                        style="@style/Widget.Spark.Chip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
+                        android:text="@string/filter_pending" />
 
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterCompleted"
+                        style="@style/Widget.Spark.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filter_completed" />
 
-            <!-- "Today's Habits" Section Header -->
-            <TextView
-                android:id="@+id/tvSectionHabits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_screen"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp"
-                android:text="@string/dashboard_section_all"
-                android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
-                android:textColor="@color/on_surface"
-                android:textStyle="bold" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterHealth"
+                        style="@style/Widget.Spark.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filter_health" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterFitness"
+                        style="@style/Widget.Spark.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fitness" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterMindfulness"
+                        style="@style/Widget.Spark.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filter_mindfulness" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterProductivity"
+                        style="@style/Widget.Spark.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filter_productivity" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterStudy"
+                        style="@style/Widget.Spark.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Study" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterCustom"
+                        style="@style/Widget.Spark.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        tools:text="Work"
+                        tools:visibility="visible" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterMore"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+ More"
+                        android:textColor="@color/primary"
+                        app:chipStrokeColor="@color/outline"
+                        app:chipStrokeWidth="1dp" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
 
             <!-- Habits RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHabits"
+                android:id="@+id/rvTodayHabits"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_screen"
+                android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="5"
+                tools:itemCount="3"
                 tools:listitem="@layout/item_habit" />
 
-            <!-- Empty State Container -->
+            <!-- Empty State View -->
             <LinearLayout
                 android:id="@+id/layoutEmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_screen"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_card_rounded"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingVertical="36dp"
+                android:paddingVertical="32dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
                 <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_logo_mark"
-                    app:tint="@color/outline_variant" />
+                    android:src="@drawable/ic_flare"
+                    app:tint="@color/primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="@string/dashboard_empty_title"
-                    android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
-                    android:textColor="@color/on_surface" />
+                    android:fontFamily="sans-serif"
+                    android:text="No habits scheduled for today"
+                    android:textAppearance="@style/TextAppearance.Spark.BodyLg"
+                    android:textColor="@color/on_surface"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:gravity="center"
-                    android:text="@string/dashboard_empty_subtitle"
+                    android:fontFamily="sans-serif"
+                    android:text="Tap + below to create a new habit"
+                    android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                    android:textColor="@color/outline" />
+            </LinearLayout>
+
+            <!-- Empty Search Results View -->
+            <LinearLayout
+                android:id="@+id/layoutEmptySearchState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_screen"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_card_rounded"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingVertical="32dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/outline" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/empty_search_results"
+                    android:textAppearance="@style/TextAppearance.Spark.BodyLg"
+                    android:textColor="@color/on_surface"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/empty_search_results_sub"
                     android:textAppearance="@style/TextAppearance.Spark.BodySm"
                     android:textColor="@color/outline" />
             </LinearLayout>
@@ -371,19 +537,19 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- FloatingActionButton (+) above Bottom Navigation -->
+    <!-- Floating Action Button: Add Habit -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddHabit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:contentDescription="@string/add_habit_title"
         android:src="@drawable/ic_plus"
         app:backgroundTint="@color/primary"
-        app:elevation="8dp"
-        app:fabCustomSize="56dp"
-        app:tint="@color/white" />
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:tint="@color/on_primary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

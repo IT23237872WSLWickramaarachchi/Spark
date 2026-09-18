@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Empty certs array for Google Play Services font provider:
-         Google Play Services is pre-installed on device and verified via system signature.
-         Empty array avoids Base64 decode exceptions in Android Studio Layoutlib / Preview. -->
-    <array name="com_google_android_gms_fonts_certs" />
-</resources>

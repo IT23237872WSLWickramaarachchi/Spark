@@ -1,72 +1,53 @@
 package com.example.spark.data.repository
 
-import com.example.spark.data.local.dao.UserDao
-import com.example.spark.data.local.entity.UserEntity
-import com.example.spark.data.local.entity.UserPrefsEntity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.withContext
+import com.example.spark.data.dao.UserDao
+import com.example.spark.data.entity.UserEntity
+import com.example.spark.util.PasswordHasher
 
-/**
- * Repository wrapping [UserDao] exposing suspend functions and Flows only.
- * No business logic, no UI concerns. Every suspend function executes on [Dispatchers.IO].
- */
-class UserRepository(
-    private val userDao: UserDao
-) {
+class UserRepository(private val userDao: UserDao) {
 
-    /**
-     * Registers a new user account.
-     */
-    suspend fun register(user: UserEntity): Long = withContext(Dispatchers.IO) {
-        userDao.register(user)
+    suspend fun registerUser(fullName: String, email: String, password: String): Result<UserEntity> {
+        val trimmedEmail = email.trim().lowercase()
+        val existing = userDao.getUserByEmail(trimmedEmail)
+        if (existing != null) {
+            return Result.failure(Exception("An account with this email already exists"))
+        }
+
+        val hashedPassword = PasswordHasher.hashPassword(password)
+        val user = UserEntity(
+            fullName = fullName.trim(),
+            email = trimmedEmail,
+            passwordHash = hashedPassword
+        )
+        val generatedId = userDao.insertUser(user)
+        return Result.success(user.copy(id = generatedId))
     }
 
-    /**
-     * Authenticates a user by email and password hash.
-     */
-    suspend fun login(email: String, passwordHash: String): UserEntity? = withContext(Dispatchers.IO) {
-        userDao.login(email, passwordHash)
+    suspend fun loginUser(email: String, password: String): Result<UserEntity> {
+        val trimmedEmail = email.trim().lowercase()
+        val user = userDao.getUserByEmail(trimmedEmail)
+            ?: return Result.failure(Exception("No account found with this email"))
+
+        if (!PasswordHasher.verifyPassword(password, user.passwordHash)) {
+            return Result.failure(Exception("Incorrect password"))
+        }
+
+        return Result.success(user)
     }
 
-    /**
-     * Reactive stream of current user account details by ID.
-     */
-    fun getCurrentUser(userId: String): Flow<UserEntity?> {
-        val id = userId.toLongOrNull() ?: return flowOf(null)
-        return userDao.getCurrentUser(id)
+    suspend fun getUserById(userId: Long): UserEntity? {
+        return userDao.getUserById(userId)
     }
 
-    /**
-     * Updates or inserts user preferences.
-     */
-    suspend fun updatePrefs(prefs: UserPrefsEntity): Unit = withContext(Dispatchers.IO) {
-        userDao.updatePrefs(prefs)
+    fun getUserByIdLiveData(userId: Long): androidx.lifecycle.LiveData<UserEntity?> {
+        return userDao.getUserByIdLiveData(userId)
     }
 
-    /**
-     * Retrieves user preferences for the given user ID.
-     */
-    suspend fun getUserPrefs(userId: Long = 1L): UserPrefsEntity? = withContext(Dispatchers.IO) {
-        userDao.getUserPrefs(userId)
+    suspend fun updateProfileImage(userId: Long, imageUri: String?) {
+        userDao.updateProfileImage(userId, imageUri)
     }
 
-    /**
-     * Reactive stream of user preferences.
-     */
-    fun getUserPrefsFlow(userId: Long = 1L): Flow<UserPrefsEntity?> {
-        return userDao.getUserPrefsFlow(userId)
-    }
-
-    // ── Additional Helpers ──────────────────────────────────────────────
-
-    suspend fun deleteUser(userId: String): Unit = withContext(Dispatchers.IO) {
-        val id = userId.toLongOrNull() ?: return@withContext
-        userDao.deleteUser(id)
-    }
-
-    suspend fun getUserByEmail(email: String): UserEntity? = withContext(Dispatchers.IO) {
-        userDao.getUserByEmail(email)
+    suspend fun updateFullName(userId: Long, fullName: String) {
+        userDao.updateFullName(userId, fullName)
     }
 }

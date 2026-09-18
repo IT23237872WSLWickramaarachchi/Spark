@@ -14,7 +14,6 @@ import kotlin.math.min
 
 /**
  * Custom View that draws an animated circular progress ring using Canvas in onDraw.
- *
  * Used in the "Daily Progress" dashboard card to visually show habit completion percentage.
  */
 class CircularProgressView @JvmOverloads constructor(
@@ -25,7 +24,7 @@ class CircularProgressView @JvmOverloads constructor(
 
     private var strokeWidthPx = 14f * resources.displayMetrics.density
 
-    private var trackColor = ContextCompat.getColor(context, R.color.divider_grey)
+    private var trackColor = ContextCompat.getColor(context, R.color.surface_container_high)
     private var progressColor = ContextCompat.getColor(context, R.color.primary)
 
     private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -56,7 +55,6 @@ class CircularProgressView @JvmOverloads constructor(
         }
 
     init {
-        // Default preview progress for Android Studio layout editor
         if (isInEditMode) {
             progress = 60f
         }
@@ -114,9 +112,6 @@ class CircularProgressView @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Allows customizing the progress stroke color dynamically (e.g. green when 100%).
-     */
     fun setProgressColor(color: Int) {
         progressColor = color
         progressPaint.color = color

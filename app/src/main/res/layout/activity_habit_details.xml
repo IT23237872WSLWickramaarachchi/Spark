@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutHabitDetailsRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_cream">
+
+    <!-- Top Toolbar -->
+    <FrameLayout
+        android:id="@+id/toolbarHabitDetails"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="start|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/action_back"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/primary" />
+
+        <TextView
+            android:id="@+id/tvDetailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif"
+            android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+            android:textColor="@color/primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Morning Walk" />
+
+        <ImageButton
+            android:id="@+id/btnOverflow"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="end|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="More options"
+            android:padding="10dp"
+            android:src="@drawable/ic_more_vert"
+            app:tint="@color/on_surface" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/layoutBottomActions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarHabitDetails">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
+
+            <!-- Purple Streak Hero Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardStreakHero"
+                style="@style/Widget.Spark.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/primary"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Subtle Decorative Crescent / Shape in Top Right -->
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="-20dp"
+                        android:layout_marginEnd="-20dp"
+                        android:alpha="0.12"
+                        android:background="@drawable/bg_circle_logo" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="32dp">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_streak_flame"
+                            app:tint="@color/on_primary" />
+
+                        <TextView
+                            android:id="@+id/tvStreakCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="sans-serif"
+                            android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
+                            android:textColor="@color/on_primary"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            tools:text="12 Day Streak" />
+
+                        <TextView
+                            android:id="@+id/tvBestStreak"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:alpha="0.85"
+                            android:fontFamily="sans-serif"
+                            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                            android:textColor="@color/primary_fixed"
+                            tools:text="Best streak: 21 days" />
+                    </LinearLayout>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- "This Week" Header -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif"
+                android:text="This Week"
+                android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                android:textColor="@color/on_surface"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Week Calendar 7-Day Card matching Habit Details.png -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardWeekView"
+                style="@style/Widget.Spark.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/surface_container_lowest"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/divider_grey"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:id="@+id/layoutWeekColumns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="18dp">
+
+                    <!-- Day 1: Monday -->
+                    <LinearLayout
+                        android:id="@+id/colDay1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvDayLetter1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="M"
+                            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                            android:textColor="@color/outline"
+                            android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:id="@+id/indicatorDay1"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_circle_success_green">
+
+                            <ImageView
+                                android:id="@+id/ivCheckDay1"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_check"
+                                app:tint="@color/white" />
+
+                            <View
+                                android:id="@+id/dotDay1"
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_circle_purple"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Day 2: Tuesday -->
+                    <LinearLayout
+                        android:id="@+id/colDay2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvDayLetter2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="T"
+                            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                            android:textColor="@color/outline"
+                            android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:id="@+id/indicatorDay2"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_circle_success_green">
+
+                            <ImageView
+                                android:id="@+id/ivCheckDay2"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_check"
+                                app:tint="@color/white" />
+
+                            <View
+                                android:id="@+id/dotDay2"
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_circle_purple"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Day 3: Wednesday -->
+                    <LinearLayout
+                        android:id="@+id/colDay3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvDayLetter3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="W"
+                            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                            android:textColor="@color/outline"
+                            android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:id="@+id/indicatorDay3"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_circle_success_green">
+
+                            <ImageView
+                                android:id="@+id/ivCheckDay3"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_check"
+                                app:tint="@color/white" />
+
+                            <View
+                                android:id="@+id/dotDay3"
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_circle_purple"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Day 4: Thursday -->
+                    <LinearLayout
+                        android:id="@+id/colDay4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvDayLetter4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="T"
+                            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                            android:textColor="@color/outline"
+                            android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:id="@+id/indicatorDay4"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_circle_success_green">
+
+                            <ImageView
+                                android:id="@+id/ivCheckDay4"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_check"
+                                app:tint="@color/white" />
+
+                            <View
+                                android:id="@+id/dotDay4"
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_circle_purple"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Day 5: Friday -->
+                    <LinearLayout
+                        android:id="@+id/colDay5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvDayLetter5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="F"
+                            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                            android:textColor="@color/outline"
+                            android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:id="@+id/indicatorDay5"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_day_today_pending">
+
+                            <ImageView
+                                android:id="@+id/ivCheckDay5"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_check"
+                                android:visibility="gone"
+                                app:tint="@color/white" />
+
+                            <View
+                                android:id="@+id/dotDay5"
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_circle_purple"
+                                android:visibility="visible" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Day 6: Saturday -->
+                    <LinearLayout
+                        android:id="@+id/colDay6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvDayLetter6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="S"
+                            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                            android:textColor="@color/outline"
+                            android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:id="@+id/indicatorDay6"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_day_future">
+
+                            <ImageView
+                                android:id="@+id/ivCheckDay6"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_check"
+                                android:visibility="gone"
+                                app:tint="@color/white" />
+
+                            <View
+                                android:id="@+id/dotDay6"
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_circle_purple"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Day 7: Sunday -->
+                    <LinearLayout
+                        android:id="@+id/colDay7"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvDayLetter7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="S"
+                            android:textAppearance="@style/TextAppearance.Spark.BodySm"
+                            android:textColor="@color/outline"
+                            android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:id="@+id/indicatorDay7"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_day_future">
+
+                            <ImageView
+                                android:id="@+id/ivCheckDay7"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_check"
+                                android:visibility="gone"
+                                app:tint="@color/white" />
+
+                            <View
+                                android:id="@+id/dotDay7"
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_circle_purple"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Notes Section Header -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/habit_detail_notes_title"
+                android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
+                android:textColor="@color/on_surface"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Notes Card matching Habit Details.png -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardNotes"
+                style="@style/Widget.Spark.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface_container_lowest"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/divider_grey"
+                app:strokeWidth="1dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tvHabitNotes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/ivEditNotes"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="4dp"
+                        android:textAppearance="@style/TextAppearance.Spark.BodyMd"
+                        android:textColor="@color/on_surface"
+                        tools:text="Feeling great this week. Trying to keep the pace steady and not push too hard on the hills." />
+
+                    <ImageView
+                        android:id="@+id/ivEditNotes"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="12dp"
+                        android:contentDescription="Edit Note"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_edit"
+                        app:tint="@color/primary" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Action Bar: Edit & Delete -->
+    <LinearLayout
+        android:id="@+id/layoutBottomActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_container_lowest"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditHabit"
+            style="@style/Widget.Spark.Button.Ghost"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/action_edit"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_edit"
+            app:iconPadding="8dp"
+            app:iconTint="@color/primary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDeleteHabit"
+            style="@style/Widget.Spark.Button.Delete"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/action_delete"
+            android:textAppearance="@style/TextAppearance.Spark.LabelBold"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_delete"
+            app:iconPadding="8dp"
+            app:iconTint="@color/error" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
