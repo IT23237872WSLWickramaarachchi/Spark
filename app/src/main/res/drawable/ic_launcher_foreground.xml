@@ -5,60 +5,32 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Central radiant core circle (Spark primary #52559C) -->
-    <path
-        android:fillColor="#52559C"
-        android:pathData="M54,54m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0" />
+    <group
+        android:pivotX="53"
+        android:pivotY="46"
+        android:scaleX="0.80"
+        android:scaleY="0.80"
+        android:translateX="1"
+        android:translateY="8">
 
-    <!-- Inner glow ring -->
-    <path
-        android:fillColor="#6B6DB5"
-        android:fillAlpha="0.3"
-        android:pathData="M54,54m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
+        <!-- Checkmark (Tick / Correct sign from Splash screen) -->
+        <path
+            android:fillColor="@android:color/transparent"
+            android:pathData="M25,55 L45,75 L85,30"
+            android:strokeColor="#FFFFFF"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:strokeWidth="9" />
 
-    <!-- Top spark ray -->
-    <path
-        android:fillColor="#FFB5C8"
-        android:pathData="M54,42 L51.5,30 Q54,27 56.5,30 Z" />
+        <!-- Top Right Sparkle Star -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M65,15 C65,15 67,25 75,25 C75,25 67,25 65,35 C65,35 63,25 55,25 C55,25 63,25 65,15 Z" />
 
-    <!-- Bottom spark ray -->
-    <path
-        android:fillColor="#FFB5C8"
-        android:pathData="M54,66 L56.5,78 Q54,81 51.5,78 Z" />
-
-    <!-- Left spark ray -->
-    <path
-        android:fillColor="#FFB5C8"
-        android:pathData="M42,54 L30,51.5 Q27,54 30,56.5 Z" />
-
-    <!-- Right spark ray -->
-    <path
-        android:fillColor="#FFB5C8"
-        android:pathData="M66,54 L78,56.5 Q81,54 78,51.5 Z" />
-
-    <!-- Diagonal spark rays (subtle, shorter) -->
-    <!-- Top-right -->
-    <path
-        android:fillColor="#E8A0B4"
-        android:fillAlpha="0.6"
-        android:pathData="M60,48 L67,37 Q69,37 67,41 Z" />
-
-    <!-- Top-left -->
-    <path
-        android:fillColor="#E8A0B4"
-        android:fillAlpha="0.6"
-        android:pathData="M48,48 L41,37 Q39,37 41,41 Z" />
-
-    <!-- Bottom-right -->
-    <path
-        android:fillColor="#E8A0B4"
-        android:fillAlpha="0.6"
-        android:pathData="M60,60 L67,71 Q69,71 67,67 Z" />
-
-    <!-- Bottom-left -->
-    <path
-        android:fillColor="#E8A0B4"
-        android:fillAlpha="0.6"
-        android:pathData="M48,60 L41,71 Q39,71 41,67 Z" />
+        <!-- Top Left Sparkle Star -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M25,15 C25,15 26,20 30,20 C30,20 26,20 25,25 C25,25 24,20 20,20 C20,20 24,20 25,15 Z" />
+    </group>
 
 </vector>
