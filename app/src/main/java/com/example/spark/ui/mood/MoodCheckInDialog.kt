@@ -225,13 +225,13 @@ class MoodCheckInDialog : DialogFragment() {
             val iconLevel = index + 1
             if (iconLevel == level) {
                 iv.setBackgroundResource(R.drawable.bg_mood_item_selected_halo)
-                iv.setColorFilter(ContextCompat.getColor(requireContext(), R.color.secondary_container))
-                iv.scaleX = 1.15f
-                iv.scaleY = 1.15f
-                iv.elevation = 6f
+                iv.setColorFilter(ContextCompat.getColor(requireContext(), R.color.mood_selected_fg))
+                iv.scaleX = 1.12f
+                iv.scaleY = 1.12f
+                iv.elevation = 4f
             } else {
-                iv.setBackgroundResource(R.drawable.bg_circle_arrow)
-                iv.setColorFilter(ContextCompat.getColor(requireContext(), R.color.primary))
+                iv.setBackgroundResource(R.drawable.bg_mood_item_unselected)
+                iv.setColorFilter(ContextCompat.getColor(requireContext(), R.color.mood_unselected_fg))
                 iv.scaleX = 1.0f
                 iv.scaleY = 1.0f
                 iv.elevation = 0f

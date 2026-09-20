@@ -80,4 +80,9 @@
     <color name="segmented_active_bg">#FFFFFF</color>
     <color name="reminder_card_bg">#F1EFFF</color>
     <color name="clock_circle_bg">#E2DFF6</color>
+    <color name="mood_selected_bg">#7B61FF</color>
+    <color name="mood_selected_fg">#FFFFFF</color>
+    <color name="mood_selected_halo">#337B61FF</color>
+    <color name="mood_unselected_bg">#EDEBF8</color>
+    <color name="mood_unselected_fg">#6E688A</color>
 </resources>

@@ -16,6 +16,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingTop="20dp"
@@ -55,75 +57,80 @@
             android:id="@+id/layoutMoodIcons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingVertical="12dp">
 
             <ImageView
                 android:id="@+id/ivMood1"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginHorizontal="6dp"
-                android:background="@drawable/bg_circle_arrow"
+                android:background="@drawable/bg_mood_item_unselected"
                 android:clickable="true"
                 android:contentDescription="Difficult"
                 android:focusable="true"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:src="@drawable/ic_mood_1"
-                app:tint="@color/primary" />
+                app:tint="@color/mood_unselected_fg" />
 
             <ImageView
                 android:id="@+id/ivMood2"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginHorizontal="6dp"
-                android:background="@drawable/bg_circle_arrow"
+                android:background="@drawable/bg_mood_item_unselected"
                 android:clickable="true"
                 android:contentDescription="Low"
                 android:focusable="true"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:src="@drawable/ic_mood_2"
-                app:tint="@color/primary" />
+                app:tint="@color/mood_unselected_fg" />
 
             <ImageView
                 android:id="@+id/ivMood3"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginHorizontal="6dp"
-                android:background="@drawable/bg_circle_arrow"
+                android:background="@drawable/bg_mood_item_unselected"
                 android:clickable="true"
                 android:contentDescription="Okay"
                 android:focusable="true"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:src="@drawable/ic_mood_3"
-                app:tint="@color/primary" />
+                app:tint="@color/mood_unselected_fg" />
 
             <ImageView
                 android:id="@+id/ivMood4"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginHorizontal="6dp"
                 android:background="@drawable/bg_mood_item_selected_halo"
                 android:clickable="true"
                 android:contentDescription="Good"
                 android:elevation="4dp"
                 android:focusable="true"
-                android:padding="8dp"
+                android:padding="10dp"
+                android:scaleX="1.12"
+                android:scaleY="1.12"
                 android:src="@drawable/ic_mood_4"
-                app:tint="@color/secondary_container" />
+                app:tint="@color/mood_selected_fg" />
 
             <ImageView
                 android:id="@+id/ivMood5"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginHorizontal="6dp"
-                android:background="@drawable/bg_circle_arrow"
+                android:background="@drawable/bg_mood_item_unselected"
                 android:clickable="true"
                 android:contentDescription="Radiant"
                 android:focusable="true"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:src="@drawable/ic_mood_5"
-                app:tint="@color/primary" />
+                app:tint="@color/mood_unselected_fg" />
         </LinearLayout>
 
         <!-- What best describes today? (optional) -->
@@ -144,9 +151,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:gravity="center"
-            app:chipSpacingHorizontal="6dp"
-            app:chipSpacingVertical="4dp"
+            android:paddingVertical="4dp"
+            app:chipSpacingHorizontal="8dp"
+            app:chipSpacingVertical="8dp"
             app:singleSelection="false">
 
             <com.google.android.material.chip.Chip
