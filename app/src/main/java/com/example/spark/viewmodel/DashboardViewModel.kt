@@ -33,7 +33,11 @@ class DashboardViewModel(
     private val _streakDays = MutableLiveData(0)
     val streakDays: LiveData<Int> = _streakDays
 
-    val todayMood: LiveData<MoodEntryEntity?> = moodRepository.getMoodForDateLiveData(userId, today)
+    /** Observes the LATEST mood entry for today (supports multiple check-ins per day) */
+    val todayMood: LiveData<MoodEntryEntity?> = moodRepository.getLatestMoodForDateLiveData(userId, today)
+
+    /** Observes ALL mood entries for today */
+    val todayMoods: LiveData<List<MoodEntryEntity>> = moodRepository.getMoodsForDateLiveData(userId, today)
 
     init {
         habitItems.addSource(activeHabitsLiveData) { habits ->

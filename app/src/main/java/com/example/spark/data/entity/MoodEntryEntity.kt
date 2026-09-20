@@ -17,7 +17,6 @@ import androidx.room.PrimaryKey
         )
     ],
     indices = [
-        Index(value = ["user_id", "date"], unique = true),
         Index(value = ["user_id"])
     ]
 )
@@ -42,6 +41,12 @@ data class MoodEntryEntity(
 
     @ColumnInfo(name = "is_demo")
     val isDemo: Boolean = false,
+
+    @ColumnInfo(name = "timestamp")
+    val timestamp: Long = System.currentTimeMillis(),
+
+    @ColumnInfo(name = "time")
+    val time: String = "",
 
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis(),

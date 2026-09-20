@@ -11,11 +11,10 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/surface_container_lowest"
+    app:cardBackgroundColor="@color/surface_card"
     app:cardCornerRadius="20dp"
     app:cardElevation="2dp"
-    app:strokeColor="@color/divider_grey"
-    app:strokeWidth="1dp">
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,8 +25,8 @@
         <!-- Leading Circular Icon Container -->
         <FrameLayout
             android:id="@+id/frameIconContainer"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:background="@drawable/bg_circle_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +34,8 @@
 
             <ImageView
                 android:id="@+id/ivHabitIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
                 android:scaleType="fitCenter"
@@ -62,7 +61,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                android:textColor="@color/on_surface"
+                android:textColor="@color/text_primary"
                 android:textStyle="bold"
                 tools:text="Drink Water" />
 
@@ -72,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                android:textColor="@color/outline"
+                android:textColor="@color/text_secondary"
                 tools:text="Morning • 8:00 AM" />
         </LinearLayout>
 

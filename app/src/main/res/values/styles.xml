@@ -31,6 +31,11 @@
         <item name="cornerSize">@dimen/radius_full</item>
     </style>
 
+    <style name="ShapeAppearance.Spark.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <!-- ================================================================= -->
     <!-- TEXT APPEARANCES (Typography from DESIGN.md)                      -->
     <!-- ================================================================= -->

@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="24dp"
-    app:cardBackgroundColor="@color/surface_container_lowest"
+    app:cardBackgroundColor="@color/surface_card"
     app:cardCornerRadius="24dp"
     app:cardElevation="8dp"
     app:strokeWidth="0dp">
@@ -26,8 +26,10 @@
             android:layout_height="88dp"
             android:elevation="4dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/sample_avatar"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.Spark.Corner.Full" />
+            android:src="@drawable/ic_profile_placeholder"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Spark.Circle"
+            app:strokeColor="@color/surface_card"
+            app:strokeWidth="2dp" />
 
         <TextView
             android:id="@+id/tvProfileName"
@@ -36,7 +38,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif"
             android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
-            android:textColor="@color/on_surface"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="Alex Johnson" />
@@ -48,7 +50,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif"
             android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-            android:textColor="@color/outline"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             tools:text="alex@example.com" />
 

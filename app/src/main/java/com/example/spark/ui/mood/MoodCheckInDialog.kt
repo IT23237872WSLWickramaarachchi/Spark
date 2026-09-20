@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
@@ -80,8 +79,8 @@ class MoodCheckInDialog : DialogFragment() {
             showAllTagsDialog(commonChips)
         }
 
-        // Load today's existing entry if present
-        loadTodayMoodIfExists(commonChips)
+        // Show last check-in info if user already checked in today
+        showLastCheckInInfo()
 
         binding.ivMood1.setOnClickListener { updateMoodSelection(1) }
         binding.ivMood2.setOnClickListener { updateMoodSelection(2) }
@@ -99,6 +98,43 @@ class MoodCheckInDialog : DialogFragment() {
     }
 
     private val selectedTags = mutableSetOf<String>()
+
+    /**
+     * Shows info about the last check-in today (if any) but keeps the dialog form fresh.
+     */
+    private fun showLastCheckInInfo() {
+        val ctx = context ?: return
+        val sessionManager = SessionManager(ctx)
+        val userId = sessionManager.getCurrentUserId()
+        if (userId <= 0) return
+
+        val db = AppDatabase.getDatabase(ctx)
+        val repository = MoodRepository(db.moodEntryDao())
+        val today = DateUtils.getTodayDateString()
+
+        lifecycleScope.launch {
+            val count = withContext(Dispatchers.IO) {
+                repository.getMoodCountForDate(userId, today)
+            }
+            if (count > 0 && _binding != null) {
+                val latest = withContext(Dispatchers.IO) {
+                    repository.getMoodForDate(userId, today)
+                }
+                if (latest != null && latest.time.isNotEmpty()) {
+                    // Format time for display
+                    val timeDisplay = try {
+                        val parts = latest.time.split(":")
+                        val hour = parts[0].toInt()
+                        val min = parts[1].toInt()
+                        DateUtils.formatTime12Hour(hour, min)
+                    } catch (e: Exception) {
+                        latest.time
+                    }
+                    binding.tvCloseMood.text = "Last check-in: $timeDisplay ($count today)"
+                }
+            }
+        }
+    }
 
     private fun showAllTagsDialog(commonChips: Map<String, com.google.android.material.chip.Chip>) {
         val allTags = com.example.spark.model.MoodTags.ALL_NAMES
@@ -167,37 +203,6 @@ class MoodCheckInDialog : DialogFragment() {
         }
     }
 
-    private fun loadTodayMoodIfExists(commonChips: Map<String, com.google.android.material.chip.Chip>) {
-        val ctx = context ?: return
-        val sessionManager = SessionManager(ctx)
-        val userId = sessionManager.getCurrentUserId()
-        if (userId <= 0) return
-
-        val db = AppDatabase.getDatabase(ctx)
-        val repository = MoodRepository(db.moodEntryDao())
-        val today = DateUtils.getTodayDateString()
-
-        lifecycleScope.launch {
-            val existing = withContext(Dispatchers.IO) {
-                repository.getMoodForDate(userId, today)
-            }
-            if (existing != null && _binding != null) {
-                selectedLevel = existing.moodLevel
-                updateMoodSelection(existing.moodLevel)
-                if (!existing.note.isNullOrEmpty()) {
-                    binding.etMoodNote.setText(existing.note)
-                }
-                val tagsList = existing.getTagsList()
-                selectedTags.clear()
-                selectedTags.addAll(tagsList)
-                commonChips.forEach { (tagName, chip) ->
-                    chip.isChecked = selectedTags.contains(tagName)
-                }
-                syncExtraTagChips()
-            }
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
@@ -253,6 +258,7 @@ class MoodCheckInDialog : DialogFragment() {
             withContext(Dispatchers.IO) {
                 repository.saveMood(userId, today, level, note, tags = tagsString)
             }
+            Toast.makeText(context, "Mood check-in saved ✓", Toast.LENGTH_SHORT).show()
             val feedbackMsg = com.example.spark.util.MoodMessageProvider.getFeedbackMessage(level, selectedTags.toList())
             Toast.makeText(context, feedbackMsg, Toast.LENGTH_LONG).show()
             onMoodSavedListener?.invoke(level)

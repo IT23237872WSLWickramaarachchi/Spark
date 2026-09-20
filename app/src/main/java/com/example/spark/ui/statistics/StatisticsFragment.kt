@@ -214,16 +214,23 @@ class StatisticsFragment : Fragment() {
         } else {
             binding.tvFeelingsEmpty.visibility = View.GONE
             binding.chipGroupCommonFeelings.visibility = View.VISIBLE
+            val density = resources.displayMetrics.density
             topTags.forEach { item ->
                 val daySuffix = if (item.count == 1) "day" else "days"
                 val chip = com.google.android.material.chip.Chip(requireContext()).apply {
                     text = "${item.name} • ${item.count} $daySuffix"
                     isClickable = false
                     isCheckable = false
-                    setChipBackgroundColorResource(R.color.surface_container_high)
-                    setTextColor(ContextCompat.getColor(context, R.color.on_surface))
+                    setChipBackgroundColorResource(R.color.chip_bg)
+                    setTextColor(ContextCompat.getColor(context, R.color.chip_text))
                     chipStrokeWidth = 0f
                     textSize = 13f
+                    shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+                        .setAllCornerSizes(density * 999f)
+                        .build()
+                    chipStartPadding = density * 14f
+                    chipEndPadding = density * 14f
+                    chipMinHeight = density * 36f
                 }
                 binding.chipGroupCommonFeelings.addView(chip)
             }

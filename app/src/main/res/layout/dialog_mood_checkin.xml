@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="24dp"
     android:layout_gravity="center"
-    app:cardBackgroundColor="@color/surface_container_lowest"
+    app:cardBackgroundColor="@color/surface_card"
     app:cardCornerRadius="28dp"
     app:cardElevation="12dp"
     app:strokeWidth="0dp">
@@ -136,7 +136,7 @@
             android:gravity="center"
             android:text="What best describes today? (optional)"
             android:textAppearance="@style/TextAppearance.Spark.BodySm"
-            android:textColor="@color/outline"
+            android:textColor="@color/text_secondary"
             android:textSize="13sp" />
 
         <com.google.android.material.chip.ChipGroup
@@ -223,8 +223,8 @@
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLines="3"
                 android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                android:textColor="@color/on_surface"
-                android:textColorHint="@color/outline" />
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_muted" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Save Mood Button -->

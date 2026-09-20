@@ -11,6 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import com.example.spark.R
 import com.example.spark.data.AppDatabase
@@ -47,8 +50,24 @@ class HabitDetailsActivity : AppCompatActivity() {
         val db = AppDatabase.getDatabase(this)
         habitRepository = HabitRepository(db.habitDao(), db.habitCompletionDao())
 
+        setupWindowInsets()
         setupListeners()
         loadHabitData()
+    }
+
+    private fun setupWindowInsets() {
+        val baseBottomPadding = (16 * resources.displayMetrics.density).toInt()
+        val baseTopPadding = (10 * resources.displayMetrics.density).toInt()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutBottomActions) { view, insets ->
+            val navInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.updatePadding(bottom = baseBottomPadding + navInsets.bottom)
+            insets
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarHabitDetails) { view, insets ->
+            val statusInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(top = baseTopPadding + statusInsets.top)
+            insets
+        }
     }
 
     private fun setupListeners() {

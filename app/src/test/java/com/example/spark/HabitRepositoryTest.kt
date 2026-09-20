@@ -139,6 +139,16 @@ class HabitRepositoryTest {
         override suspend fun getTotalCompletedCountForHabit(habitId: Long): Int {
             return completions.count { it.habitId == habitId && it.completed }
         }
+
+        override suspend fun deleteDemoCompletions(userId: Long): Int {
+            val count = completions.count { it.isDemo }
+            completions.removeAll { it.isDemo }
+            return count
+        }
+
+        override suspend fun getDemoCompletionCount(userId: Long): Int {
+            return completions.count { it.isDemo }
+        }
     }
 
     @Before

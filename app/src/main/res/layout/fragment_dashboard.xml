@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorDashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_cream">
+    android:background="@color/surface_background">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollDashboard"
@@ -65,7 +65,7 @@
                     android:fontFamily="cursive"
                     android:includeFontPadding="false"
                     android:textAppearance="@style/TextAppearance.Spark.ScriptWelcome"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textSize="38sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -83,12 +83,12 @@
                     android:elevation="3dp"
                     android:focusable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sample_avatar"
+                    android:src="@drawable/ic_profile_placeholder"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Spark.Corner.Full"
-                    app:strokeColor="@color/white"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Spark.Circle"
+                    app:strokeColor="@color/surface_card"
                     app:strokeWidth="2dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -102,7 +102,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="@color/surface_container_high"
+                app:cardBackgroundColor="@color/surface_card"
                 app:cardCornerRadius="999dp"
                 app:cardElevation="1dp"
                 app:strokeWidth="0dp">
@@ -130,7 +130,7 @@
                         android:layout_marginStart="8dp"
                         android:fontFamily="sans-serif"
                         android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/text_primary"
                         android:textStyle="bold"
                         tools:text="Feeling good today" />
 
@@ -152,12 +152,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_screen"
-                android:layout_marginTop="18dp"
-                app:cardBackgroundColor="@color/surface_container_lowest"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/surface_card"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="2dp"
-                app:strokeColor="@color/divider_grey"
-                app:strokeWidth="1dp">
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -172,7 +171,7 @@
                         android:fontFamily="sans-serif"
                         android:text="Daily Progress"
                         android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -240,7 +239,7 @@
                                 android:fontFamily="sans-serif"
                                 android:text="0%"
                                 android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
-                                android:textColor="@color/on_surface"
+                                android:textColor="@color/text_primary"
                                 android:textSize="32sp"
                                 android:textStyle="bold"
                                 tools:text="60%" />
@@ -253,7 +252,7 @@
                                 android:fontFamily="sans-serif"
                                 android:text="0 of 0 habits"
                                 android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                                android:textColor="@color/outline"
+                                android:textColor="@color/text_secondary"
                                 tools:text="3 of 5 habits" />
                         </LinearLayout>
                     </FrameLayout>
@@ -281,7 +280,7 @@
                     android:fontFamily="sans-serif"
                     android:text="Today's Habits"
                     android:textAppearance="@style/TextAppearance.Spark.HeadlineMd"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -481,7 +480,7 @@
                     android:fontFamily="sans-serif"
                     android:text="No habits scheduled for today"
                     android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -491,7 +490,7 @@
                     android:fontFamily="sans-serif"
                     android:text="Tap + below to create a new habit"
                     android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                    android:textColor="@color/outline" />
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
             <!-- Empty Search Results View -->
@@ -521,7 +520,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/empty_search_results"
                     android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -531,25 +530,10 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/empty_search_results_sub"
                     android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                    android:textColor="@color/outline" />
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- Floating Action Button: Add Habit -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddHabit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/add_habit_title"
-        android:src="@drawable/ic_plus"
-        app:backgroundTint="@color/primary"
-        app:elevation="6dp"
-        app:fabSize="normal"
-        app:tint="@color/on_primary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

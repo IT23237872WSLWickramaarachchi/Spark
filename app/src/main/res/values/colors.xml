@@ -56,4 +56,28 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
+
+    <!-- Semantic Theme Tokens: Light Mode -->
+    <color name="text_primary">#1C192A</color>
+    <color name="text_secondary">#5F5A6B</color>
+    <color name="text_muted">#817B8C</color>
+    <color name="surface_background">#F8F5F1</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="surface_card_elevated">#FFFFFF</color>
+    <color name="surface_accent">#F0ECFF</color>
+    <color name="chip_bg">#EDEBF8</color>
+    <color name="chip_text">#2A2435</color>
+    <color name="insight_card_bg">#F0ECFF</color>
+    <color name="insight_card_text">#2A2435</color>
+    <color name="insight_icon_tint">#52559C</color>
+    <color name="nav_bg">#FFFFFF</color>
+    <color name="nav_icon_inactive">#817B8C</color>
+    <color name="nav_active_pill">#EAE8F8</color>
+    <color name="nav_active_icon">#52559C</color>
+    <color name="avatar_placeholder_bg">#EAE7F5</color>
+    <color name="avatar_placeholder_fg">#7A7494</color>
+    <color name="segmented_container_bg">#EDEBF8</color>
+    <color name="segmented_active_bg">#FFFFFF</color>
+    <color name="reminder_card_bg">#F1EFFF</color>
+    <color name="clock_circle_bg">#E2DFF6</color>
 </resources>

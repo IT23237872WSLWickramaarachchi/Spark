@@ -5,11 +5,11 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_cream">
+    android:background="@color/surface_background">
 
-    <!-- Fragment Container -->
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+    <!-- ViewPager2 Swipe Container (replaces FrameLayout) -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerMain"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavCard"
@@ -21,8 +21,8 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottomNavCard"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        app:cardBackgroundColor="@color/surface_container_lowest"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/nav_bg"
         app:cardCornerRadius="0dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +33,7 @@
         <LinearLayout
             android:id="@+id/bottomNavContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="64dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -61,7 +61,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/nav_dashboard"
                         android:src="@drawable/ic_home"
-                        app:tint="@color/on_primary" />
+                        app:tint="@color/nav_active_icon" />
                 </FrameLayout>
             </FrameLayout>
 
@@ -88,7 +88,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/nav_stats"
                         android:src="@drawable/ic_chart"
-                        app:tint="@color/on_surface_variant" />
+                        app:tint="@color/nav_icon_inactive" />
                 </FrameLayout>
             </FrameLayout>
 
@@ -115,7 +115,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/nav_add"
                         android:src="@drawable/ic_plus"
-                        app:tint="@color/on_surface_variant" />
+                        app:tint="@color/nav_icon_inactive" />
                 </FrameLayout>
             </FrameLayout>
 
@@ -142,7 +142,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/nav_mood"
                         android:src="@drawable/ic_mood_smile"
-                        app:tint="@color/on_surface_variant" />
+                        app:tint="@color/nav_icon_inactive" />
                 </FrameLayout>
             </FrameLayout>
 
@@ -169,7 +169,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/nav_settings"
                         android:src="@drawable/ic_gear"
-                        app:tint="@color/on_surface_variant" />
+                        app:tint="@color/nav_icon_inactive" />
                 </FrameLayout>
             </FrameLayout>
 

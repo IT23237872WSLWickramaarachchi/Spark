@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_cream"
+    android:background="@color/surface_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -31,7 +31,7 @@
                 android:focusable="true"
                 android:padding="8dp"
                 android:src="@drawable/ic_arrow_back"
-                app:tint="@color/on_surface" />
+                app:tint="@color/text_primary" />
 
             <TextView
                 android:id="@+id/tvSparkTitle"
@@ -42,7 +42,7 @@
                 android:gravity="center"
                 android:text="@string/app_name"
                 android:textAppearance="@style/TextAppearance.Spark.TitleMd"
-                android:textColor="@color/primary_deep_purple"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -56,7 +56,7 @@
                 android:focusable="true"
                 android:padding="8dp"
                 android:src="@drawable/ic_bell"
-                app:tint="@color/on_surface" />
+                app:tint="@color/text_primary" />
         </LinearLayout>
 
         <!-- Header Title: Your Progress -->
@@ -69,7 +69,7 @@
             android:gravity="center"
             android:text="@string/stats_your_progress"
             android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
-            android:textColor="@color/primary_deep_purple"
+            android:textColor="@color/text_primary"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -122,9 +122,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="24dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:strokeWidth="0dp">
 
             <LinearLayout
@@ -147,7 +147,7 @@
                         android:fontFamily="sans-serif"
                         android:text="@string/stats_completion_label"
                         android:textAppearance="@style/TextAppearance.Spark.TitleLg"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -160,7 +160,7 @@
                         android:fontFamily="sans-serif"
                         android:text="@string/stats_completion_sublabel"
                         android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                        android:textColor="@color/outline"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
 
                     <TextView
@@ -171,7 +171,7 @@
                         android:layout_centerVertical="true"
                         android:fontFamily="sans-serif"
                         android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
-                        android:textColor="@color/primary_deep_purple"
+                        android:textColor="@color/primary"
                         android:textSize="32sp"
                         android:textStyle="bold"
                         tools:text="82%" />
@@ -206,9 +206,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="24dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:strokeWidth="0dp">
 
             <LinearLayout
@@ -231,7 +231,7 @@
                         android:fontFamily="sans-serif"
                         android:text="@string/stats_mood_trend_label"
                         android:textAppearance="@style/TextAppearance.Spark.TitleLg"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -244,7 +244,7 @@
                         android:fontFamily="sans-serif"
                         android:text="@string/stats_mood_trend_sublabel"
                         android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                        android:textColor="@color/outline"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
 
                     <!-- Trend Badge Pill -->
@@ -295,7 +295,7 @@
                     android:gravity="center"
                     android:text="Check in with your mood to see trends."
                     android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                    android:textColor="@color/outline"
+                    android:textColor="@color/text_muted"
                     android:visibility="gone" />
 
                 <TextView
@@ -305,7 +305,7 @@
                     android:layout_marginTop="6dp"
                     android:gravity="center"
                     android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                    android:textColor="@color/outline"
+                    android:textColor="@color/text_muted"
                     android:textSize="12sp"
                     android:visibility="gone"
                     tools:text="Early trend preview (3 entries logged)." />
@@ -321,9 +321,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="24dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:strokeWidth="0dp">
 
             <LinearLayout
@@ -341,7 +341,7 @@
                     android:fontFamily="sans-serif"
                     android:text="Common Feelings"
                     android:textAppearance="@style/TextAppearance.Spark.TitleLg"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -349,20 +349,21 @@
                     android:id="@+id/tvFeelingsSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="6dp"
                     android:fontFamily="sans-serif"
                     android:text="Feelings you reported most this period"
                     android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                    android:textColor="@color/outline"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupCommonFeelings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    app:chipSpacingHorizontal="6dp"
-                    app:chipSpacingVertical="4dp" />
+                    android:layout_marginTop="20dp"
+                    app:chipSpacingHorizontal="10dp"
+                    app:chipSpacingVertical="10dp"
+                    app:singleLine="false" />
 
                 <TextView
                     android:id="@+id/tvFeelingsEmpty"
@@ -373,7 +374,7 @@
                     android:gravity="center"
                     android:text="Log feelings during your check-in to reveal emotional patterns."
                     android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                    android:textColor="@color/outline"
+                    android:textColor="@color/text_muted"
                     android:visibility="gone" />
 
             </LinearLayout>
@@ -387,9 +388,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="24dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:strokeWidth="0dp">
 
             <LinearLayout
@@ -407,7 +408,7 @@
                     android:fontFamily="sans-serif"
                     android:text="Habit &amp; Mood"
                     android:textAppearance="@style/TextAppearance.Spark.TitleLg"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -415,29 +416,29 @@
                     android:id="@+id/tvHabitMoodSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="6dp"
                     android:fontFamily="sans-serif"
                     android:text="Descriptive well-being insights"
                     android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                    android:textColor="@color/outline"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_segmented_container"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_insight_panel"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="12dp">
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="16dp">
 
                     <ImageView
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginEnd="14dp"
                         android:src="@drawable/ic_flare"
-                        app:tint="@color/primary" />
+                        app:tint="@color/insight_icon_tint" />
 
                     <TextView
                         android:id="@+id/tvHabitMoodInsight"
@@ -446,8 +447,8 @@
                         android:fontFamily="sans-serif"
                         android:lineSpacingExtra="3dp"
                         android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"
+                        android:textColor="@color/insight_card_text"
+                        android:textSize="14sp"
                         tools:text="On days you completed habits, your mood averaged 4.2 compared to 3.1 on other days." />
 
                 </LinearLayout>
@@ -472,9 +473,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/surface_card"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="3dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
@@ -482,7 +483,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
+                    android:paddingHorizontal="18dp"
                     android:paddingVertical="20dp">
 
                     <ImageView
@@ -507,8 +508,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
                             android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
-                            android:textColor="@color/on_surface"
-                            android:textSize="26sp"
+                            android:textColor="@color/text_primary"
+                            android:textSize="28sp"
                             android:textStyle="bold"
                             tools:text="12" />
 
@@ -520,7 +521,7 @@
                             android:fontFamily="sans-serif"
                             android:text="days"
                             android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                            android:textColor="@color/on_surface"
+                            android:textColor="@color/text_secondary"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -532,7 +533,7 @@
                         android:letterSpacing="0.05"
                         android:text="CURRENT STREAK"
                         android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                        android:textColor="@color/outline"
+                        android:textColor="@color/text_muted"
                         android:textSize="11sp" />
 
                 </LinearLayout>
@@ -546,9 +547,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@color/surface_container_lowest"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/surface_card"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="3dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
@@ -556,7 +557,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
+                    android:paddingHorizontal="18dp"
                     android:paddingVertical="20dp">
 
                     <ImageView
@@ -581,8 +582,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
                             android:textAppearance="@style/TextAppearance.Spark.HeadlineLg"
-                            android:textColor="@color/on_surface"
-                            android:textSize="26sp"
+                            android:textColor="@color/text_primary"
+                            android:textSize="28sp"
                             android:textStyle="bold"
                             tools:text="4" />
 
@@ -594,8 +595,8 @@
                             android:layout_marginBottom="2dp"
                             android:fontFamily="sans-serif"
                             android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                            android:textColor="@color/outline"
-                            android:textSize="16sp"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp"
                             tools:text="/5" />
                     </LinearLayout>
 
@@ -607,7 +608,7 @@
                         android:letterSpacing="0.05"
                         android:text="TODAY'S RATE"
                         android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-                        android:textColor="@color/outline"
+                        android:textColor="@color/text_muted"
                         android:textSize="11sp" />
 
                 </LinearLayout>

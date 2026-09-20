@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_cream"
+    android:background="@color/surface_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -69,7 +69,7 @@
             android:letterSpacing="0.08"
             android:text="@string/settings_section_account"
             android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-            android:textColor="@color/outline"
+            android:textColor="@color/text_muted"
             android:textSize="12sp" />
 
         <!-- Account Profile Card -->
@@ -82,7 +82,7 @@
             android:layout_marginTop="10dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
             app:strokeWidth="0dp">
@@ -102,8 +102,8 @@
                     android:contentDescription="@string/settings_profile_title"
                     android:focusable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sample_avatar"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Spark.Corner.Full" />
+                    android:src="@drawable/ic_profile_placeholder"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Spark.Circle" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -112,16 +112,16 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvSettingsUserName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
-                        android:textAppearance="@style/TextAppearance.Spark.TitleLg"
-                        android:textColor="@color/on_surface"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:text="Alex Johnson" />
+                <TextView
+                    android:id="@+id/tvSettingsUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:textAppearance="@style/TextAppearance.Spark.TitleLg"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Alex Johnson" />
 
                     <TextView
                         android:id="@+id/tvSettingsViewProfile"
@@ -153,17 +153,21 @@
             android:letterSpacing="0.08"
             android:text="@string/settings_section_preferences"
             android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-            android:textColor="@color/outline"
+            android:textColor="@color/text_muted"
             android:textSize="12sp" />
 
         <!-- Row 1: Notifications Master -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardNotifications"
             style="@style/Widget.Spark.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
             app:strokeWidth="0dp">
@@ -190,7 +194,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/settings_notifications"
                     android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -208,12 +212,16 @@
 
         <!-- Row 2: Dark Mode -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDarkMode"
             style="@style/Widget.Spark.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
             app:strokeWidth="0dp">
@@ -240,7 +248,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/settings_dark_mode"
                     android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -266,7 +274,7 @@
             android:layout_marginTop="10dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
             app:strokeWidth="0dp">
@@ -293,7 +301,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/settings_reminder_time"
                     android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
                 <TextView
@@ -303,7 +311,7 @@
                     android:layout_marginEnd="6dp"
                     android:fontFamily="sans-serif"
                     android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                    android:textColor="@color/on_surface_variant"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     tools:text="8:00 AM" />
 
@@ -325,7 +333,7 @@
             android:layout_marginTop="10dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
             app:strokeWidth="0dp">
@@ -352,7 +360,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/settings_language"
                     android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                    android:textColor="@color/on_surface"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
                 <TextView
@@ -363,7 +371,7 @@
                     android:fontFamily="sans-serif"
                     android:text="@string/settings_language_value"
                     android:textAppearance="@style/TextAppearance.Spark.BodyMd"
-                    android:textColor="@color/on_surface_variant"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp" />
 
                 <ImageView
@@ -384,7 +392,7 @@
             android:letterSpacing="0.08"
             android:text="@string/settings_section_about"
             android:textAppearance="@style/TextAppearance.Spark.LabelBold"
-            android:textColor="@color/outline"
+            android:textColor="@color/text_muted"
             android:textSize="12sp" />
 
         <!-- Grouped About Card -->
@@ -394,7 +402,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
             app:strokeWidth="0dp">
@@ -431,7 +439,7 @@
                         android:fontFamily="sans-serif"
                         android:text="@string/settings_help_center"
                         android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/text_primary"
                         android:textSize="15sp" />
 
                     <ImageView
@@ -461,6 +469,7 @@
                     android:paddingVertical="16dp">
 
                     <ImageView
+                        android:id="@+id/ivPrivacyTip"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_privacy_tip"
@@ -474,7 +483,7 @@
                         android:fontFamily="sans-serif"
                         android:text="@string/settings_privacy_policy"
                         android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/text_primary"
                         android:textSize="15sp" />
 
                     <ImageView
@@ -522,7 +531,7 @@
                             android:fontFamily="sans-serif"
                             android:text="Developer / Demo Data"
                             android:textAppearance="@style/TextAppearance.Spark.BodyLg"
-                            android:textColor="@color/on_surface"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp" />
 
                         <TextView
@@ -532,7 +541,7 @@
                             android:fontFamily="sans-serif"
                             android:text="Generate or clear sample history for review"
                             android:textAppearance="@style/TextAppearance.Spark.BodySm"
-                            android:textColor="@color/outline"
+                            android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -555,7 +564,7 @@
             android:layout_marginTop="20dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="@color/surface_container_lowest"
+            app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
             app:strokeWidth="0dp">
@@ -596,7 +605,7 @@
             android:gravity="center"
             android:text="@string/settings_app_version"
             android:textAppearance="@style/TextAppearance.Spark.BodySm"
-            android:textColor="@color/outline"
+            android:textColor="@color/text_muted"
             android:textSize="12sp" />
 
     </LinearLayout>

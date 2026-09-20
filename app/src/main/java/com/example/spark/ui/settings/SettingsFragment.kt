@@ -47,7 +47,7 @@ class SettingsFragment : Fragment() {
     private lateinit var habitRepository: HabitRepository
 
     private val imagePickerLauncher = registerForActivityResult(
-        ActivityResultContracts.GetContent()
+        ActivityResultContracts.OpenDocument()
     ) { uri: Uri? ->
         if (uri != null) {
             handleSelectedProfileImage(uri)
@@ -128,7 +128,7 @@ class SettingsFragment : Fragment() {
 
         // Tapping avatar or account card opens image picker
         binding.ivSettingsAvatar.setOnClickListener {
-            imagePickerLauncher.launch("image/*")
+            imagePickerLauncher.launch(arrayOf("image/*"))
         }
 
         binding.cardAccountProfile.setOnClickListener {
@@ -188,7 +188,7 @@ class SettingsFragment : Fragment() {
 
         dialogBinding.btnChangePhoto.setOnClickListener {
             dialog.dismiss()
-            imagePickerLauncher.launch("image/*")
+            imagePickerLauncher.launch(arrayOf("image/*"))
         }
 
         dialogBinding.btnCloseProfile.setOnClickListener {
@@ -236,12 +236,19 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        binding.cardNotifications.setOnClickListener {
+            binding.switchNotificationsMaster.toggle()
+        }
+
         // 2. Dark Mode Switch
         binding.switchDarkMode.isChecked = preferenceHelper.isDarkMode
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             if (preferenceHelper.isDarkMode != isChecked) {
                 preferenceHelper.isDarkMode = isChecked
             }
+        }
+        binding.cardDarkMode.setOnClickListener {
+            binding.switchDarkMode.toggle()
         }
 
         // 3. Daily Mood Reminder Time

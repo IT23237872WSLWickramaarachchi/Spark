@@ -175,53 +175,102 @@ class SparkFullDatabaseWorkflowTest {
         override suspend fun getTotalCompletedCountForHabit(habitId: Long): Int {
             return completions.count { it.habitId == habitId && it.completed }
         }
+
+        override suspend fun deleteDemoCompletions(userId: Long): Int {
+            val count = completions.count { it.isDemo }
+            completions.removeAll { it.isDemo }
+            return count
+        }
+
+        override suspend fun getDemoCompletionCount(userId: Long): Int {
+            return completions.count { it.isDemo }
+        }
     }
 
     class FakeMoodDao : MoodEntryDao {
-        val moods = mutableMapOf<String, MoodEntryEntity>()
+        val moods = mutableListOf<MoodEntryEntity>()
         private var idGen = 1L
 
         override suspend fun insertOrUpdate(mood: MoodEntryEntity): Long {
             val id = if (mood.id > 0) mood.id else idGen++
             val item = mood.copy(id = id)
-            moods["${mood.userId}_${mood.date}"] = item
+            moods.removeAll { it.id == id || (it.userId == mood.userId && it.date == mood.date && it.timestamp == mood.timestamp) }
+            moods.add(item)
+            return id
+        }
+
+        override suspend fun insertNew(mood: MoodEntryEntity): Long {
+            val id = if (mood.id > 0) mood.id else idGen++
+            val item = mood.copy(id = id)
+            moods.add(item)
             return id
         }
 
         override suspend fun update(mood: MoodEntryEntity) {
-            moods["${mood.userId}_${mood.date}"] = mood
+            val index = moods.indexOfFirst { it.id == mood.id }
+            if (index != -1) moods[index] = mood
         }
 
         override suspend fun delete(mood: MoodEntryEntity) {
-            moods.remove("${mood.userId}_${mood.date}")
+            moods.removeAll { it.id == mood.id }
         }
 
         override suspend fun getMoodForDate(userId: Long, date: String): MoodEntryEntity? {
-            return moods["${userId}_$date"]
+            return moods.filter { it.userId == userId && it.date == date }.maxByOrNull { it.timestamp }
+        }
+
+        override suspend fun getMoodsForDate(userId: Long, date: String): List<MoodEntryEntity> {
+            return moods.filter { it.userId == userId && it.date == date }.sortedByDescending { it.timestamp }
+        }
+
+        override fun getMoodsForDateLiveData(userId: Long, date: String): LiveData<List<MoodEntryEntity>> {
+            return MutableLiveData(moods.filter { it.userId == userId && it.date == date }.sortedByDescending { it.timestamp })
+        }
+
+        override fun getLatestMoodForDateLiveData(userId: Long, date: String): LiveData<MoodEntryEntity?> {
+            return MutableLiveData(moods.filter { it.userId == userId && it.date == date }.maxByOrNull { it.timestamp })
         }
 
         override fun getMoodForDateLiveData(userId: Long, date: String): LiveData<MoodEntryEntity?> {
-            return MutableLiveData(moods["${userId}_$date"])
+            return MutableLiveData(moods.filter { it.userId == userId && it.date == date }.maxByOrNull { it.timestamp })
         }
 
         override fun getAllMoodsLiveData(userId: Long): LiveData<List<MoodEntryEntity>> {
-            return MutableLiveData(moods.values.filter { it.userId == userId })
+            return MutableLiveData(moods.filter { it.userId == userId }.sortedByDescending { it.timestamp })
         }
 
         override suspend fun getAllMoods(userId: Long): List<MoodEntryEntity> {
-            return moods.values.filter { it.userId == userId }
+            return moods.filter { it.userId == userId }.sortedByDescending { it.timestamp }
         }
 
         override suspend fun getMoodsBetween(userId: Long, startDate: String, endDate: String): List<MoodEntryEntity> {
-            return moods.values.filter { it.userId == userId && it.date in startDate..endDate }
+            return moods.filter { it.userId == userId && it.date in startDate..endDate }.sortedBy { it.timestamp }
         }
 
         override fun getMoodsBetweenLiveData(userId: Long, startDate: String, endDate: String): LiveData<List<MoodEntryEntity>> {
-            return MutableLiveData(moods.values.filter { it.userId == userId && it.date in startDate..endDate })
+            return MutableLiveData(moods.filter { it.userId == userId && it.date in startDate..endDate }.sortedBy { it.timestamp })
         }
 
         override suspend fun getTotalMoodCheckInCount(userId: Long): Int {
-            return moods.values.count { it.userId == userId }
+            return moods.count { it.userId == userId }
+        }
+
+        override suspend fun deleteDemoMoods(userId: Long): Int {
+            val count = moods.count { it.userId == userId && it.isDemo }
+            moods.removeAll { it.userId == userId && it.isDemo }
+            return count
+        }
+
+        override suspend fun getLatestMood(userId: Long): MoodEntryEntity? {
+            return moods.filter { it.userId == userId }.maxByOrNull { it.timestamp }
+        }
+
+        override suspend fun getDemoMoodCount(userId: Long): Int {
+            return moods.count { it.userId == userId && it.isDemo }
+        }
+
+        override suspend fun getMoodCountForDate(userId: Long, date: String): Int {
+            return moods.count { it.userId == userId && it.date == date }
         }
     }
 

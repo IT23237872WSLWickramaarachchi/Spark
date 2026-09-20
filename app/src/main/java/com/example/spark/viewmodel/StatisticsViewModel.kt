@@ -168,17 +168,19 @@ class StatisticsViewModel(
         }
 
         // 3. Mood trend points and label
-        // Map moods by date
-        val moodsByDate = currentMoods.associateBy { it.date }
+        // Group moods by date and compute daily average for each date
+        val dailyMoodAverages = currentMoods.groupBy { it.date }.mapValues { (_, entries) ->
+            entries.map { it.moodLevel }.average().toFloat()
+        }
         val moodPoints = mutableListOf<MoodPointUiModel>()
         var pointIndex = 0f
         dates.forEach { dateStr ->
-            val mood = moodsByDate[dateStr]
-            if (mood != null) {
+            val avgLevel = dailyMoodAverages[dateStr]
+            if (avgLevel != null) {
                 moodPoints.add(
                     MoodPointUiModel(
                         xIndex = pointIndex,
-                        moodLevel = mood.moodLevel.toFloat(),
+                        moodLevel = avgLevel,
                         date = dateStr
                     )
                 )

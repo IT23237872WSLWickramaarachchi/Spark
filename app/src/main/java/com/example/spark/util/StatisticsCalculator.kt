@@ -90,10 +90,16 @@ object StatisticsCalculator {
 
     /**
      * Calculates the mean of mood levels (1 to 5) in the selected period.
+     * When multiple entries exist on the same day, uses daily averages so that
+     * each calendar day contributes equally to the period average.
      */
     fun calculateMoodAverage(moods: List<MoodEntryEntity>): Double? {
         if (moods.isEmpty()) return null
-        return moods.map { it.moodLevel }.average()
+        // Group by date and compute daily average, then average those
+        val dailyAverages = moods.groupBy { it.date }.map { (_, entries) ->
+            entries.map { it.moodLevel }.average()
+        }
+        return dailyAverages.average()
     }
 
     /**
@@ -139,7 +145,17 @@ object StatisticsCalculator {
     }
 
     /**
+     * Calculates the average number of mood check-ins per day in the given period.
+     */
+    fun calculateAvgCheckInsPerDay(moods: List<MoodEntryEntity>): Double {
+        if (moods.isEmpty()) return 0.0
+        val uniqueDays = moods.map { it.date }.distinct().size
+        return if (uniqueDays > 0) moods.size.toDouble() / uniqueDays else 0.0
+    }
+
+    /**
      * Calculates descriptive correlation between habit completions and logged mood levels.
+     * When multiple mood entries exist per day, uses the daily average mood for comparison.
      */
     fun calculateHabitMoodInsight(
         dates: List<String>,
@@ -157,14 +173,19 @@ object StatisticsCalculator {
             .map { it.completionDate }
             .toSet()
 
-        val completedDayMoods = mutableListOf<Int>()
-        val nonCompletedDayMoods = mutableListOf<Int>()
+        // Group moods by date and compute daily average
+        val dailyMoodAverages = moods.groupBy { it.date }.mapValues { (_, entries) ->
+            entries.map { it.moodLevel }.average()
+        }
 
-        moods.forEach { mood ->
-            if (completedDates.contains(mood.date)) {
-                completedDayMoods.add(mood.moodLevel)
+        val completedDayMoods = mutableListOf<Double>()
+        val nonCompletedDayMoods = mutableListOf<Double>()
+
+        dailyMoodAverages.forEach { (date, avg) ->
+            if (completedDates.contains(date)) {
+                completedDayMoods.add(avg)
             } else {
-                nonCompletedDayMoods.add(mood.moodLevel)
+                nonCompletedDayMoods.add(avg)
             }
         }
 

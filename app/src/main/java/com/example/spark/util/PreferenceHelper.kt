@@ -2,9 +2,10 @@ package com.example.spark.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 
-class PreferenceHelper(context: Context) {
+class PreferenceHelper(private val context: Context) {
 
     private val prefs: SharedPreferences =
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -19,8 +20,12 @@ class PreferenceHelper(context: Context) {
         const val DEFAULT_MOOD_REMINDER_TIME = "20:00" // 8:00 PM
     }
 
+    private val isSystemDark: Boolean
+        get() = (context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+
     var isDarkMode: Boolean
-        get() = prefs.getBoolean(KEY_DARK_MODE, false)
+        get() = if (prefs.contains(KEY_DARK_MODE)) prefs.getBoolean(KEY_DARK_MODE, false) else isSystemDark
         set(value) {
             prefs.edit().putBoolean(KEY_DARK_MODE, value).apply()
             applyNightMode(value)
@@ -39,7 +44,11 @@ class PreferenceHelper(context: Context) {
         set(value) = prefs.edit().putString(KEY_LANGUAGE, value).apply()
 
     fun applyTheme() {
-        applyNightMode(isDarkMode)
+        if (prefs.contains(KEY_DARK_MODE)) {
+            applyNightMode(prefs.getBoolean(KEY_DARK_MODE, false))
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
     }
 
     private fun applyNightMode(darkMode: Boolean) {

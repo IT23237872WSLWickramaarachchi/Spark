@@ -16,12 +16,14 @@ import com.example.spark.adapter.HabitAdapter
 import com.example.spark.data.AppDatabase
 import com.example.spark.data.repository.HabitRepository
 import com.example.spark.data.repository.MoodRepository
+import com.example.spark.data.repository.UserRepository
 import com.example.spark.databinding.FragmentDashboardBinding
 import com.example.spark.model.HabitItemUiModel
 import com.example.spark.model.MoodLevel
 import com.example.spark.ui.habits.AddHabitBottomSheet
 import com.example.spark.ui.habits.HabitDetailsActivity
 import com.example.spark.ui.mood.MoodCheckInDialog
+import com.example.spark.util.DateUtils
 import com.example.spark.util.SessionManager
 import com.example.spark.viewmodel.DashboardViewModel
 import java.util.Calendar
@@ -72,6 +74,7 @@ class DashboardFragment : Fragment() {
         setupRecyclerView()
         setupListeners()
         observeViewModel()
+        observeUserProfile()
     }
 
     private fun checkNotificationPermission() {
@@ -114,6 +117,26 @@ class DashboardFragment : Fragment() {
         updateUserAvatar()
     }
 
+    /**
+     * Observe Room UserEntity in real-time so profile image updates from Settings
+     * are reflected immediately without needing to reload the fragment.
+     */
+    private fun observeUserProfile() {
+        val userId = sessionManager.getCurrentUserId()
+        if (userId > 0) {
+            val db = AppDatabase.getDatabase(requireContext())
+            val userRepo = UserRepository(db.userDao())
+            userRepo.getUserByIdLiveData(userId).observe(viewLifecycleOwner) { user ->
+                if (user != null) {
+                    com.example.spark.util.ProfileImageHelper.loadProfileImage(
+                        binding.ivAvatar,
+                        user.profileImageUri
+                    )
+                }
+            }
+        }
+    }
+
     private fun setupRecyclerView() {
         habitAdapter = HabitAdapter(
             onToggleComplete = { item, isChecked ->
@@ -135,10 +158,6 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.fabAddHabit.setOnClickListener {
-            openAddHabitBottomSheet()
-        }
-
         // FR-10: Subtle Search toggle
         binding.btnSearchHabits.setOnClickListener {
             if (binding.tilSearchHabits.visibility == View.VISIBLE) {
@@ -273,7 +292,17 @@ class DashboardFragment : Fragment() {
             if (moodEntity != null) {
                 val mood = MoodLevel.fromLevel(moodEntity.moodLevel)
                 binding.ivMoodIcon.setImageResource(mood.iconResId)
-                binding.tvMoodText.text = mood.dashboardText
+
+                // Show mood with time for latest check-in
+                val timeDisplay = if (moodEntity.time.isNotEmpty()) {
+                    try {
+                        val parts = moodEntity.time.split(":")
+                        val hour = parts[0].toInt()
+                        val min = parts[1].toInt()
+                        " • ${DateUtils.formatTime12Hour(hour, min)}"
+                    } catch (e: Exception) { "" }
+                } else ""
+                binding.tvMoodText.text = "${mood.dashboardText}$timeDisplay"
             } else {
                 binding.ivMoodIcon.setImageResource(R.drawable.ic_mood_smile)
                 binding.tvMoodText.text = "How are you feeling today?"
@@ -294,7 +323,6 @@ class DashboardFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.refreshStreak()
-        updateUserAvatar()
     }
 
     private fun updateUserAvatar() {
